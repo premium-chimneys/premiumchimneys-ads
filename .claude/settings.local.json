@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(wc -l c:/Users/glimm/landing-pages/components/*.js)",
+      "Bash(wc -l \"c:/Users/glimm/landing-pages/components/\"*.js)",
+      "Bash(node convert.mjs)",
+      "Bash(npx next *)"
+    ]
+  }
+}
