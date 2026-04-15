@@ -1,55 +1,10 @@
 
 'use client';
-import { useEffect } from 'react';
 
 export default function Coupons({ city }) {
-  useEffect(() => {
-    // ---- script block ----
-    try {
-      var coupons = [
-          { icon:'\u{1F9F9}', amount:'$49',  service:'Chimney Sweeps', code:'SWEEP49',  desc:'Save $49 on your next professional chimney sweep service.', gradient:'linear-gradient(135deg,#7c3aed,#6d28d9)' },
-          { icon:'\u{1F527}', amount:'10%',  service:'All Repairs',    code:'REPAIR10', desc:'Get 10% off any chimney repair service we offer.',         gradient:'linear-gradient(135deg,#9b5de5,#7c3aed)' },
-          { icon:'\u{1F3E0}', amount:'$149', service:'Chimney Caps',   code:'CAP149',   desc:'Save $149 on a new chimney cap installation.',            gradient:'linear-gradient(135deg,#6d28d9,#5b21b6)' }
-        ];
-      
-        var savedScrollY = 0;
-      
-        function cpOpen(i) {
-          var c = coupons[i];
-          document.getElementById('cpModalIcon').textContent    = c.icon;
-          document.getElementById('cpModalAmount').textContent  = c.amount;
-          document.getElementById('cpModalService').textContent = c.service;
-          document.getElementById('cpModalCode').textContent    = c.code;
-          document.getElementById('cpModalDesc').textContent    = c.desc;
-          document.getElementById('cpModalTop').style.background = c.gradient;
-      
-          savedScrollY = window.scrollY;
-          document.body.style.position = 'fixed';
-          document.body.style.top = '-' + savedScrollY + 'px';
-          document.body.style.left = '0';
-          document.body.style.right = '0';
-      
-          document.getElementById('cpOverlay').classList.add('cp-active');
-        }
-      
-        function cpClose(e) {
-          if (e && e.target.closest('.cp-modal-card')) return;
-          document.getElementById('cpOverlay').classList.remove('cp-active');
-      
-          document.body.style.position = '';
-          document.body.style.top = '';
-          document.body.style.left = '';
-          document.body.style.right = '';
-          window.scrollTo(0, savedScrollY);
-        }
-    } catch (e) { console.error('[component script]', e); }
-  }, []);
   return (
     <>
-      ) &#123;
-        return <div></div>
-      &#125;
-      
+
       
       
       
@@ -78,8 +33,8 @@ export default function Coupons({ city }) {
         @keyframes followTrail{
           0%{offset-distance:0%;opacity:0}
           5%{opacity:1}
-          90%{opacity:1;offset-distance:100%}
-          91%{opacity:0;offset-distance:100%}
+          75%{opacity:1;offset-distance:97%}
+          85%{opacity:0;offset-distance:97%}
           100%{opacity:0;offset-distance:0%}
         }
         @keyframes overlayIn{from{opacity:0}to{opacity:1}}
@@ -89,19 +44,21 @@ export default function Coupons({ city }) {
         /* ── Section ── */
         .cp-section{
           background:#faf9fe;
-          padding:0 48px 80px;
+          padding:0 0 128px;
           font-family:'Inter Tight',sans-serif;
         }
         .cp-container{
           max-width:1200px;
           margin:0 auto;
+          padding:0 24px;
+          box-sizing:border-box;
         }
       
         /* ── Trail ── */
         .cp-trail{
           display:flex;
           justify-content:center;
-          padding-bottom:40px;
+          padding-bottom:72px;
         }
         .cp-trail-wrap{
           position:relative;
@@ -123,6 +80,7 @@ export default function Coupons({ city }) {
           box-shadow:0 0 12px 4px rgba(124,58,237,.45);
           offset-path:path('M100 0 C100 40,160 50,160 80 C160 110,40 120,40 150 C40 180,100 190,100 220');
           animation:followTrail 4s ease-in-out infinite;
+          z-index:1;
         }
         .cp-trail-arrow{
           position:absolute;
@@ -135,6 +93,7 @@ export default function Coupons({ city }) {
           top:50%;
           left:50%;
           transform:translate(-50%,-50%);
+          z-index:2;
           font-size:17px;
           font-weight:700;
           color:#7c3aed;
@@ -159,32 +118,28 @@ export default function Coupons({ city }) {
           border:2px dashed #7c3aed;
           border-radius:18px;
           box-shadow:0 4px 24px rgba(124,58,237,.12);
-          cursor:pointer;
           animation:couponFloat 5s ease-in-out infinite;
-          transition:transform .25s,box-shadow .25s;
-          overflow:hidden;
+          transition:transform .5s cubic-bezier(.16,1,.3,1), box-shadow .5s cubic-bezier(.16,1,.3,1), opacity .4s ease;
+          display:flex;
+          flex-direction:column;
+          height:100%;
+          -webkit-mask:
+            radial-gradient(circle 10px at 0 50%, transparent 98%, #000 100%),
+            radial-gradient(circle 10px at 100% 50%, transparent 98%, #000 100%);
+          -webkit-mask-composite: source-in;
+          mask:
+            radial-gradient(circle 10px at 0 50%, transparent 98%, #000 100%),
+            radial-gradient(circle 10px at 100% 50%, transparent 98%, #000 100%);
+          mask-composite: intersect;
         }
-        .cp-card:hover{
-          transform:scale(1.04) rotate(var(--rot))!important;
-          box-shadow:0 8px 36px rgba(124,58,237,.22);
+        .cp-card-top{border-top-left-radius:16px;border-top-right-radius:16px}
+        .cp-card-bottom{border-bottom-left-radius:16px;border-bottom-right-radius:16px}
+        .cp-grid:hover .cp-card{opacity:.55}
+        .cp-grid .cp-card:hover{
+          opacity:1;
+          box-shadow:0 12px 44px rgba(124,58,237,.28);
         }
       
-        /* Perforated cutouts */
-        .cp-card::before,
-        .cp-card::after{
-          content:'';
-          position:absolute;
-          width:22px;
-          height:22px;
-          background:#faf9fe;
-          border-radius:50%;
-          top:50%;
-          transform:translateY(-50%);
-          z-index:2;
-          box-shadow:inset 0 0 0 2px #7c3aed;
-        }
-        .cp-card::before{left:-12px}
-        .cp-card::after{right:-12px}
       
         /* Top gradient */
         .cp-card-top{
@@ -193,6 +148,10 @@ export default function Coupons({ city }) {
           text-align:center;
           color:#fff;
           overflow:hidden;
+          background:
+            radial-gradient(circle at 30% 25%, rgba(167,139,250,0.35) 0%, transparent 55%),
+            radial-gradient(circle at 75% 80%, rgba(124,58,237,0.28) 0%, transparent 60%),
+            linear-gradient(160deg, #0e0b14 0%, #1a1030 45%, #241548 100%) !important;
         }
         .cp-card-top::after{
           content:'';
@@ -204,7 +163,8 @@ export default function Coupons({ city }) {
           background-size:24px 24px,30px 30px,18px 18px;
           pointer-events:none;
         }
-        .cp-card-icon{font-size:36px;display:block;margin-bottom:6px}
+        .cp-card-icon{font-size:36px;display:block;margin-bottom:6px;transform-origin:center;animation:cpIconBob 2.6s ease-in-out infinite}
+        @keyframes cpIconBob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-4px) rotate(4deg)}}
         .cp-card-amount{font-size:64px;font-weight:800;line-height:1}
         .cp-card-off{font-size:20px;font-weight:700;text-transform:uppercase;letter-spacing:2px;opacity:.85}
         .cp-card-service{font-size:16px;font-weight:600;margin-top:4px;opacity:.9}
@@ -231,12 +191,17 @@ export default function Coupons({ city }) {
         .cp-card-bottom{
           padding:18px 20px 22px;
           text-align:center;
+          flex:1;
+          display:flex;
+          flex-direction:column;
+          align-items:center;
         }
         .cp-card-desc{
           font-size:14px;
           color:#555;
           margin-bottom:12px;
           line-height:1.45;
+          flex:1;
         }
         .cp-card-code-wrap{
           display:inline-flex;
@@ -266,43 +231,44 @@ export default function Coupons({ city }) {
           display:none;
           position:fixed;
           inset:0;
-          z-index:9999;
-          background:rgba(30,10,60,.72);
-          backdrop-filter:blur(10px);
-          -webkit-backdrop-filter:blur(10px);
+          z-index:10000;
+          font-family:'Inter Tight',sans-serif;
+          background:rgba(0,0,0,0.7);
+          backdrop-filter:blur(8px);
+          -webkit-backdrop-filter:blur(8px);
           justify-content:center;
           align-items:center;
           flex-direction:column;
-          animation:overlayIn .3s ease;
+          animation:overlayIn .3s ease both;
           cursor:pointer;
         }
         .cp-overlay.cp-active{display:flex}
       
         .cp-modal-greeting{
-          font-size:36px;
+          font-family:'Inter Tight',sans-serif;
+          font-size:56px;
           font-weight:700;
+          letter-spacing:-0.03em;
           color:#fff;
-          margin-bottom:6px;
+          margin-bottom:8px;
+          text-align:center;
           animation:modalIn .45s ease both;
         }
         .cp-modal-sub{
+          font-family:'Inter Tight',sans-serif;
           font-size:18px;
-          color:rgba(255,255,255,.7);
-          margin-bottom:28px;
+          color:rgba(255,255,255,.75);
+          margin-bottom:32px;
+          text-align:center;
           animation:modalIn .45s ease .08s both;
         }
       
-        .cp-modal-card{
-          position:relative;
-          width:400px;
+        .cp-card.cp-modal-card{
           max-width:92vw;
-          background:#fff;
-          border:2px dashed #7c3aed;
-          border-radius:22px;
-          box-shadow:0 12px 48px rgba(124,58,237,.25);
-          overflow:hidden;
+          flex:0 0 auto;
           cursor:default;
-          animation:modalIn .5s ease .12s both;
+          animation:modalIn .45s ease .16s both;
+          box-shadow:0 12px 48px rgba(124,58,237,.25);
         }
         .cp-modal-card::before,
         .cp-modal-card::after{
@@ -310,7 +276,7 @@ export default function Coupons({ city }) {
           position:absolute;
           width:26px;
           height:26px;
-          background:rgba(30,10,60,.72);
+          background:#14101e;
           border-radius:50%;
           top:50%;
           transform:translateY(-50%);
@@ -418,31 +384,53 @@ export default function Coupons({ city }) {
           margin-bottom:16px;
         }
         .cp-cta-btn{
-          display:inline-block;
-          padding:16px 40px;
-          background:linear-gradient(135deg,#7c3aed,#6d28d9);
-          color:#fff;
+          display:inline-flex;
+          align-items:center;
+          justify-content:center;
+          gap:8px;
           font-family:'Inter Tight',sans-serif;
-          font-size:18px;
-          font-weight:700;
-          border:none;
-          border-radius:50px;
+          font-size:15px;
+          font-weight:600;
+          color:#f0e0fd;
           text-decoration:none;
+          padding:12px 24px;
+          height:46px;
+          box-sizing:border-box;
+          border:1px solid #7c3aed;
+          border-radius:10px;
+          background:linear-gradient(160deg,#9b5de5 0%,#7c3aed 25%,#5b21b6 50%,#6d28d9 72%,#8b5cf6 100%);
+          box-shadow:inset 0 1px 0 rgba(196,155,240,.55),inset 0 -1px 0 rgba(0,0,0,.22),0 4px 16px rgba(91,33,182,.45);
           cursor:pointer;
-          transition:transform .2s,box-shadow .2s;
-          box-shadow:0 4px 20px rgba(124,58,237,.3);
+          transition:all .22s ease;
+          position:relative;
+          overflow:hidden;
+          text-shadow:0 1px 2px rgba(45,15,80,.35);
+        }
+        .cp-cta-btn::before{
+          content:'';
+          position:absolute;
+          top:0;
+          left:-70%;
+          width:40%;
+          height:100%;
+          background:linear-gradient(105deg,transparent 35%,rgba(210,175,255,.35) 50%,transparent 65%);
+          transform:skewX(-12deg);
+          pointer-events:none;
+          transition:left .55s ease;
         }
         .cp-cta-btn:hover{
           transform:translateY(-2px);
-          box-shadow:0 8px 28px rgba(124,58,237,.4);
+          box-shadow:inset 0 1px 0 rgba(196,155,240,.55),inset 0 -1px 0 rgba(0,0,0,.22),0 8px 24px rgba(91,33,182,.5);
         }
+        .cp-cta-btn:hover::before{left:130%}
       
         /* ── Responsive ── */
         @media(max-width:960px){
+          .cp-section{padding:0 0 80px}
           .cp-grid{grid-template-columns:repeat(2,1fr)}
         }
         @media(max-width:600px){
-          .cp-section{padding:0 20px 60px}
+          .cp-section{padding:0 0 80px}
           .cp-grid{grid-template-columns:1fr}
           .cp-card-amount{font-size:52px}
           .cp-modal-amount{font-size:64px}
@@ -463,9 +451,9 @@ export default function Coupons({ city }) {
               </svg>
               <div className="cp-trail-dot"></div>
               <svg className="cp-trail-arrow" width="20" height="14" viewBox="0 0 20 14" xmlns="http://www.w3.org/2000/svg">
-                <polygon points="10,14 0,0 20,0" fill="#7c3aed" opacity="0.5" />
+                <polygon points="10,14 0,0 20,0" fill="#7c3aed" />
               </svg>
-              <span className="cp-trail-text">Now pick one to get started</span>
+              <span className="cp-trail-text">Claim a discount to get started</span>
             </div>
           </div>
       
@@ -473,7 +461,7 @@ export default function Coupons({ city }) {
           <div className="cp-grid">
       
             {/* Card 1 */}
-            <div className="cp-card" style={{ '-Rot': '-2deg', animationDelay: '0s' }} onclick="cpOpen(0)">
+            <div className="cp-card" style={{ animationDelay: '0s' }}>
               <div className="cp-card-top" style={{ background: 'linear-gradient(135deg,#7c3aed,#6d28d9)' }}>
                 <div className="cp-card-shine"></div>
                 <span className="cp-card-icon">&#x1f9f9;</span>
@@ -492,7 +480,7 @@ export default function Coupons({ city }) {
             </div>
       
             {/* Card 2 */}
-            <div className="cp-card" style={{ '-Rot': '1deg', animationDelay: '.6s' }} onclick="cpOpen(1)">
+            <div className="cp-card" style={{ animationDelay: '.6s' }}>
               <div className="cp-card-top" style={{ background: 'linear-gradient(135deg,#9b5de5,#7c3aed)' }}>
                 <div className="cp-card-shine"></div>
                 <span className="cp-card-icon">&#x1f527;</span>
@@ -511,10 +499,10 @@ export default function Coupons({ city }) {
             </div>
       
             {/* Card 3 */}
-            <div className="cp-card" style={{ '-Rot': '-1deg', animationDelay: '1.2s' }} onclick="cpOpen(2)">
+            <div className="cp-card" style={{ animationDelay: '1.2s' }}>
               <div className="cp-card-top" style={{ background: 'linear-gradient(135deg,#6d28d9,#5b21b6)' }}>
                 <div className="cp-card-shine"></div>
-                <span className="cp-card-icon">&#x1f3e0;</span>
+                <span className="cp-card-icon">&#x1f525;</span>
                 <div className="cp-card-amount">$149</div>
                 <div className="cp-card-off">OFF</div>
                 <div className="cp-card-service">Chimney Caps</div>
@@ -540,30 +528,6 @@ export default function Coupons({ city }) {
         </div>
       </section>
       
-      {/* Modal Overlay */}
-      <div className="cp-overlay" id="cpOverlay" onclick="cpClose(event)">
-        <div className="cp-modal-greeting">Um.. hello there &#x1f44b;</div>
-        <div className="cp-modal-sub">I'm just a coupon. Please redeem me.</div>
-      
-        <div className="cp-modal-card" id="cpModalCard" onclick="event.stopPropagation()">
-          <div className="cp-modal-top" id="cpModalTop">
-            <div className="cp-modal-shine"></div>
-            <span className="cp-modal-icon" id="cpModalIcon"></span>
-            <div className="cp-modal-amount" id="cpModalAmount"></div>
-            <div className="cp-modal-off">OFF</div>
-            <div className="cp-modal-service" id="cpModalService"></div>
-          </div>
-          <hr className="cp-modal-sep" />
-          <div className="cp-modal-bottom">
-            <p className="cp-modal-desc" id="cpModalDesc"></p>
-            <div className="cp-modal-code" id="cpModalCode"></div>
-            <br />
-            <a href={`tel:${city.phone}`} className="cp-modal-btn">Redeem Now</a>
-          </div>
-        </div>
-      
-        <div className="cp-modal-hint">Tap anywhere to close</div>
-      </div>
     </>
   );
 }

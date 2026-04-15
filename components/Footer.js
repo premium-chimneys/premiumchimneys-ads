@@ -5,10 +5,7 @@ import { getCalendlyUrl } from '@/lib/useCalendlyTracking'
 export default function Footer({ city }) {
   return (
     <>
-      ) &#123;
-        return <div></div>
-      &#125;
-      
+
       {/* Calendly widget assets */}
       
       
@@ -72,10 +69,10 @@ export default function Footer({ city }) {
       .footer-inner {
         position: relative;
         z-index: 1;
-        max-width: 1400px;
+        max-width: 1200px;
         margin: 0 auto;
-        padding-left: 64px;
-        padding-right: 64px;
+        padding-left: 24px;
+        padding-right: 24px;
         box-sizing: border-box;
       }
       
@@ -237,11 +234,12 @@ export default function Footer({ city }) {
         min-width: 280px;
       }
       .footer-heading {
-        font-size: 36px;
-        font-weight: 600;
-        line-height: 1.2;
+        font-family: 'Inter Tight', sans-serif;
+        font-size: 48px;
+        font-weight: 700;
+        letter-spacing: -0.04em;
+        line-height: 1.08;
         margin: 0 0 28px;
-        font-family: inherit;
         color: #fff;
       }
       .footer-hours-title {
@@ -281,41 +279,70 @@ export default function Footer({ city }) {
         min-width: 220px;
       }
       .footer-btn-book {
-        background: #6c5ce7;
-        color: #fff;
-        border: none;
-        border-radius: 50px;
-        padding: 14px 36px;
-        font-size: 16px;
-        font-weight: 600;
-        cursor: pointer;
-        text-decoration: none;
-        transition: background 0.2s;
-        text-align: center;
-        width: 240px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
         font-family: 'Inter Tight', sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+        color: #f0e0fd;
+        text-decoration: none;
+        padding: 12px 24px;
+        width: 240px;
+        height: 46px;
+        box-sizing: border-box;
+        border: 1px solid #7c3aed;
+        border-radius: 10px;
+        background: linear-gradient(160deg, #9b5de5 0%, #7c3aed 25%, #5b21b6 50%, #6d28d9 72%, #8b5cf6 100%);
+        box-shadow: inset 0 1px 0 rgba(196,155,240,0.55), inset 0 -1px 0 rgba(0,0,0,0.22), 0 4px 16px rgba(91,33,182,0.45);
+        cursor: pointer;
+        transition: all 0.22s ease;
+        position: relative;
+        overflow: hidden;
+        text-shadow: 0 1px 2px rgba(45,15,80,0.35);
+      }
+      .footer-btn-book::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -70%;
+        width: 40%;
+        height: 100%;
+        background: linear-gradient(105deg, transparent 35%, rgba(210,175,255,0.35) 50%, transparent 65%);
+        transform: skewX(-12deg);
+        pointer-events: none;
+        transition: left 0.55s ease;
       }
       .footer-btn-book:hover {
-        background: #5a4bd4;
+        transform: translateY(-2px);
+        box-shadow: inset 0 1px 0 rgba(196,155,240,0.55), inset 0 -1px 0 rgba(0,0,0,0.22), 0 8px 24px rgba(91,33,182,0.5);
       }
+      .footer-btn-book:hover::before { left: 130%; }
       .footer-btn-phone {
-        background: transparent;
-        color: #fff;
-        border: 1px solid rgba(255,255,255,0.25);
-        border-radius: 50px;
-        padding: 14px 36px;
-        font-size: 16px;
-        font-weight: 500;
-        cursor: pointer;
-        text-decoration: none;
-        transition: border-color 0.2s;
-        text-align: center;
-        width: 240px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
         font-family: 'Inter Tight', sans-serif;
+        font-size: 15px;
+        font-weight: 500;
+        color: rgba(255,255,255,0.8);
+        text-decoration: none;
+        padding: 12px 24px;
+        width: 240px;
+        height: 46px;
         box-sizing: border-box;
+        border-radius: 10px;
+        border: 1px solid rgba(255,255,255,0.12);
+        background: rgba(255,255,255,0.04);
+        cursor: pointer;
+        transition: all 0.2s ease;
       }
       .footer-btn-phone:hover {
-        border-color: rgba(255,255,255,0.5);
+        border-color: rgba(255,255,255,0.25);
+        background: rgba(255,255,255,0.08);
+        color: #ffffff;
       }
       .footer-divider {
         border: none;
@@ -393,7 +420,7 @@ export default function Footer({ city }) {
           align-items: flex-start;
         }
         .footer-heading {
-          font-size: 28px;
+          font-size: 38px;
         }
       }
       `}} />
@@ -447,16 +474,15 @@ export default function Footer({ city }) {
         <div className="footer-inner">
           <div className="footer-top">
             <div className="footer-left">
-              <h2 className="footer-heading">Your Local Chimney &<br />Fireplace Experts</h2>
+              <h2 className="footer-heading">Your local chimney &<br />fireplace experts</h2>
       
               <p className="footer-hours-title">Working Hours:</p>
               <p className="footer-hours">
-                Sunday - Friday: 8:00 AM - 7:00 PM<br />
-                Saturday: 8:00 AM - 5:00 PM
+                Everyday: 8:00 AM - 7:00 PM
               </p>
       
-              <p className="footer-service-title">Service Area:</p>
-              <p className="footer-service-area">{`${city.address}`}</p>
+              <p className="footer-service-title">Office Address:</p>
+              <p className="footer-service-area">{city.service_area}</p>
       
               <div className="footer-bbb">
                 <img src="https://seal-dallas.bbb.org/seals/blue-seal-293-61-whitetxt-bbb-91352067.png" alt="Premium Chimneys BBB Business Review" style={{ border: '0', maxWidth: '293px', width: '100%', height: 'auto', display: 'block', pointerEvents: 'none' }} />

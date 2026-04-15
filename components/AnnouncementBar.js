@@ -266,7 +266,7 @@ function AnnouncementBarMembership({ city }) {
           .announcement-content { gap: 10px; }
         }
       `}} />
-      <a href="https://buy.stripe.com/8x2dRb0LI6pF11k8a1c7u00" className="announcement-bar" style={{ textDecoration: 'none', color: 'inherit' }}>
+      <a href={`/membership/${city?.slug ?? ''}`} className="announcement-bar" style={{ textDecoration: 'none', color: 'inherit' }}>
         <canvas className="announcement-canvas"></canvas>
       
         <div className="announcement-content">

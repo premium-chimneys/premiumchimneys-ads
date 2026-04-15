@@ -1,6 +1,7 @@
 'use client';
 import { useEffect } from 'react';
 import { getCalendlyUrl } from '@/lib/useCalendlyTracking';
+import Form from './Form';
 
 export default function ServiceHero({ city, service, heading }) {
   useEffect(() => {
@@ -17,44 +18,6 @@ export default function ServiceHero({ city, service, heading }) {
             }
           });
         }
-
-        var urlField = document.getElementById('hsPageUrl');
-        if (urlField) urlField.value = window.location.href;
-
-        var form = document.getElementById('hsForm');
-        if (!form) return;
-
-        var handler = function(e) {
-          e.preventDefault();
-          var btn = form.querySelector('.hs-submit');
-          btn.disabled = true;
-          btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg> Sending...';
-
-          var data = {};
-          var inputs = form.querySelectorAll('input, textarea');
-          for (var i = 0; i < inputs.length; i++) {
-            if (inputs[i].name) data[inputs[i].name] = inputs[i].value;
-          }
-
-          fetch('https://api.web3forms.com/submit', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-          }).then(function(res) {
-            if (res.ok) {
-              btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> Received';
-              btn.style.background = '#16a34a';
-            } else {
-              btn.disabled = false;
-              btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg> Submit Request';
-            }
-          }).catch(function() {
-            btn.disabled = false;
-            btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg> Submit Request';
-          });
-        };
-
-        form.addEventListener('submit', handler);
       })();
     } catch {}
   }, []);
@@ -65,8 +28,6 @@ export default function ServiceHero({ city, service, heading }) {
     .hs-hero * { margin: 0; padding: 0; box-sizing: border-box; }
 
     @keyframes hsShimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
-    @keyframes hsLivePing { 0% { transform: scale(1); opacity: 0.7; } 75%, 100% { transform: scale(2.2); opacity: 0; } }
-    @keyframes hsAuroraSlide { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
     .hs-hero {
       position: relative;
@@ -99,7 +60,7 @@ export default function ServiceHero({ city, service, heading }) {
       max-width: 1200px;
       width: 100%;
       margin: 0 auto;
-      padding: 236px 24px 128px;
+      padding: 237px 24px 128px;
       display: grid;
       grid-template-columns: 1fr 420px;
       gap: 60px;
@@ -215,132 +176,17 @@ export default function ServiceHero({ city, service, heading }) {
 
     .hs-cta-secondary:hover { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.08); color: #fff; }
 
-    .hs-form-card {
-      background: rgba(255,255,255,0.95);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border-radius: 20px;
-      border: 1px solid rgba(255,255,255,0.6);
-      overflow: hidden;
-      box-shadow: 0 24px 48px rgba(0,0,0,0.15), 0 0 0 1px rgba(255,255,255,0.2), 0 0 80px rgba(124,58,237,0.08);
-    }
-
-    .hs-form-card::before {
-      content: '';
-      display: block;
-      height: 3px;
-      background: linear-gradient(90deg, #7c3aed, #a78bfa, #c084fc, #e879f9, #c084fc, #a78bfa, #7c3aed);
-      background-size: 300% 100%;
-      animation: hsAuroraSlide 4s ease-in-out infinite;
-    }
-
-    .hs-form-header {
-      padding: 24px 28px 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .hs-form-title {
-      font-family: 'Inter Tight', sans-serif;
-      font-size: 22px;
-      font-weight: 700;
-      color: #1a1225;
-    }
-
-    .hs-live-pill {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 5px 12px;
-      background: rgba(34,197,94,0.06);
-      border: 1px solid rgba(34,197,94,0.18);
-      border-radius: 100px;
-    }
-
-    .hs-live-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: #16a34a;
-      position: relative;
-    }
-
-    .hs-live-dot::before {
-      content: '';
-      position: absolute;
-      inset: -3px;
-      border-radius: 50%;
-      background: rgba(22,163,74,0.4);
-      animation: hsLivePing 1.5s cubic-bezier(0,0,0.2,1) infinite;
-    }
-
-    .hs-live-text {
-      font-size: 11px;
-      font-weight: 600;
-      color: #16a34a;
-      font-family: 'Inter Tight', sans-serif;
-    }
-
-    .hs-form-body { padding: 20px 28px 28px; }
-
-    .hs-form { display: flex; flex-direction: column; gap: 10px; }
-
-    .hs-input,
-    .hs-textarea {
-      width: 100%;
-      padding: 12px 16px;
-      font-size: 14px;
-      font-family: 'Inter Tight', sans-serif;
-      font-weight: 400;
-      color: #1a1225;
-      background: #f8f6fd;
-      border: 1.5px solid rgba(124,58,237,0.12);
-      border-radius: 12px;
-      outline: none;
-      transition: all 0.25s ease;
-      box-sizing: border-box;
-    }
-
-    .hs-input::placeholder, .hs-textarea::placeholder { color: #b0a4c4; }
-    .hs-input:focus, .hs-textarea:focus { border-color: #7c3aed; background: #fff; box-shadow: 0 0 0 3px rgba(124,58,237,0.1); }
-    .hs-textarea { resize: none; min-height: 80px; }
-
-    .hs-submit {
-      width: 100%;
-      padding: 14px 24px;
-      border: none;
-      border-radius: 12px;
-      background: linear-gradient(160deg, #9b5de5 0%, #7c3aed 40%, #6d28d9 100%);
-      color: #fff;
-      font-size: 15px;
-      font-weight: 600;
-      font-family: 'Inter Tight', sans-serif;
-      cursor: pointer;
-      transition: all 0.25s ease;
-      box-shadow: 0 4px 20px rgba(124,58,237,0.4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 6px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hs-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(124,58,237,0.5); }
-
     @media (max-width: 960px) {
-      .hs-inner { grid-template-columns: 1fr; gap: 40px; padding: 168px 24px 60px; }
+      .hs-inner { grid-template-columns: 1fr; gap: 40px; padding: 189px 24px 80px; }
       .hs-h1 { font-size: 38px; max-width: 100%; }
-      .hs-form-card { max-width: 480px; }
+      .hero-form-card { max-width: 480px; }
     }
 
     @media (max-width: 480px) {
-      .hs-inner { padding: 148px 20px 48px; }
+      .hs-inner { padding: 189px 24px 80px; }
       .hs-h1 { font-size: 30px; }
       .hs-ctas { flex-direction: column; align-items: stretch; }
       .hs-cta-primary, .hs-cta-secondary { width: 100%; justify-content: center; text-align: center; }
-      .hs-form-header { flex-direction: column; align-items: flex-start; gap: 12px; }
       .hs-badges { flex-wrap: wrap; }
     }
   `;
@@ -386,29 +232,7 @@ export default function ServiceHero({ city, service, heading }) {
           </div>
 
           {/* Right — Form */}
-          <div className="hs-form-card">
-            <div className="hs-form-header">
-              <div className="hs-form-title">Request Service</div>
-              <div className="hs-live-pill">
-                <div className="hs-live-dot"></div>
-                <span className="hs-live-text">Live</span>
-              </div>
-            </div>
-            <div className="hs-form-body">
-              <form className="wrapper-form-banner hs-form" id="hsForm">
-                <input type="hidden" name="access_key" value="dd8ad38f-712e-4d31-8426-2579600f0df0" />
-                <input type="hidden" name="page_url" id="hsPageUrl" defaultValue="" />
-                <input className="hs-input" type="text" name="name" placeholder="Full Name" required />
-                <input className="hs-input" type="tel" name="phone" placeholder="Phone Number" required />
-                <input className="hs-input" type="email" name="email" placeholder="Email Address" required />
-                <textarea className="hs-textarea" name="message" placeholder="How can we help?" rows="3"></textarea>
-                <button className="hs-submit" type="submit">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}><path d="M22 2L11 13" /><path d="M22 2L15 22L11 13L2 9L22 2Z" /></svg>
-                  Submit Request
-                </button>
-              </form>
-            </div>
-          </div>
+          <Form />
         </div>
       </section>
     </>

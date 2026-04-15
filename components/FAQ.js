@@ -28,31 +28,36 @@ export default function FAQ({ city }) {
   }, []);
   return (
     <>
-      ) &#123;
-        return <div></div>
-      &#125;
-      
+
       <style dangerouslySetInnerHTML={{__html: `
         @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@1,400;1,500;1,600&display=swap');
       
         .cs-faq * { margin: 0; padding: 0; box-sizing: border-box; }
         @keyframes faqPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.7); } }
       
-        .cs-faq { background: #0a0a0a; padding: 0 48px 120px; position: relative; font-family: 'DM Sans', sans-serif; }
-        .cs-faq-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 380px 1fr; gap: 80px; align-items: start; }
-        .cs-faq-left { position: sticky; top: 140px; }
+        .cs-faq { background: #0a0a0a; padding: 0 0 128px; position: relative; font-family: 'DM Sans', sans-serif; }
+        .cs-faq-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: grid; grid-template-columns: 380px 1fr; column-gap: 80px; row-gap: 72px; align-items: start; }
+        .cs-faq-left { }
         .cs-faq-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: rgba(124,58,237,0.12); border: 1px solid rgba(124,58,237,0.25); border-radius: 100px; padding: 6px 16px; margin-bottom: 20px; }
         .cs-faq-eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: #a78bfa; animation: faqPulse 2s ease-in-out infinite; }
         .cs-faq-eyebrow-text { font-size: 12px; font-weight: 600; color: #a78bfa; letter-spacing: 0.08em; text-transform: uppercase; font-family: 'Inter Tight', sans-serif; }
-        .cs-faq-h2 { font-family: 'Inter Tight', sans-serif; font-size: 40px; font-weight: 900; color: #fff; letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 16px; }
-        .cs-faq-h2-accent { color: #a78bfa; }
+        .cs-faq-h2 { font-family: 'Inter Tight', sans-serif; font-size: 48px; font-weight: 700; color: #fff; letter-spacing: -0.04em; line-height: 1.08; margin-bottom: 16px; }
+        @keyframes faqShimmerText { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+        .cs-faq-h2-accent {
+          background: linear-gradient(135deg, #a78bfa, #c084fc, #e879f9, #c084fc, #a78bfa);
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          animation: faqShimmerText 4s ease-in-out infinite;
+        }
         .cs-faq-desc { font-size: 15px; color: rgba(255,255,255,0.4); line-height: 1.7; font-weight: 300; margin-bottom: 0; }
-        .cs-faq-quote { margin-top: 32px; padding: 24px; border-radius: 16px; background: rgba(124,58,237,0.06); border: 1px solid rgba(124,58,237,0.12); }
-        .cs-faq-quote-text { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 500; font-style: italic; color: rgba(255,255,255,0.7); line-height: 1.6; margin-bottom: 16px; letter-spacing: 0.01em; }
-        .cs-faq-quote-author { display: flex; align-items: center; gap: 12px; }
-        .cs-faq-quote-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(124,58,237,0.3); }
-        .cs-faq-quote-name { font-family: 'Inter Tight', sans-serif; font-size: 13px; font-weight: 700; color: #fff; letter-spacing: -0.01em; }
-        .cs-faq-quote-role { font-family: 'Inter Tight', sans-serif; font-size: 11px; font-weight: 500; color: #a78bfa; }
+        .cs-faq-quote { grid-column: 1 / -1; padding: 72px; border-radius: 16px; background: rgba(124,58,237,0.06); border: 1px solid rgba(124,58,237,0.12); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .cs-faq-quote-text { font-family: 'Inter Tight', sans-serif; font-style: italic; font-size: 24px; font-weight: 500; color: #fff; line-height: 1.5; margin-top: 32px; margin-bottom: 0; letter-spacing: -0.01em; max-width: 560px; }
+        .cs-faq-quote-author { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+        .cs-faq-quote-img { width: 68px; height: 68px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(124,58,237,0.35); }
+        .cs-faq-quote-name { font-family: 'Inter Tight', sans-serif; font-size: 17px; font-weight: 700; color: #fff; letter-spacing: -0.01em; }
+        .cs-faq-quote-role { font-family: 'Inter Tight', sans-serif; font-size: 14px; font-weight: 500; color: #a78bfa; margin-top: 2px; }
       
         .cs-faq-list { display: flex; flex-direction: column; gap: 0; }
         .cs-faq-item { border-bottom: 1px solid rgba(255,255,255,0.06); }
@@ -69,12 +74,12 @@ export default function FAQ({ city }) {
         @media (max-width: 960px) {
           .cs-faq-inner { grid-template-columns: 1fr !important; gap: 40px !important; }
           .cs-faq-left { position: static !important; }
-          .cs-faq { padding: 80px 24px !important; }
-          .cs-faq-h2 { font-size: 32px !important; }
+          .cs-faq { padding: 0 0 80px !important; }
+          .cs-faq-h2 { font-size: 38px !important; }
         }
       
         @media (max-width: 600px) {
-          .cs-faq { padding: 60px 20px !important; }
+          .cs-faq { padding: 0 0 80px !important; }
         }
       `}} />
       
@@ -86,19 +91,8 @@ export default function FAQ({ city }) {
               <div className="cs-faq-eyebrow-dot"></div>
               <span className="cs-faq-eyebrow-text">FAQ</span>
             </div>
-            <h2 className="cs-faq-h2">Questions? <span className="cs-faq-h2-accent">We've got answers.</span></h2>
+            <h2 className="cs-faq-h2">Questions? We've got <span className="cs-faq-h2-accent">answers.</span></h2>
             <p className="cs-faq-desc">The most common things homeowners ask us before booking their first inspection.</p>
-      
-            <div className="cs-faq-quote">
-              <p className="cs-faq-quote-text">"Your questions matter to us. We want you informed, confident, and part of every step, from the first call to the final report."</p>
-              <div className="cs-faq-quote-author">
-                <img className="cs-faq-quote-img" src="https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/6949ae8b2c8046d0db5c5439_arin-premium-chimneys-leadership-team.webp" alt="Arin Glimm" />
-                <div>
-                  <div className="cs-faq-quote-name">Arin Glimm</div>
-                  <div className="cs-faq-quote-role">Founder, Premium Chimneys</div>
-                </div>
-              </div>
-            </div>
           </div>
       
           {/* Right — accordion */}
@@ -130,6 +124,17 @@ export default function FAQ({ city }) {
                 <div className="cs-faq-a-inner">Yes. Chimney caps keep out rain, animals, and debris — all of which can cause serious damage. They also help prevent downdrafts and improve ventilation.</div>
               </div>
             </div>
+          </div>
+
+          <div className="cs-faq-quote">
+            <div className="cs-faq-quote-author">
+              <img className="cs-faq-quote-img" src="https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/6949ae8b2c8046d0db5c5439_arin-premium-chimneys-leadership-team.webp" alt="Arin Glimm" />
+              <div>
+                <div className="cs-faq-quote-name">Arin Glimm</div>
+                <div className="cs-faq-quote-role">Founder, Premium Chimneys</div>
+              </div>
+            </div>
+            <p className="cs-faq-quote-text">"Your questions matter to us. We want you informed, confident, and part of every step, from the first call to the final report."</p>
           </div>
         </div>
       </section>

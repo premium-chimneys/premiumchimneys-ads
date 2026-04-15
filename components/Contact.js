@@ -1,62 +1,11 @@
 
 'use client';
-import { useEffect } from 'react';
+import Form from './Form';
 
 export default function Contact({ city }) {
-  useEffect(() => {
-    // ---- script block ----
-    try {
-      (function() {
-          const form = document.getElementById('ct-contact-form');
-          const success = document.getElementById('ct-success');
-      
-          // Set page URL
-          const pageUrlInput = form.querySelector('input[name="page_url"]');
-          if (pageUrlInput) pageUrlInput.value = window.location.href;
-      
-          form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const btn = form.querySelector('.ct-submit-btn');
-            btn.disabled = true;
-            btn.style.opacity = '0.6';
-            btn.textContent = 'Sending...';
-      
-            try {
-              const formData = new FormData(form);
-              const res = await fetch('https://api.web3forms.com/submit', {
-                method: 'POST',
-                body: formData
-              });
-              const data = await res.json();
-      
-              if (data.success) {
-                form.style.display = 'none';
-                form.closest('.ct-form-inner').querySelector('.ct-dispatch').style.display = 'none';
-                form.closest('.ct-form-inner').querySelector('.ct-disclaimer').style.display = 'none';
-                form.closest('.ct-form-inner').querySelector('.ct-trust-row').style.display = 'none';
-                success.classList.add('ct-active');
-              } else {
-                btn.disabled = false;
-                btn.style.opacity = '1';
-                btn.innerHTML = 'Send Request <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
-                alert('Something went wrong. Please try again.');
-              }
-            } catch (err) {
-              btn.disabled = false;
-              btn.style.opacity = '1';
-              btn.innerHTML = 'Send Request <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
-              alert('Network error. Please try again.');
-            }
-          });
-        })();
-    } catch (e) { console.error('[component script]', e); }
-  }, []);
   return (
     <>
-      ) &#123;
-        return <div></div>
-      &#125;
-      
+
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes jiggle {
           0%, 100% { transform: rotate(0deg); }
@@ -77,25 +26,9 @@ export default function Contact({ city }) {
           50% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
         }
       
-        @keyframes successFadeIn {
-          0% { opacity: 0; transform: scale(0.95); }
-          100% { opacity: 1; transform: scale(1); }
-        }
-      
-        @keyframes successCheckPop {
-          0% { transform: scale(0); opacity: 0; }
-          50% { transform: scale(1.2); }
-          100% { transform: scale(1); opacity: 1; }
-        }
-      
-        @keyframes successTextUp {
-          0% { opacity: 0; transform: translateY(12px); }
-          100% { opacity: 1; transform: translateY(0); }
-        }
-      
         .ct-section {
           background: #faf9fe;
-          padding: 0 48px 120px;
+          padding: 0 0 128px;
           font-family: 'Inter Tight', sans-serif;
           box-sizing: border-box;
         }
@@ -107,26 +40,38 @@ export default function Contact({ city }) {
         .ct-container {
           max-width: 1200px;
           margin: 0 auto;
+          padding: 0 24px;
         }
       
         .ct-heading {
           text-align: center;
-          margin-top: 120px;
           margin-bottom: 56px;
         }
       
         .ct-heading h2 {
-          font-size: 64px;
-          font-weight: 800;
-          color: #1a1a2e;
+          font-family: 'Inter Tight', sans-serif;
+          font-size: 48px;
+          font-weight: 700;
+          color: #1a1225;
+          letter-spacing: -0.04em;
+          line-height: 1.08;
           margin: 0;
-          line-height: 1.1;
         }
-      
-        .ct-heading .ct-hello {
-          color: #7c3aed;
+
+        @keyframes ctShimmerText { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+        .ct-heading .ct-hello-wrap {
           display: inline-block;
           animation: jiggle 2s infinite;
+          transform-origin: center bottom;
+        }
+        .ct-heading .ct-hello {
+          display: inline-block;
+          background: linear-gradient(135deg, #a78bfa, #c084fc, #e879f9, #c084fc, #a78bfa);
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          animation: ctShimmerText 4s ease-in-out infinite;
         }
       
         .ct-layout {
@@ -165,6 +110,14 @@ export default function Contact({ city }) {
         a.ct-card:hover {
           transform: scale(1.02);
           box-shadow: 0 4px 16px rgba(124, 58, 237, 0.1);
+        }
+
+        .ct-row-top .ct-card {
+          display: flex;
+          flex-direction: column;
+        }
+        .ct-row-top .ct-card .ct-card-label {
+          margin-top: auto;
         }
       
         .ct-card-icon {
@@ -207,7 +160,7 @@ export default function Contact({ city }) {
         }
       
         .ct-card-value.ct-mono {
-          font-family: 'IBM Plex Mono', monospace;
+          font-family: 'Inter Tight', sans-serif;
         }
       
         /* Working Hours Card */
@@ -284,206 +237,6 @@ export default function Contact({ city }) {
           border-bottom: 8px solid #f5f0ff;
         }
       
-        /* Right Column – Form Card */
-        .ct-form-card {
-          background: #fff;
-          border-radius: 20px;
-          border: 1px solid #ebe5f5;
-          box-shadow: 0 2px 8px rgba(124, 58, 237, 0.04);
-          overflow: hidden;
-          display: flex;
-          flex-direction: column;
-        }
-      
-        .ct-form-aurora {
-          height: 3px;
-          background: linear-gradient(90deg, #7c3aed, #9b5de5, #c084fc, #7c3aed, #9b5de5);
-          background-size: 300% 100%;
-          animation: shimmerLine 4s linear infinite;
-        }
-      
-        .ct-form-inner {
-          padding: 32px 28px;
-          display: flex;
-          flex-direction: column;
-          flex: 1;
-        }
-      
-        .ct-form-title {
-          font-size: 22px;
-          font-weight: 700;
-          color: #1a1a2e;
-          margin-bottom: 8px;
-        }
-      
-        .ct-form-subtitle {
-          font-size: 14px;
-          color: #6b7280;
-          line-height: 1.5;
-          margin-bottom: 18px;
-        }
-      
-        .ct-dispatch {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          font-size: 13px;
-          color: #16a34a;
-          font-weight: 600;
-          margin-bottom: 22px;
-        }
-      
-        .ct-dispatch-dot {
-          width: 8px;
-          height: 8px;
-          min-width: 8px;
-          border-radius: 50%;
-          background: #22c55e;
-          box-shadow: 0 0 6px rgba(34, 197, 94, 0.5);
-        }
-      
-        .ct-form-group {
-          margin-bottom: 14px;
-        }
-      
-        .ct-form-group input,
-        .ct-form-group textarea {
-          width: 100%;
-          background: #faf9fe;
-          border: 1.5px solid #ebe5f5;
-          border-radius: 12px;
-          padding: 14px 16px;
-          font-size: 14px;
-          font-family: 'Inter Tight', sans-serif;
-          color: #1a1a2e;
-          outline: none;
-          transition: border-color 0.2s ease;
-        }
-      
-        .ct-form-group input::placeholder,
-        .ct-form-group textarea::placeholder {
-          color: #9ca3af;
-        }
-      
-        .ct-form-group input:focus,
-        .ct-form-group textarea:focus {
-          border-color: #7c3aed;
-        }
-      
-        .ct-form-group textarea {
-          resize: vertical;
-          min-height: 90px;
-        }
-      
-        .ct-submit-btn {
-          width: 100%;
-          padding: 16px;
-          border: none;
-          border-radius: 14px;
-          background: linear-gradient(135deg, #7c3aed, #9b5de5);
-          color: #fff;
-          font-size: 16px;
-          font-weight: 700;
-          font-family: 'Inter Tight', sans-serif;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 10px;
-          transition: opacity 0.2s ease, transform 0.2s ease;
-          margin-top: 4px;
-        }
-      
-        .ct-submit-btn:hover {
-          opacity: 0.92;
-          transform: translateY(-1px);
-        }
-      
-        .ct-submit-btn svg {
-          width: 18px;
-          height: 18px;
-        }
-      
-        .ct-disclaimer {
-          font-size: 11px;
-          color: #9ca3af;
-          text-align: center;
-          margin-top: 12px;
-          line-height: 1.5;
-        }
-      
-        .ct-trust-row {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 18px;
-          margin-top: 12px;
-          padding-top: 12px;
-          border-top: 1px solid #f0edf5;
-        }
-      
-        .ct-trust-item {
-          display: flex;
-          align-items: center;
-          gap: 5px;
-          font-size: 12px;
-          font-weight: 500;
-          color: #6b5c8a;
-        }
-      
-        .ct-trust-item svg {
-          width: 14px;
-          height: 14px;
-          flex-shrink: 0;
-        }
-      
-        /* Success State */
-        .ct-success {
-          display: none;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          text-align: center;
-          padding: 40px 20px;
-          animation: successFadeIn 0.5s ease;
-        }
-      
-        .ct-success.ct-active {
-          display: flex;
-        }
-      
-        .ct-success-ring {
-          width: 72px;
-          height: 72px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, #22c55e, #16a34a);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-bottom: 20px;
-          animation: successCheckPop 0.6s ease 0.2s both;
-        }
-      
-        .ct-success-ring svg {
-          width: 36px;
-          height: 36px;
-          color: #fff;
-        }
-      
-        .ct-success-title {
-          font-size: 20px;
-          font-weight: 700;
-          color: #1a1a2e;
-          margin-bottom: 8px;
-          animation: successTextUp 0.5s ease 0.4s both;
-        }
-      
-        .ct-success-text {
-          font-size: 14px;
-          color: #6b7280;
-          animation: successTextUp 0.5s ease 0.6s both;
-        }
-      
         /* Responsive */
         @media (max-width: 960px) {
           .ct-layout {
@@ -491,22 +244,21 @@ export default function Contact({ city }) {
           }
       
           .ct-heading h2 {
-            font-size: 48px;
+            font-size: 38px;
           }
-      
+
           .ct-section {
-            padding: 0 24px 80px;
+            padding: 0 0 80px;
           }
-      
+
           .ct-heading {
-            margin-top: 80px;
             margin-bottom: 40px;
           }
         }
       
         @media (max-width: 600px) {
           .ct-heading h2 {
-            font-size: 34px;
+            font-size: 30px;
           }
       
           .ct-row-top {
@@ -514,17 +266,11 @@ export default function Contact({ city }) {
           }
       
           .ct-section {
-            padding: 0 16px 60px;
+            padding: 0 0 80px;
           }
       
           .ct-heading {
-            margin-top: 60px;
             margin-bottom: 32px;
-          }
-      
-          .ct-trust-row {
-            flex-direction: column;
-            gap: 8px;
           }
       
           .ct-hours-row {
@@ -536,7 +282,7 @@ export default function Contact({ city }) {
       <section className="ct-section">
         <div className="ct-container">
           <div className="ct-heading">
-            <h2>It's time to say <span className="ct-hello">hello</span> &#x1F44B;</h2>
+            <h2>It's time to say <span className="ct-hello-wrap"><span className="ct-hello">hello</span> &#x1F44B;</span></h2>
           </div>
       
           <div className="ct-layout">
@@ -566,7 +312,7 @@ export default function Contact({ city }) {
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>
                 </div>
                 <div className="ct-card-label">OFFICE ADDRESS</div>
-                <div className="ct-card-value">{`${city.address}`}</div>
+                <div className="ct-card-value">{city.service_area}</div>
               </div>
       
               {/* Row 3: Working Hours */}
@@ -577,83 +323,16 @@ export default function Contact({ city }) {
                 <div className="ct-hours-rows">
                   <div className="ct-hours-row">
                     <div className="ct-green-dot"></div>
-                    <div className="ct-hours-day">Mon–Fri</div>
-                    <div className="ct-hours-time">8:00 AM – 7:00 PM</div>
-                  </div>
-                  <div className="ct-hours-row">
-                    <div className="ct-green-dot"></div>
-                    <div className="ct-hours-day">Saturday</div>
-                    <div className="ct-hours-time">8:00 AM – 5:00 PM</div>
-                  </div>
-                  <div className="ct-hours-row">
-                    <div className="ct-green-dot"></div>
-                    <div className="ct-hours-day">Sunday</div>
+                    <div className="ct-hours-day">Everyday</div>
                     <div className="ct-hours-time">8:00 AM – 7:00 PM</div>
                   </div>
                 </div>
-                <div className="ct-speech-bubble">Yes, we work Saturdays! &#x1F4AA;</div>
+                <div className="ct-speech-bubble">Yes, we work on weekends! &#x1F4AA;</div>
               </div>
             </div>
       
             {/* Right Column – Form */}
-            <div className="ct-form-card">
-              <div className="ct-form-aurora"></div>
-              <div className="ct-form-inner">
-                <div className="ct-form-title">Request Service</div>
-                <div className="ct-form-subtitle">Fill out our quick form to schedule a service call with our team today!</div>
-                <div className="ct-dispatch">
-                  <div className="ct-dispatch-dot"></div>
-                  Goes straight to our dispatch team
-                </div>
-      
-                <form className="wrapper-form-banner" id="ct-contact-form">
-                  <input type="hidden" name="access_key" value="dd8ad38f-712e-4d31-8426-2579600f0df0" />
-                  <input type="hidden" name="page_url" value="" />
-                  <div className="ct-form-group">
-                    <input type="text" name="name" placeholder="Full Name" required={true} />
-                  </div>
-                  <div className="ct-form-group">
-                    <input type="tel" name="phone" placeholder="Phone Number" required={true} />
-                  </div>
-                  <div className="ct-form-group">
-                    <input type="email" name="email" placeholder="Email Address" required={true} />
-                  </div>
-                  <div className="ct-form-group">
-                    <textarea name="message" placeholder="How can we help?" rows="3"></textarea>
-                  </div>
-                  <button type="submit" className="ct-submit-btn">
-                    Send Request
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" /></svg>
-                  </button>
-                </form>
-      
-                <div className="ct-disclaimer">By submitting, you agree to receive communication from our team. We respect your privacy.</div>
-      
-                <div className="ct-trust-row">
-                  <div className="ct-trust-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-                    No spam
-                  </div>
-                  <div className="ct-trust-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-                    No obligation
-                  </div>
-                  <div className="ct-trust-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-                    Call back in 1 hr
-                  </div>
-                </div>
-      
-                {/* Success State */}
-                <div className="ct-success" id="ct-success">
-                  <div className="ct-success-ring">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-                  </div>
-                  <div className="ct-success-title">Submission Received</div>
-                  <div className="ct-success-text">Our dispatch team will reach out shortly.</div>
-                </div>
-              </div>
-            </div>
+            <Form />
           </div>
         </div>
       </section>

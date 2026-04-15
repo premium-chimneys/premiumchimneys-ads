@@ -3,10 +3,7 @@
 export default function Reviews({ city }) {
   return (
     <>
-      ) &#123;
-        return <div></div>
-      &#125;
-      
+
       <style dangerouslySetInnerHTML={{__html: `
         @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&display=swap');
       
@@ -30,7 +27,7 @@ export default function Reviews({ city }) {
       
         .tm-section {
           background: #faf9fe;
-          padding: 140px 48px 80px;
+          padding: 128px 0 72px;
           position: relative;
           overflow-x: clip;
           overflow-y: visible;
@@ -65,13 +62,14 @@ export default function Reviews({ city }) {
         .tm-inner {
           max-width: 1200px;
           margin: 0 auto;
+          padding: 0 24px;
           position: relative;
           z-index: 1;
         }
       
         .tm-header {
           text-align: center;
-          margin-bottom: 56px;
+          margin-bottom: 0;
           position: relative;
         }
       
@@ -116,15 +114,36 @@ export default function Reviews({ city }) {
           height: 36px;
           fill: #7c3aed;
           filter: drop-shadow(0 2px 6px rgba(124, 58, 237, 0.35));
+          transform-origin: center;
+          animation: tmStarTwinkle 2.4s ease-in-out infinite;
+        }
+        .tm-big-star:nth-child(1) { animation-delay: 0s; }
+        .tm-big-star:nth-child(2) { animation-delay: 0.25s; }
+        .tm-big-star:nth-child(3) { animation-delay: 0.5s; }
+        .tm-big-star:nth-child(4) { animation-delay: 0.75s; }
+        .tm-big-star:nth-child(5) { animation-delay: 1s; }
+        @keyframes tmStarTwinkle {
+          0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+          50% { transform: scale(1.15) rotate(6deg); opacity: 0.75; }
         }
       
         .tm-h2 {
-          font-size: 72px;
-          font-weight: 900;
+          font-size: 48px;
+          font-weight: 700;
           color: #1a1225;
           letter-spacing: -0.04em;
-          line-height: 1.05;
-          margin-bottom: 16px;
+          line-height: 1.08;
+          margin-bottom: 0;
+        }
+
+        @keyframes tmShimmerText { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+        .tm-h2-accent {
+          background: linear-gradient(135deg, #a78bfa, #c084fc, #e879f9, #c084fc, #a78bfa);
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          animation: tmShimmerText 4s ease-in-out infinite;
         }
       
         .tm-subtitle {
@@ -197,8 +216,8 @@ export default function Reviews({ city }) {
       
         /* Responsive 960px */
         @media (max-width: 960px) {
-          .tm-section { padding: 100px 32px 60px; }
-          .tm-h2 { font-size: 48px; }
+          .tm-section { padding: 80px 0; }
+          .tm-h2 { font-size: 38px; }
           .tm-subtitle { font-size: 16px; }
           .tm-quote-left,
           .tm-quote-right { font-size: 450px; }
@@ -209,8 +228,8 @@ export default function Reviews({ city }) {
       
         /* Responsive 600px */
         @media (max-width: 600px) {
-          .tm-section { padding: 80px 20px 48px; }
-          .tm-h2 { font-size: 36px; }
+          .tm-section { padding: 80px 0; }
+          .tm-h2 { font-size: 30px; }
           .tm-subtitle { font-size: 15px; }
           .tm-quote-left,
           .tm-quote-right { font-size: 300px; }
@@ -219,6 +238,11 @@ export default function Reviews({ city }) {
           .tm-guarantee-center { width: 42px; height: 42px; }
           .tm-guarantee-check { width: 18px; height: 18px; }
           .tm-star-scatter { display: none; }
+        }
+
+        .tm-widget [class*="elfsight-app-"],
+        .tm-widget [class*="elfsight-app-"] * {
+          font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
         }
       `}} />
       
@@ -238,8 +262,7 @@ export default function Reviews({ city }) {
               <svg className="tm-big-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>
             </div>
       
-            <h2 className="tm-h2">Don't take<br />our word for it.</h2>
-            <p className="tm-subtitle">Read feedback from our incredible and loyal customers.</p>
+            <h2 className="tm-h2">Read through our<br /><span className="tm-h2-accent">customer reviews.</span></h2>
       
             {/* Guarantee sticker */}
             <div className="tm-guarantee">
@@ -265,9 +288,10 @@ export default function Reviews({ city }) {
       </section>
       
       {/* Elfsight widget outside section */}
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 48px', marginTop: '-56px', paddingBottom: '80px', background: '#faf9fe' }}>
-        
-        <div className="elfsight-app-1f973617-d463-40e7-916a-3a2dfadb8a9b" data-elfsight-app-lazy={true}></div>
+      <div style={{ background: '#faf9fe' }}>
+        <div className="tm-widget" style={{ boxSizing: 'border-box', maxWidth: '1200px', margin: '0 auto', padding: '0 24px 72px', marginTop: '0' }}>
+          <div className="elfsight-app-1f973617-d463-40e7-916a-3a2dfadb8a9b" data-elfsight-app-lazy={true}></div>
+        </div>
       </div>
     </>
   );

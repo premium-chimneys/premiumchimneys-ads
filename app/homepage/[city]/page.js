@@ -25,8 +25,7 @@ export default async function Page({ params }) {
 
   return (
     <div>
-      {/* offersMembership — column not confirmed; defaulting to city.offers_membership ?? true */}
-      <AnnouncementBar city={city} offersMembership={city.offers_membership ?? true} />
+      <AnnouncementBar city={city} offersMembership={city.metroplex === 'dallas'} />
       <NavigationBar city={city} />
       <Hero city={city} />
       <Services city={city} />

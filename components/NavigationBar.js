@@ -19,7 +19,7 @@ const services = [
   {
     slug: 'chimney-inspection',
     name: 'Chimney Inspection',
-    sub: 'Certified safety evaluations',
+    sub: 'Safety reports & evaluations',
     icon: (
       <svg {...svgProps}>
         <circle cx="11" cy="11" r="7" />
@@ -84,7 +84,7 @@ const services = [
   {
     slug: 'fireplace-repair',
     name: 'Fireplace Repair',
-    sub: 'Restore full function',
+    sub: 'Restore full functionality',
     icon: (
       <svg {...svgProps}>
         <path d="M14 9l7 7-2 2-7-7" />
@@ -96,7 +96,7 @@ const services = [
   {
     slug: 'fireplace-maintenance',
     name: 'Fireplace Maintenance',
-    sub: 'Keep it running perfectly',
+    sub: 'Ensure your system is safe and efficient',
     icon: (
       <svg {...svgProps}>
         <circle cx="12" cy="12" r="3" />
@@ -148,10 +148,7 @@ export default function NavigationBar({ city }) {
   }, []);
   return (
     <>
-      ) &#123;
-        return <div></div>
-      &#125;
-      
+
       <style dangerouslySetInnerHTML={{__html: `
         .nav-wrapper {
           position: fixed;
@@ -203,17 +200,41 @@ export default function NavigationBar({ city }) {
         }
 
         .nav-link {
+          position: relative;
           font-size: 14px;
           font-weight: 500;
           color: #000000;
           text-decoration: none;
           letter-spacing: 0.01em;
-          transition: opacity 0.2s ease;
           white-space: nowrap;
+          transition: color 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+          z-index: 0;
+        }
+
+        .nav-link::before {
+          content: '';
+          position: absolute;
+          top: -8px;
+          bottom: -8px;
+          left: -14px;
+          right: -14px;
+          border-radius: 999px;
+          background: rgba(124, 58, 237, 0.08);
+          border: 1px solid rgba(124, 58, 237, 0.14);
+          opacity: 0;
+          transform: scale(0.88);
+          transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+                      transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+          z-index: -1;
         }
 
         .nav-link:hover {
-          opacity: 0.65;
+          color: #5b21b6;
+        }
+
+        .nav-link:hover::before {
+          opacity: 1;
+          transform: scale(1);
         }
 
         @media (max-width: 960px) {
@@ -225,6 +246,22 @@ export default function NavigationBar({ city }) {
           position: relative;
           display: flex;
           align-items: center;
+        }
+
+        .nav-link-services {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+        }
+
+        .nav-caret {
+          transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+          flex-shrink: 0;
+        }
+
+        .nav-services-wrapper:hover .nav-caret,
+        .nav-services-wrapper:focus-within .nav-caret {
+          transform: rotate(180deg);
         }
 
         .nav-services-dropdown {
@@ -286,13 +323,20 @@ export default function NavigationBar({ city }) {
           width: 42px;
           height: 42px;
           border-radius: 12px;
-          background: linear-gradient(160deg, #9b5de5 0%, #7c3aed 45%, #5b21b6 100%);
-          box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
+          background:
+            radial-gradient(circle at 30% 25%, rgba(167,139,250,0.35) 0%, transparent 55%),
+            radial-gradient(circle at 75% 80%, rgba(124,58,237,0.28) 0%, transparent 60%),
+            linear-gradient(160deg, #0e0b14 0%, #1a1030 45%, #241548 100%);
+          border: 1px solid rgba(124, 58, 237, 0.35);
+          box-shadow:
+            inset 0 1px 0 rgba(167, 139, 250, 0.15),
+            0 0 18px rgba(124, 58, 237, 0.22),
+            0 4px 12px rgba(14, 11, 20, 0.5);
           display: flex;
           align-items: center;
           justify-content: center;
           flex-shrink: 0;
-          color: #ffffff;
+          color: #e0d4fc;
         }
 
         .nav-service-text {
@@ -436,69 +480,9 @@ export default function NavigationBar({ city }) {
           );
         }
       
-        /* ─── CALENDLY MODAL ────────────────────────────────────── */
-        .calendly-overlay {
-          display: none;
-          position: fixed;
-          inset: 0;
-          z-index: 10000;
-          background: rgba(0, 0, 0, 0.5);
-          backdrop-filter: blur(4px);
-          -webkit-backdrop-filter: blur(4px);
-          align-items: center;
-          justify-content: center;
-        }
-      
-        .calendly-overlay.active {
-          display: flex;
-        }
-      
-        .calendly-modal {
-          background: #fff;
-          border-radius: 12px;
-          width: 90%;
-          max-width: 700px;
-          height: 750px;
-          position: relative;
-          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-          overflow: hidden;
-        }
-      
-        .calendly-close {
-          position: absolute;
-          top: 12px;
-          right: 12px;
-          z-index: 10;
-          width: 32px;
-          height: 32px;
-          border: none;
-          background: rgba(0, 0, 0, 0.06);
-          border-radius: 50%;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 18px;
-          color: #333;
-          transition: background 0.2s ease;
-        }
-      
-        .calendly-close:hover {
-          background: rgba(0, 0, 0, 0.12);
-        }
-      
-        .calendly-modal .calendly-inline-widget {
-          width: 100%;
-          height: 100%;
-        }
-      
         @media (max-width: 760px) {
           .nav-phone { display: none; }
           .nav-inner { padding: 0 20px; }
-          .calendly-modal {
-            width: 95%;
-            height: 85vh;
-          }
         }
       `}} />
       
@@ -506,16 +490,21 @@ export default function NavigationBar({ city }) {
         <div className="nav-inner">
       
           {/* Logo */}
-          <a href="/" className="nav-logo">
+          <a href={`/homepage/${city?.slug ?? ''}`} className="nav-logo">
             <img src="https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/65e2c8c7fdd2f9e01030c70f_Premium%20Chimneys%20(Dark).svg" alt="Premium Chimneys" />
           </a>
 
           {/* Nav links */}
           <div className="nav-links">
-            <a href="/" className="nav-link">Home</a>
-            <a href="/about" className="nav-link">About</a>
+            <a href={`/homepage/${city?.slug ?? ''}`} className="nav-link">Home</a>
+            <a href={`/about/${city?.slug ?? ''}`} className="nav-link">About</a>
             <div className="nav-services-wrapper">
-              <a href="/services" className="nav-link">Services</a>
+              <a href="/services" className="nav-link nav-link-services">
+                Services
+                <svg className="nav-caret" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </a>
               <div className="nav-services-dropdown">
                 {services.map((s) => (
                   <a
@@ -532,9 +521,11 @@ export default function NavigationBar({ city }) {
                 ))}
               </div>
             </div>
-            <a href="/membership" className="nav-link">Membership</a>
-            <a href="/blog" className="nav-link">Blog</a>
-            <a href="/contact" className="nav-link">Contact</a>
+            {city?.metroplex === 'dallas' && (
+              <a href={`/membership/${city?.slug ?? ''}`} className="nav-link">Membership</a>
+            )}
+            <a href={`/blog/${city?.slug ?? ''}`} className="nav-link">Blog</a>
+            <a href={`/contact/${city?.slug ?? ''}`} className="nav-link">Contact</a>
           </div>
 
           {/* CTAs */}
@@ -561,14 +552,6 @@ export default function NavigationBar({ city }) {
         {/* Separator */}
         <div className="nav-separator"></div>
       </nav>
-      
-      {/* Calendly Modal */}
-      <div className="calendly-overlay" id="calendlyOverlay">
-        <div className="calendly-modal">
-          <button type="button" className="calendly-close" id="closeCalendly">&times;</button>
-          <div className="calendly-inline-widget" data-url="https://calendly.com/premiumchimneys/inspection" style={{ minWidth: '320px', height: '100%' }}></div>
-        </div>
-      </div>
     </>
   );
 }

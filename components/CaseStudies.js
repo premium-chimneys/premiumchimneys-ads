@@ -1,6 +1,7 @@
 
 'use client';
 import { useEffect } from 'react';
+import Form from './Form';
 
 export default function CaseStudies({ city }) {
   useEffect(() => {
@@ -41,8 +42,6 @@ export default function CaseStudies({ city }) {
         var modal = document.getElementById('csModal');
         var closeBtn = document.getElementById('csModalClose');
       
-        var scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-        var savedScrollY = 0;
       
         function openModal(c) {
           document.getElementById('csModalImg').src = c.img;
@@ -54,69 +53,38 @@ export default function CaseStudies({ city }) {
           document.getElementById('csModalDesc').textContent = c.desc;
           document.getElementById('csModalStat').textContent = c.stat;
           modal.classList.add('active');
-          savedScrollY = window.scrollY;
-          document.body.classList.add('cs-modal-open');
-          document.body.style.top = '-' + savedScrollY + 'px';
-          document.body.style.paddingRight = scrollbarWidth + 'px';
+          lockScroll();
         }
-      
+
         function closeModal() {
           modal.classList.remove('active');
-          document.body.classList.remove('cs-modal-open');
-          document.body.style.top = '';
-          document.body.style.paddingRight = '';
-          window.scrollTo(0, savedScrollY);
+          unlockScroll();
+        }
+
+        function preventScroll(e) { e.preventDefault(); }
+        function preventKeys(e) {
+          if (['ArrowUp','ArrowDown','PageUp','PageDown','Home','End',' '].indexOf(e.key) !== -1) e.preventDefault();
+        }
+        function lockScroll() {
+          window.addEventListener('wheel', preventScroll, { passive: false });
+          window.addEventListener('touchmove', preventScroll, { passive: false });
+          window.addEventListener('keydown', preventKeys, { passive: false });
+        }
+        function unlockScroll() {
+          window.removeEventListener('wheel', preventScroll, { passive: false });
+          window.removeEventListener('touchmove', preventScroll, { passive: false });
+          window.removeEventListener('keydown', preventKeys, { passive: false });
         }
       
         closeBtn.addEventListener('click', closeModal);
         modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
       
-        // ── CTA Form submission (Web3Forms) ──
-        var csUrlField = document.getElementById('csPageUrlField');
-        if (csUrlField) csUrlField.value = window.location.href;
-      
-        var csForm = document.getElementById('csCtaForm');
-        if (csForm) {
-          csForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            var btn = document.getElementById('csCtaSubmitBtn');
-            btn.disabled = true;
-            btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg> Sending to dispatch...';
-      
-            var data = {};
-            var inputs = csForm.querySelectorAll('input, textarea');
-            for (var i = 0; i < inputs.length; i++) {
-              if (inputs[i].name) data[inputs[i].name] = inputs[i].value;
-            }
-      
-            var formCard = document.getElementById('csCtaFormCard');
-      
-            fetch('https://api.web3forms.com/submit', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(data)
-            }).then(function(res) {
-              if (res.ok) {
-                formCard.classList.add('submitted');
-              } else {
-                btn.disabled = false;
-                btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg> Submit Request';
-              }
-            }).catch(function() {
-              btn.disabled = false;
-              btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg> Submit Request';
-            });
-          });
-        }
       })();
     } catch (e) { console.error('[component script]', e); }
   }, []);
   return (
     <>
-      ) &#123;
-        return <div></div>
-      &#125;
-      
+
       <style dangerouslySetInnerHTML={{__html: `
         @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
       
@@ -134,12 +102,12 @@ export default function CaseStudies({ city }) {
         @keyframes slideStatIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
       
         /* Section */
-        .cs-section { background: #0a0a0a; padding: 120px 48px 40px; position: relative; overflow: hidden; }
-        .cs-inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+        .cs-section { background: #0a0a0a; padding: 128px 0 0; position: relative; overflow: hidden; }
+        .cs-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
       
         /* Heading */
         .cs-header { margin-bottom: 72px; text-align: center; }
-        .cs-h2 { font-family: 'Inter Tight', sans-serif; font-size: 64px; font-weight: 900; color: #fff; letter-spacing: -0.05em; line-height: 1.05; }
+        .cs-h2 { font-family: 'Inter Tight', sans-serif; font-size: 48px; font-weight: 700; color: #fff; letter-spacing: -0.04em; line-height: 1.08; }
         .cs-h2-accent { background: linear-gradient(135deg, #a78bfa, #c084fc, #e879f9, #c084fc, #a78bfa); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: shimmerText 4s ease-in-out infinite; }
       
       
@@ -185,8 +153,7 @@ export default function CaseStudies({ city }) {
         /* Modal */
         .cs-modal-overlay { display: none; position: fixed; inset: 0; z-index: 10000; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); align-items: center; justify-content: center; animation: overlayIn 0.3s ease both; }
         .cs-modal-overlay.active { display: flex; }
-        body.cs-modal-open { overflow: hidden !important; position: fixed !important; width: 100% !important; touch-action: none; }
-        .cs-modal-inner { background: #111; border-radius: 20px; overflow: hidden; max-width: 720px; width: 100%; position: relative; border: 1px solid rgba(124,58,237,0.2); animation: modalIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; max-height: 90vh; overflow-y: auto; margin: 40px; }
+                .cs-modal-inner { background: #111; border-radius: 20px; overflow: hidden; max-width: 720px; width: 100%; position: relative; border: 1px solid rgba(124,58,237,0.2); animation: modalIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; max-height: 90vh; overflow-y: auto; margin: 40px; }
         .cs-modal-close { position: absolute; top: 16px; right: 16px; z-index: 5; width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 18px; transition: background 0.2s; }
         .cs-modal-close:hover { background: rgba(124,58,237,0.6); }
         .cs-modal-img { position: relative; height: 300px; }
@@ -206,52 +173,25 @@ export default function CaseStudies({ city }) {
         .cs-modal-cta:hover { transform: translateY(-1px); }
       
         /* CTA Banner */
-        .cs-cta-section { background: #0a0a0a; padding: 40px 48px 120px; }
-        .cs-cta-card { max-width: 1200px; margin: 0 auto; background: linear-gradient(135deg, #1a1025 0%, #130d1e 50%, #1a1025 100%); border-radius: 24px; overflow: hidden; position: relative; border: 1px solid rgba(124,58,237,0.15); }
+        .cs-cta-section { background: #0a0a0a; padding: 72px 0 128px; }
+        .cs-cta-card { max-width: 1152px; margin: 0 auto; width: calc(100% - 48px); background: linear-gradient(135deg, #1a1025 0%, #130d1e 50%, #1a1025 100%); border-radius: 24px; overflow: hidden; position: relative; border: 1px solid rgba(124,58,237,0.15); }
         .cs-cta-aurora { height: 2px; width: 100%; background: linear-gradient(90deg, transparent, #7c3aed, #a78bfa, #c084fc, #a78bfa, #7c3aed, transparent); background-size: 300% 100%; animation: shimmerLine 4s ease-in-out infinite; }
         .cs-cta-grid { display: grid; grid-template-columns: 1fr 420px; gap: 60px; padding: 64px; position: relative; z-index: 1; align-items: center; }
         .cs-cta-price { font-family: 'Inter Tight', sans-serif; font-size: 52px; font-weight: 900; color: #fff; letter-spacing: -0.04em; line-height: 1; }
         .cs-cta-only { font-size: 11px; font-weight: 600; color: #a78bfa; letter-spacing: 0.06em; text-transform: uppercase; font-family: 'Inter Tight', sans-serif; }
         .cs-cta-per { font-size: 12px; color: rgba(255,255,255,0.35); font-family: 'Inter Tight', sans-serif; }
-        .cs-cta-heading { font-family: 'Inter Tight', sans-serif; font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 16px; }
-        .cs-cta-heading-accent { color: #a78bfa; }
+        .cs-cta-heading { font-family: 'Inter Tight', sans-serif; font-size: 48px; font-weight: 700; color: #fff; letter-spacing: -0.04em; line-height: 1.08; margin-bottom: 16px; }
+        @keyframes csCtaShimmerText { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+        .cs-cta-heading-accent {
+          background: linear-gradient(135deg, #a78bfa, #c084fc, #e879f9, #c084fc, #a78bfa);
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          animation: csCtaShimmerText 4s ease-in-out infinite;
+        }
         .cs-cta-desc { font-size: 15px; color: rgba(255,255,255,0.4); line-height: 1.7; font-weight: 300; max-width: 420px; margin-bottom: 32px; }
         .cs-cta-trust { display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.55); font-weight: 400; font-family: 'Inter Tight', sans-serif; margin-bottom: 14px; }
-      
-        /* CTA Form */
-        .cs-cta-form-card { background: rgba(255,255,255,0.04); border-radius: 20px; border: 1px solid rgba(124,58,237,0.2); padding: 28px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-        .cs-cta-form-title { font-family: 'Inter Tight', sans-serif; font-size: 20px; font-weight: 700; color: #fff; letter-spacing: -0.02em; margin-bottom: 4px; }
-        .cs-cta-form-sub { font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.5; }
-        .cs-cta-dispatch { display: flex; align-items: center; gap: 10px; padding: 10px 14px; margin: 16px 0; background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.2); border-radius: 10px; }
-        .cs-cta-dispatch-dot { width: 8px; height: 8px; border-radius: 50%; background: #16a34a; flex-shrink: 0; box-shadow: 0 0 8px rgba(22,163,74,0.6); }
-        .cs-cta-dispatch-text { font-size: 12px; font-weight: 500; color: #16a34a; font-family: 'Inter Tight', sans-serif; }
-        .cs-cta-form { display: flex; flex-direction: column; gap: 10px; }
-        .cs-cta-input { width: 100%; font-family: 'Inter Tight', sans-serif; font-size: 14px; font-weight: 400; padding: 12px 16px; border: 1.5px solid rgba(124,58,237,0.15); border-radius: 12px; background: rgba(255,255,255,0.06); color: #fff; outline: none; transition: all 0.25s ease; box-sizing: border-box; }
-        .cs-cta-input::placeholder { color: rgba(255,255,255,0.3); }
-        .cs-cta-input:focus { border-color: #7c3aed; background: rgba(255,255,255,0.08); box-shadow: 0 0 0 3px rgba(124,58,237,0.15); }
-        .cs-cta-textarea { resize: none; min-height: 80px; }
-        .cs-cta-submit { width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: 'Inter Tight', sans-serif; font-size: 15px; font-weight: 600; color: #f0e0fd; padding: 14px 24px; border: 1px solid #7c3aed; border-radius: 12px; background: linear-gradient(160deg, #9b5de5 0%, #7c3aed 25%, #5b21b6 50%, #6d28d9 72%, #8b5cf6 100%); box-shadow: inset 0 1px 0 rgba(196,155,240,0.55), inset 0 -1px 0 rgba(0,0,0,0.22), 0 4px 16px rgba(91,33,182,0.45); cursor: pointer; transition: all 0.22s ease; position: relative; overflow: hidden; text-shadow: 0 1px 2px rgba(45,15,80,0.35); margin-top: 4px; }
-        .cs-cta-submit:hover { transform: translateY(-2px); box-shadow: inset 0 1px 0 rgba(196,155,240,0.55), inset 0 -1px 0 rgba(0,0,0,0.22), 0 8px 24px rgba(91,33,182,0.5); }
-        .cs-cta-disclaimer { font-size: 11px; color: rgba(255,255,255,0.25); line-height: 1.5; text-align: center; margin-top: 8px; }
-        .cs-cta-trust-row { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 4px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.05); }
-        .cs-cta-trust-item { display: flex; align-items: center; gap: 4px; font-size: 11px; color: rgba(255,255,255,0.3); font-weight: 500; font-family: 'Inter Tight', sans-serif; }
-      
-        /* Form success state */
-        @keyframes successFadeIn { 0% { opacity: 0; transform: scale(0.92) translateY(10px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
-        @keyframes successCheckPop { 0% { opacity: 0; transform: scale(0.3); } 50% { transform: scale(1.15); } 100% { opacity: 1; transform: scale(1); } }
-        @keyframes successTextUp { 0% { opacity: 0; transform: translateY(12px); } 100% { opacity: 1; transform: translateY(0); } }
-      
-        .cs-cta-success { display: none; text-align: center; padding: 48px 20px; }
-        .cs-cta-form-card.submitted .cs-cta-success { display: block; animation: successFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
-        .cs-cta-form-card.submitted .cs-cta-form-title,
-        .cs-cta-form-card.submitted .cs-cta-form-sub,
-        .cs-cta-form-card.submitted .cs-cta-dispatch,
-        .cs-cta-form-card.submitted .cs-cta-form { display: none; }
-        .cs-success-ring { width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 20px; position: relative; display: flex; align-items: center; justify-content: center; animation: successCheckPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s both; }
-        .cs-success-ring::before { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 1.5px solid rgba(34,197,94,0.25); }
-        .cs-success-circle { width: 64px; height: 64px; border-radius: 50%; background: rgba(34,197,94,0.08); border: 1.5px solid rgba(34,197,94,0.2); display: flex; align-items: center; justify-content: center; }
-        .cs-success-h3 { font-family: 'Inter Tight', sans-serif; font-size: 20px; font-weight: 700; color: #fff; margin: 0 0 8px; letter-spacing: -0.02em; animation: successTextUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both; }
-        .cs-success-p { font-family: 'Inter Tight', sans-serif; font-size: 14px; color: rgba(255,255,255,0.4); margin: 0; line-height: 1.5; animation: successTextUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both; }
       
         /* Responsive */
         @media (max-width: 960px) {
@@ -260,26 +200,24 @@ export default function CaseStudies({ city }) {
           .cs-bento-grid { grid-template-columns: 1fr 1fr !important; }
           .cs-bento-span2 { grid-column: span 1 !important; }
           .cs-cta-grid { grid-template-columns: 1fr !important; }
-          .cs-section { padding: 80px 24px 60px !important; }
-          .cs-cta-section { padding: 0 24px 80px !important; }
+          .cs-section { padding: 80px 0 !important; }
+          .cs-cta-section { padding: 80px 0 !important; }
           .cs-cta-grid { padding: 40px 24px !important; }
-          .cs-h2 { font-size: 42px !important; }
+          .cs-h2 { font-size: 38px !important; }
         }
       
         @media (max-width: 600px) {
           .cs-bento-grid { grid-template-columns: 1fr !important; }
           .cs-featured-content { padding: 32px 24px !important; }
           .cs-featured-stats { flex-direction: column; gap: 16px !important; }
-          .cs-h2 { font-size: 32px !important; }
-          .cs-cta-section { padding: 40px 0 0 !important; }
-          .cs-cta-card { border-radius: 0 !important; border-left: none !important; border-right: none !important; }
+          .cs-h2 { font-size: 30px !important; }
+          .cs-cta-section { padding: 80px 0 !important; }
+          .cs-cta-card { width: 100% !important; border-radius: 0 !important; border-left: none !important; border-right: none !important; }
           .cs-cta-grid { padding: 32px 20px !important; gap: 32px !important; }
           .cs-cta-price { font-size: 40px !important; }
-          .cs-cta-heading { font-size: 28px !important; }
-          .cs-cta-form-card { padding: 20px !important; border-radius: 16px !important; }
+          .cs-cta-heading { font-size: 38px !important; }
           .cs-modal-inner { margin: 16px !important; max-height: calc(100vh - 32px) !important; }
           .cs-modal-img { height: 220px !important; }
-          .cs-cta-trust-row { flex-wrap: wrap; gap: 8px !important; }
         }
       `}} />
       
@@ -394,40 +332,13 @@ export default function CaseStudies({ city }) {
                   <span className="cs-cta-price">$69</span>
                   <div><div className="cs-cta-only">Only</div><div className="cs-cta-per">per inspection</div></div>
                 </div>
-                <h2 className="cs-cta-heading">Don't wait for the<br /><span className="cs-cta-heading-accent">damage to find you.</span></h2>
+                <h2 className="cs-cta-heading">Just fill out our form<br />to <span className="cs-cta-heading-accent">get started.</span></h2>
                 <p className="cs-cta-desc">Every project in our case studies started the same way, a homeowner who finally picked up the phone. Book your inspection today and know exactly where your chimney stands.</p>
                 <div className="cs-cta-trust"><span>📅</span> Same-week availability</div>
                 <div className="cs-cta-trust"><span>🛡️</span> Insured & bonded</div>
                 <div className="cs-cta-trust"><span>✅</span> 100% satisfaction guaranteed</div>
               </div>
-              <div className="cs-cta-form-card" id="csCtaFormCard">
-                <div className="cs-cta-success">
-                  <div className="cs-success-ring"><div className="cs-success-circle"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg></div></div>
-                  <h3 className="cs-success-h3">Submission Received</h3>
-                  <p className="cs-success-p">Our dispatch team will reach out shortly.</p>
-                </div>
-                <h3 className="cs-cta-form-title">Request Service</h3>
-                <p className="cs-cta-form-sub">Fill out our quick form to schedule a service call with our team today!</p>
-                <div className="cs-cta-dispatch"><div className="cs-cta-dispatch-dot"></div><span className="cs-cta-dispatch-text">Goes straight to our dispatch team</span></div>
-                <form className="wrapper-form-banner cs-cta-form" id="csCtaForm">
-                  <input type="hidden" name="access_key" value="dd8ad38f-712e-4d31-8426-2579600f0df0" />
-                  <input type="hidden" name="page_url" id="csPageUrlField" value="" />
-                  <input className="cs-cta-input" type="text" name="name" placeholder="Full Name" required={true} />
-                  <input className="cs-cta-input" type="tel" name="phone" placeholder="Phone Number" required={true} />
-                  <input className="cs-cta-input" type="email" name="email" placeholder="Email Address" required={true} />
-                  <textarea className="cs-cta-input cs-cta-textarea" name="message" placeholder="How can we help?" rows="3"></textarea>
-                  <button type="submit" className="cs-cta-submit" id="csCtaSubmitBtn">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M22 2L11 13" /><path d="M22 2L15 22L11 13L2 9L22 2Z" /></svg>
-                    Submit Request
-                  </button>
-                  <p className="cs-cta-disclaimer">By submitting, you agree to be contacted by one of our agents. Your information is confidential and won't be shared or sold.</p>
-                  <div className="cs-cta-trust-row">
-                    <span className="cs-cta-trust-item"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" strokeWidth="3" strokeLinecap="round"><polyline points="20 6 9 17 4 12" /></svg> No spam</span>
-                    <span className="cs-cta-trust-item"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" strokeWidth="3" strokeLinecap="round"><polyline points="20 6 9 17 4 12" /></svg> No obligation</span>
-                    <span className="cs-cta-trust-item"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" strokeWidth="3" strokeLinecap="round"><polyline points="20 6 9 17 4 12" /></svg> Call back in 1 hr</span>
-                  </div>
-                </form>
-              </div>
+              <Form />
             </div>
           </div>
         </section>

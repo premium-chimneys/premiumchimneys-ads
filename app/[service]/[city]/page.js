@@ -6,7 +6,6 @@ import Education from '@/components/Education'
 import SubServices from '@/components/SubServices'
 import Process from '@/components/Process'
 import Benefits from '@/components/Benefits'
-import FAQ from '@/components/FAQ'
 import Reviews from '@/components/Reviews'
 import Coupons from '@/components/Coupons'
 import Contact from '@/components/Contact'
@@ -39,7 +38,7 @@ export default async function Page({ params }) {
   const city = await getCityData(citySlug)
 
   const heading = `${serviceNames[service]} in ${city.name}`
-  const offersMembership = ['dallas'].includes(city.metroplex)
+  const offersMembership = city.metroplex === 'dallas'
 
   return (
     <div>
@@ -50,7 +49,6 @@ export default async function Page({ params }) {
       <SubServices city={city} service={service} />
       <Process city={city} service={service} />
       <Benefits city={city} service={service} />
-      <FAQ city={city} />
       <Reviews city={city} />
       <Coupons city={city} />
       <Contact city={city} />
