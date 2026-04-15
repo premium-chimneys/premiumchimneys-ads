@@ -166,7 +166,7 @@ export default function Coupons({ city }) {
         .cp-card-icon{font-size:36px;display:block;margin-bottom:6px;transform-origin:center;animation:cpIconBob 2.6s ease-in-out infinite}
         @keyframes cpIconBob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-4px) rotate(4deg)}}
         .cp-card-amount{font-size:64px;font-weight:800;line-height:1}
-        .cp-card-off{font-size:20px;font-weight:700;text-transform:uppercase;letter-spacing:2px;opacity:.85}
+        .cp-card-off{font-size:20px;font-weight:700;letter-spacing:2px;opacity:.85}
         .cp-card-service{font-size:16px;font-weight:600;margin-top:4px;opacity:.9}
       
         /* Shine sweep */
@@ -305,7 +305,7 @@ export default function Coupons({ city }) {
         }
         .cp-modal-icon{font-size:52px;display:block;margin-bottom:8px}
         .cp-modal-amount{font-size:80px;font-weight:800;line-height:1}
-        .cp-modal-off{font-size:22px;font-weight:700;text-transform:uppercase;letter-spacing:2px;opacity:.85}
+        .cp-modal-off{font-size:22px;font-weight:700;letter-spacing:2px;opacity:.85}
         .cp-modal-service{font-size:18px;font-weight:600;margin-top:6px;opacity:.9}
         .cp-modal-shine{
           position:absolute;
@@ -466,14 +466,14 @@ export default function Coupons({ city }) {
                 <div className="cp-card-shine"></div>
                 <span className="cp-card-icon">&#x1f9f9;</span>
                 <div className="cp-card-amount">$49</div>
-                <div className="cp-card-off">OFF</div>
+                <div className="cp-card-off">Off</div>
                 <div className="cp-card-service">Chimney Sweeps</div>
               </div>
               <hr className="cp-card-sep" />
               <div className="cp-card-bottom">
                 <p className="cp-card-desc">Save $49 on your next professional chimney sweep service.</p>
                 <div className="cp-card-code-wrap">
-                  <span className="cp-card-code">SWEEP49</span>
+                  <span className="cp-card-code">sweep49</span>
                   <span className="cp-card-scissors">&#x2702;&#xFE0F;</span>
                 </div>
               </div>
@@ -485,14 +485,14 @@ export default function Coupons({ city }) {
                 <div className="cp-card-shine"></div>
                 <span className="cp-card-icon">&#x1f527;</span>
                 <div className="cp-card-amount">10%</div>
-                <div className="cp-card-off">OFF</div>
+                <div className="cp-card-off">Off</div>
                 <div className="cp-card-service">All Repairs</div>
               </div>
               <hr className="cp-card-sep" />
               <div className="cp-card-bottom">
                 <p className="cp-card-desc">Get 10% off any chimney repair service we offer.</p>
                 <div className="cp-card-code-wrap">
-                  <span className="cp-card-code">REPAIR10</span>
+                  <span className="cp-card-code">repair10</span>
                   <span className="cp-card-scissors">&#x2702;&#xFE0F;</span>
                 </div>
               </div>
@@ -504,14 +504,14 @@ export default function Coupons({ city }) {
                 <div className="cp-card-shine"></div>
                 <span className="cp-card-icon">&#x1f525;</span>
                 <div className="cp-card-amount">$149</div>
-                <div className="cp-card-off">OFF</div>
+                <div className="cp-card-off">Off</div>
                 <div className="cp-card-service">Chimney Caps</div>
               </div>
               <hr className="cp-card-sep" />
               <div className="cp-card-bottom">
                 <p className="cp-card-desc">Save $149 on a new chimney cap installation.</p>
                 <div className="cp-card-code-wrap">
-                  <span className="cp-card-code">CAP149</span>
+                  <span className="cp-card-code">cap149</span>
                   <span className="cp-card-scissors">&#x2702;&#xFE0F;</span>
                 </div>
               </div>

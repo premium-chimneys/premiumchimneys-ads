@@ -2,7 +2,10 @@ import { getCityData } from '@/lib/getCityData'
 import AnnouncementBar from '@/components/AnnouncementBar'
 import NavigationBar from '@/components/NavigationBar'
 import ServiceHero from '@/components/ServiceHero'
-import Education from '@/components/Education'
+import ProblemAwareness from '@/components/ProblemAwareness'
+import RiskAmplification from '@/components/RiskAmplification'
+import OurProcess from '@/components/OurProcess'
+import Differentiation from '@/components/Differentiation'
 import SubServices from '@/components/SubServices'
 import Process from '@/components/Process'
 import Benefits from '@/components/Benefits'
@@ -45,7 +48,10 @@ export default async function Page({ params }) {
       <AnnouncementBar city={city} offersMembership={offersMembership} />
       <NavigationBar city={city} />
       <ServiceHero city={city} service={service} heading={heading} />
-      <Education city={city} service={service} />
+      <ProblemAwareness city={city} service={service} />
+      <RiskAmplification city={city} service={service} />
+      <OurProcess city={city} service={service} />
+      <Differentiation city={city} service={service} />
       <SubServices city={city} service={service} />
       <Process city={city} service={service} />
       <Benefits city={city} service={service} />
