@@ -15,9 +15,13 @@ export async function POST(request) {
     const body = await request.json()
     console.log('[webflow contact] incoming body:', JSON.stringify(body))
 
-    const data = body.data || body.payload || body
+    const data = body.payload?.data || body.data || body
 
-    const { full_name, phone, email, message, source_url } = data
+    const full_name = data.full_name || ''
+    const phone = data.phone || ''
+    const email = data.email || ''
+    const message = data.message || ''
+    const source_url = data['Page URL'] || data.source_url || ''
 
     const { error } = await supabase
       .from('form_submissions')
