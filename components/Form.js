@@ -392,7 +392,7 @@ export default function Form() {
       phoneInput.addEventListener('blur', onPhoneBlur)
     }
 
-    const handler = (e) => {
+    const handler = async (e) => {
       e.preventDefault()
 
       const digits = getDigits(phoneInput?.value || '')
@@ -419,23 +419,25 @@ export default function Form() {
         source_url: window.location.href,
       }
 
-      fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      })
-        .then((res) => {
-          if (res.ok) {
-            card.classList.add('submitted')
-          } else {
-            btn.disabled = false
-            btn.innerHTML = submitSVG + ' Submit Request'
-          }
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
         })
-        .catch(() => {
+        const body = await res.clone().json()
+        console.log('response:', res.status, body)
+        if (res.ok) {
+          card.classList.add('submitted')
+        } else {
           btn.disabled = false
           btn.innerHTML = submitSVG + ' Submit Request'
-        })
+        }
+      } catch (err) {
+        console.error('submit error:', err)
+        btn.disabled = false
+        btn.innerHTML = submitSVG + ' Submit Request'
+      }
     }
 
     form.addEventListener('submit', handler)
@@ -475,7 +477,7 @@ export default function Form() {
         </div>
 
         <div className="hero-form-body">
-          <form ref={formRef}>
+          <form ref={formRef} name="contact" data-form-type="contact">
             <input type="hidden" name="source_url" ref={urlRef} value="" />
             <div className="hero-form-group"><input className="hero-form-input" type="text" name="name" placeholder="Full Name" required /></div>
             <div className="hero-form-group">

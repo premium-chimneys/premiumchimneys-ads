@@ -10,10 +10,10 @@ export default function FormBanner() {
         <div className="fb-grid">
           <div>
             <div className="fb-price-row">
-              <span className="fb-price">$69</span>
+              <span className="fb-price">#1</span>
               <div>
-                <div className="fb-only">Only</div>
-                <div className="fb-per">per inspection</div>
+                <div className="fb-only">Rated</div>
+                <div className="fb-per">in your area</div>
               </div>
             </div>
             <h2 className="fb-heading">

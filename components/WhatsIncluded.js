@@ -89,9 +89,9 @@ export default function WhatsIncluded({ city, serviceData }) {
           {/* CTA BANNER */}
           <div className="wi-cta">
             <div className="wi-cta-badge">
-              <span className="wi-cta-badge-label">Only</span>
-              <span className="wi-cta-badge-amount">$69</span>
-              <span className="wi-cta-badge-sub">per inspection</span>
+              <span className="wi-cta-badge-label">Rated</span>
+              <span className="wi-cta-badge-amount">#1</span>
+              <span className="wi-cta-badge-sub">in your area</span>
             </div>
             <div className="wi-cta-content">
               <p className="wi-cta-heading">Schedule your appointment today</p>

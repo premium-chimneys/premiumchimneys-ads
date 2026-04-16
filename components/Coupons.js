@@ -121,6 +121,9 @@ export default function Coupons({ city }) {
           animation:couponFloat 5s ease-in-out infinite;
           transition:transform .5s cubic-bezier(.16,1,.3,1), box-shadow .5s cubic-bezier(.16,1,.3,1), opacity .4s ease;
           display:flex;
+          text-decoration:none;
+          color:inherit;
+          cursor:pointer;
           flex-direction:column;
           height:100%;
           -webkit-mask:
@@ -461,7 +464,7 @@ export default function Coupons({ city }) {
           <div className="cp-grid">
       
             {/* Card 1 */}
-            <div className="cp-card" style={{ animationDelay: '0s' }}>
+            <a href={`tel:${city.phone}`} className="cp-card" style={{ animationDelay: '0s' }}>
               <div className="cp-card-top" style={{ background: 'linear-gradient(135deg,#7c3aed,#6d28d9)' }}>
                 <div className="cp-card-shine"></div>
                 <span className="cp-card-icon">&#x1f9f9;</span>
@@ -477,10 +480,10 @@ export default function Coupons({ city }) {
                   <span className="cp-card-scissors">&#x2702;&#xFE0F;</span>
                 </div>
               </div>
-            </div>
-      
+            </a>
+
             {/* Card 2 */}
-            <div className="cp-card" style={{ animationDelay: '.6s' }}>
+            <a href={`tel:${city.phone}`} className="cp-card" style={{ animationDelay: '.6s' }}>
               <div className="cp-card-top" style={{ background: 'linear-gradient(135deg,#9b5de5,#7c3aed)' }}>
                 <div className="cp-card-shine"></div>
                 <span className="cp-card-icon">&#x1f527;</span>
@@ -496,10 +499,10 @@ export default function Coupons({ city }) {
                   <span className="cp-card-scissors">&#x2702;&#xFE0F;</span>
                 </div>
               </div>
-            </div>
-      
+            </a>
+
             {/* Card 3 */}
-            <div className="cp-card" style={{ animationDelay: '1.2s' }}>
+            <a href={`tel:${city.phone}`} className="cp-card" style={{ animationDelay: '1.2s' }}>
               <div className="cp-card-top" style={{ background: 'linear-gradient(135deg,#6d28d9,#5b21b6)' }}>
                 <div className="cp-card-shine"></div>
                 <span className="cp-card-icon">&#x1f525;</span>
@@ -515,7 +518,7 @@ export default function Coupons({ city }) {
                   <span className="cp-card-scissors">&#x2702;&#xFE0F;</span>
                 </div>
               </div>
-            </div>
+            </a>
       
           </div>
       

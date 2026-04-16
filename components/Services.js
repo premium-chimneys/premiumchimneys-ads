@@ -9,9 +9,9 @@ export default function Services({ city }) {
     try {
       (function() {
         var offers = [
-          { emoji: '🔍', title: 'Free Inspection', desc: 'A full chimney or fireplace inspection — on us.', code: 'FREEINSPECT25' },
-          { emoji: '🧹', title: '$69 Off Sweep', desc: '$69 off any chimney sweep service.', code: 'SWEEP69OFF' },
-          { emoji: '🔧', title: '15% Off Repairs', desc: '15% off any chimney or fireplace repair.', code: 'REPAIR15' }
+          { emoji: '🔍', title: 'Free Inspection', desc: 'A full chimney or fireplace inspection — on us.', code: 'freeinspect25' },
+          { emoji: '🧹', title: '$69 Off Sweep', desc: '$69 off any chimney sweep service.', code: 'sweep69off' },
+          { emoji: '🔧', title: '15% Off Repairs', desc: '15% off any chimney or fireplace repair.', code: 'repair15' }
         ];
       
         var claimed = false;
@@ -284,9 +284,9 @@ export default function Services({ city }) {
           {/* CTA BANNER */}
           <div className="sv1-cta">
             <div className="sv1-cta-badge">
-              <span className="sv1-cta-badge-label">Only</span>
-              <span className="sv1-cta-badge-amount">$69</span>
-              <span className="sv1-cta-badge-sub">per inspection</span>
+              <span className="sv1-cta-badge-label">Rated</span>
+              <span className="sv1-cta-badge-amount">#1</span>
+              <span className="sv1-cta-badge-sub">in your area</span>
             </div>
             <div className="sv1-cta-content">
               <p className="sv1-cta-heading">Schedule your appointment today</p>
