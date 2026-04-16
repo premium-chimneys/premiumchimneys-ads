@@ -422,7 +422,7 @@ export default function Form() {
       const formData = new FormData(form)
       formData.set('phone', '+1' + digits)
 
-      fetch('https://api.web3forms.com/submit', {
+      fetch('/api/submit-form', {
         method: 'POST',
         body: formData,
       })
