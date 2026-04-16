@@ -7,6 +7,9 @@
       "Bash(npx next *)",
       "Bash(node -e \"const fs=require\\('fs'\\);const p='content/ourProcess.js';let s=fs.readFileSync\\(p,'utf8'\\);s=s.replace\\(/preview: '\\\\\\(\\([^\\)]*\\)\\\\\\)'/g,\\\\\"preview: '\\\\$1'\\\\\"\\);fs.writeFileSync\\(p,s\\);\")",
       "Bash(node -e \"const fs=require\\('fs'\\);const p='components/Education.js';let s=fs.readFileSync\\(p,'utf8'\\);s=s.replace\\(/;\\\\s*text-transform:\\\\s*uppercase/g,''\\);fs.writeFileSync\\(p,s\\);\")"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\glimm\\landing-pages\\app\\api"
     ]
   }
 }

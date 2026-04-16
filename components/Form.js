@@ -407,24 +407,22 @@ export default function Form() {
       btn.disabled = true
       btn.innerHTML = submitSVG + ' Sending to dispatch...'
 
-      const data = {}
-      const inputs = form.querySelectorAll('input, textarea')
-      for (const input of inputs) {
-        if (input.name) {
-          if (input.name === 'phone') {
-            data[input.name] = '+1' + digits
-          } else {
-            data[input.name] = input.value
-          }
-        }
+      const nameInput = form.querySelector('input[name="name"]')
+      const emailInput = form.querySelector('input[name="email"]')
+      const messageInput = form.querySelector('textarea[name="message"]')
+
+      const payload = {
+        full_name: nameInput?.value || '',
+        phone: '+1' + digits,
+        email: emailInput?.value || '',
+        message: messageInput?.value || '',
+        source_url: window.location.href,
       }
 
-      const formData = new FormData(form)
-      formData.set('phone', '+1' + digits)
-
-      fetch('/api/submit-form', {
+      fetch('/api/contact', {
         method: 'POST',
-        body: formData,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
       })
         .then((res) => {
           if (res.ok) {
@@ -478,8 +476,7 @@ export default function Form() {
 
         <div className="hero-form-body">
           <form ref={formRef}>
-            <input type="hidden" name="access_key" value="dd8ad38f-712e-4d31-8426-2579600f0df0" />
-            <input type="hidden" name="page_url" ref={urlRef} value="" />
+            <input type="hidden" name="source_url" ref={urlRef} value="" />
             <div className="hero-form-group"><input className="hero-form-input" type="text" name="name" placeholder="Full Name" required /></div>
             <div className="hero-form-group">
               <div className="hero-form-phone-wrap">
