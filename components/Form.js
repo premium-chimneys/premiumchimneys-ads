@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 const formCss = `
 .hero-form-card {
@@ -146,6 +146,50 @@ const formCss = `
 }
 
 .hero-form-textarea { resize: none; min-height: 80px; }
+
+/* Phone input with +1 prefix */
+.hero-form-phone-wrap {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid rgba(124, 58, 237, 0.12);
+  border-radius: 12px;
+  background: #f8f6fd;
+  overflow: hidden;
+  transition: all 0.25s ease;
+}
+.hero-form-phone-wrap:focus-within {
+  border-color: #7c3aed;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1), 0 0 20px rgba(124, 58, 237, 0.04);
+}
+.hero-form-phone-prefix {
+  padding: 12px 0 12px 16px;
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1225;
+  user-select: none;
+  flex-shrink: 0;
+}
+.hero-form-phone-input {
+  flex: 1;
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  padding: 12px 16px 12px 6px;
+  border: none;
+  background: transparent;
+  color: #1a1225;
+  outline: none;
+}
+.hero-form-phone-input::placeholder { color: #b0a4c4; }
+.hero-form-phone-error {
+  font-size: 11px;
+  color: #ef4444;
+  margin-top: 4px;
+  display: none;
+}
+.hero-form-phone-error.visible { display: block; }
 
 .hero-form-submit {
   width: 100%;
@@ -295,60 +339,102 @@ const formCss = `
 }
 `
 
+function formatPhone(value) {
+  const digits = value.replace(/\D/g, '').slice(0, 10)
+  if (digits.length <= 3) return digits
+  if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`
+  return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`
+}
+
+function getDigits(value) {
+  return value.replace(/\D/g, '')
+}
+
 export default function Form() {
+  const cardRef = useRef(null)
+  const formRef = useRef(null)
+  const phoneRef = useRef(null)
+  const phoneErrorRef = useRef(null)
+  const urlRef = useRef(null)
+
   useEffect(() => {
-    try {
-      const urlField = document.getElementById('pageUrlField')
-      if (urlField) urlField.value = window.location.href
+    if (urlRef.current) urlRef.current.value = window.location.href
 
-      const form = document.getElementById('heroForm')
-      const card = document.getElementById('heroFormCard')
-      if (!form || !card) return
+    const form = formRef.current
+    const card = cardRef.current
+    const phoneInput = phoneRef.current
+    const phoneError = phoneErrorRef.current
+    if (!form || !card) return
 
-      const submitSVG = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="flex-shrink:0"><path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+    const submitSVG = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="flex-shrink:0"><path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 
-      const handler = (e) => {
-        e.preventDefault()
-        const btn = form.querySelector('.hero-form-submit')
-        btn.disabled = true
-        btn.innerHTML = submitSVG + ' Sending to dispatch...'
+    const onPhoneInput = () => {
+      phoneInput.value = formatPhone(phoneInput.value)
+      const digits = getDigits(phoneInput.value)
+      if (digits.length === 10) {
+        phoneError.classList.remove('visible')
+      }
+    }
 
-        const data = {}
-        const inputs = form.querySelectorAll('input, textarea')
-        for (const input of inputs) {
-          if (input.name) data[input.name] = input.value
+    if (phoneInput) phoneInput.addEventListener('input', onPhoneInput)
+
+    const handler = (e) => {
+      e.preventDefault()
+
+      const digits = getDigits(phoneInput?.value || '')
+      if (digits.length !== 10) {
+        if (phoneError) phoneError.classList.add('visible')
+        phoneInput?.focus()
+        return
+      }
+      if (phoneError) phoneError.classList.remove('visible')
+
+      const btn = form.querySelector('.hero-form-submit')
+      btn.disabled = true
+      btn.innerHTML = submitSVG + ' Sending to dispatch...'
+
+      const data = {}
+      const inputs = form.querySelectorAll('input, textarea')
+      for (const input of inputs) {
+        if (input.name) {
+          if (input.name === 'phone') {
+            data[input.name] = '+1' + digits
+          } else {
+            data[input.name] = input.value
+          }
         }
-
-        fetch('https://api.web3forms.com/submit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
-        })
-          .then((res) => {
-            if (res.ok) {
-              card.classList.add('submitted')
-            } else {
-              btn.disabled = false
-              btn.innerHTML = submitSVG + ' Submit Request'
-            }
-          })
-          .catch(() => {
-            btn.disabled = false
-            btn.innerHTML = submitSVG + ' Submit Request'
-          })
       }
 
-      form.addEventListener('submit', handler)
-      return () => form.removeEventListener('submit', handler)
-    } catch (e) {
-      console.error('[Form]', e)
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+        .then((res) => {
+          if (res.ok) {
+            card.classList.add('submitted')
+          } else {
+            btn.disabled = false
+            btn.innerHTML = submitSVG + ' Submit Request'
+          }
+        })
+        .catch(() => {
+          btn.disabled = false
+          btn.innerHTML = submitSVG + ' Submit Request'
+        })
+    }
+
+    form.addEventListener('submit', handler)
+    return () => {
+      form.removeEventListener('submit', handler)
+      if (phoneInput) phoneInput.removeEventListener('input', onPhoneInput)
     }
   }, [])
 
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: formCss }} />
-      <div className="hero-form-card" id="heroFormCard">
+      <div className="hero-form-card" ref={cardRef}>
         <div className="hero-form-success">
           <div className="hero-form-success-ring">
             <div className="hero-form-success-circle">
@@ -371,11 +457,17 @@ export default function Form() {
         </div>
 
         <div className="hero-form-body">
-          <form className="wrapper-form-banner" id="heroForm">
+          <form ref={formRef}>
             <input type="hidden" name="access_key" value="dd8ad38f-712e-4d31-8426-2579600f0df0" />
-            <input type="hidden" name="page_url" id="pageUrlField" value="" />
+            <input type="hidden" name="page_url" ref={urlRef} value="" />
             <div className="hero-form-group"><input className="hero-form-input" type="text" name="name" placeholder="Full Name" required /></div>
-            <div className="hero-form-group"><input className="hero-form-input" type="tel" name="phone" placeholder="Phone Number" required /></div>
+            <div className="hero-form-group">
+              <div className="hero-form-phone-wrap">
+                <span className="hero-form-phone-prefix">+1</span>
+                <input className="hero-form-phone-input" type="tel" name="phone" placeholder="(555) 555-5555" required ref={phoneRef} />
+              </div>
+              <div className="hero-form-phone-error" ref={phoneErrorRef}>Please enter a valid 10-digit phone number</div>
+            </div>
             <div className="hero-form-group"><input className="hero-form-input" type="email" name="email" placeholder="Email Address" required /></div>
             <div className="hero-form-group"><textarea className="hero-form-textarea" name="message" placeholder="How can we help?"></textarea></div>
             <button className="hero-form-submit" type="submit">
