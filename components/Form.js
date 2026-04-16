@@ -170,18 +170,21 @@ const formCss = `
   color: #1a1225;
   user-select: none;
   flex-shrink: 0;
+  display: none;
 }
+.hero-form-phone-wrap.active .hero-form-phone-prefix { display: block; }
 .hero-form-phone-input {
   flex: 1;
   font-family: 'Inter Tight', sans-serif;
   font-size: 14px;
   font-weight: 400;
-  padding: 12px 16px 12px 6px;
+  padding: 12px 16px;
   border: none;
   background: transparent;
   color: #1a1225;
   outline: none;
 }
+.hero-form-phone-wrap.active .hero-form-phone-input { padding-left: 6px; }
 .hero-form-phone-input::placeholder { color: #b0a4c4; }
 .hero-form-phone-error {
   font-size: 11px;
@@ -368,6 +371,8 @@ export default function Form() {
 
     const submitSVG = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="flex-shrink:0"><path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 
+    const phoneWrap = phoneInput?.parentElement
+
     const onPhoneInput = () => {
       phoneInput.value = formatPhone(phoneInput.value)
       const digits = getDigits(phoneInput.value)
@@ -376,7 +381,16 @@ export default function Form() {
       }
     }
 
-    if (phoneInput) phoneInput.addEventListener('input', onPhoneInput)
+    const onPhoneFocus = () => { if (phoneWrap) phoneWrap.classList.add('active') }
+    const onPhoneBlur = () => {
+      if (phoneWrap && !getDigits(phoneInput.value).length) phoneWrap.classList.remove('active')
+    }
+
+    if (phoneInput) {
+      phoneInput.addEventListener('input', onPhoneInput)
+      phoneInput.addEventListener('focus', onPhoneFocus)
+      phoneInput.addEventListener('blur', onPhoneBlur)
+    }
 
     const handler = (e) => {
       e.preventDefault()
@@ -405,12 +419,16 @@ export default function Form() {
         }
       }
 
+      console.log('[Form] submitting:', data)
+
       fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       })
-        .then((res) => {
+        .then(async (res) => {
+          const body = await res.json().catch(() => null)
+          console.log('[Form] response:', res.status, body)
           if (res.ok) {
             card.classList.add('submitted')
           } else {
@@ -418,7 +436,8 @@ export default function Form() {
             btn.innerHTML = submitSVG + ' Submit Request'
           }
         })
-        .catch(() => {
+        .catch((err) => {
+          console.error('[Form] error:', err)
           btn.disabled = false
           btn.innerHTML = submitSVG + ' Submit Request'
         })
@@ -427,7 +446,11 @@ export default function Form() {
     form.addEventListener('submit', handler)
     return () => {
       form.removeEventListener('submit', handler)
-      if (phoneInput) phoneInput.removeEventListener('input', onPhoneInput)
+      if (phoneInput) {
+        phoneInput.removeEventListener('input', onPhoneInput)
+        phoneInput.removeEventListener('focus', onPhoneFocus)
+        phoneInput.removeEventListener('blur', onPhoneBlur)
+      }
     }
   }, [])
 
