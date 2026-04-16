@@ -4,7 +4,9 @@ import { useEffect } from 'react';
 import { getCalendlyUrl } from '@/lib/useCalendlyTracking';
 import Form from './Form';
 
-export default function ServiceHero({ city, heading }) {
+export default function ServiceHero({ city, heading, serviceData }) {
+  const heroImage = serviceData?.hero_image_url || 'https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/694441da86840f464e36c79b_chimney-inspection-roofline-flue-evaluation.webp';
+  const heroDescription = serviceData?.hero_description || 'Premium Chimneys provides professional fireplace and chimney services for your home. Our mission is to help you enjoy your fireplace safely and efficiently, with complete peace of mind.';
   useEffect(() => {
     // ---- script block ----
     try {
@@ -259,7 +261,7 @@ export default function ServiceHero({ city, heading }) {
       `}} />
 
       <section className="hero">
-        <img className="hero-video" src="https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/694441da86840f464e36c79b_chimney-inspection-roofline-flue-evaluation.webp" alt="" />
+        <img className="hero-video" src={heroImage} alt="" />
         <div className="hero-overlay"></div>
 
         <div className="hero-inner">
@@ -274,7 +276,7 @@ export default function ServiceHero({ city, heading }) {
 
             <h1 className="hero-h1"><span style={{ display: 'block' }}>{heading.replace(` in ${city.name}`, '')}</span><span style={{ display: 'block' }}>{`in ${city.name}`}</span></h1>
 
-            <p className="hero-desc">Premium Chimneys provides professional fireplace and chimney services for your home. Our mission is to help you enjoy your fireplace safely and efficiently, with complete peace of mind.</p>
+            <p className="hero-desc">{heroDescription}</p>
 
             <div className="hero-location">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ flexShrink: '0' }}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /><circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="1.8" /></svg>

@@ -1,14 +1,11 @@
 import { getCityData } from '@/lib/getCityData'
+import { getServiceData } from '@/lib/getServiceData'
 import AnnouncementBar from '@/components/AnnouncementBar'
 import NavigationBar from '@/components/NavigationBar'
 import ServiceHero from '@/components/ServiceHero'
-import ProblemAwareness from '@/components/ProblemAwareness'
-import RiskAmplification from '@/components/RiskAmplification'
-import OurProcess from '@/components/OurProcess'
+import WhatsIncluded from '@/components/WhatsIncluded'
+import Education from '@/components/Education'
 import Differentiation from '@/components/Differentiation'
-import SubServices from '@/components/SubServices'
-import Process from '@/components/Process'
-import Benefits from '@/components/Benefits'
 import Reviews from '@/components/Reviews'
 import Coupons from '@/components/Coupons'
 import Contact from '@/components/Contact'
@@ -38,7 +35,10 @@ export async function generateMetadata({ params }) {
 
 export default async function Page({ params }) {
   const { service, city: citySlug } = await params
-  const city = await getCityData(citySlug)
+  const [city, serviceData] = await Promise.all([
+    getCityData(citySlug),
+    getServiceData(service),
+  ])
 
   const heading = `${serviceNames[service]} in ${city.name}`
   const offersMembership = city.metroplex === 'dallas'
@@ -47,14 +47,10 @@ export default async function Page({ params }) {
     <div>
       <AnnouncementBar city={city} offersMembership={offersMembership} />
       <NavigationBar city={city} />
-      <ServiceHero city={city} service={service} heading={heading} />
-      <ProblemAwareness city={city} service={service} />
-      <RiskAmplification city={city} service={service} />
-      <OurProcess city={city} service={service} />
+      <ServiceHero city={city} service={service} heading={heading} serviceData={serviceData} />
+      <WhatsIncluded city={city} serviceData={serviceData} />
+      <Education city={city} serviceData={serviceData} />
       <Differentiation city={city} service={service} />
-      <SubServices city={city} service={service} />
-      <Process city={city} service={service} />
-      <Benefits city={city} service={service} />
       <Reviews city={city} />
       <Coupons city={city} />
       <Contact city={city} />

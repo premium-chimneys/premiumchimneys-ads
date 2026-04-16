@@ -271,7 +271,7 @@ export default function Reviews({ city }) {
                   <path id="tm-text-circle" d="M 60,60 m -48,0 a 48,48 0 1,1 96,0 a 48,48 0 1,1 -96,0" fill="none" />
                 </defs>
                 <text fontSize="11" fontWeight="700" fill="#7c3aed" fontFamily="'Inter Tight', sans-serif" letterSpacing="3">
-                  <textPath href="#tm-text-circle">SATISFACTION GUARANTEED · 100%</textPath>
+                  <textPath href="#tm-text-circle">Your satisfaction guaranteed · 100%</textPath>
                 </text>
               </svg>
               <div className="tm-guarantee-center">

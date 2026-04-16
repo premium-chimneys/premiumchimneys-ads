@@ -40,7 +40,7 @@ export default function FAQ({ city }) {
         .cs-faq-left { }
         .cs-faq-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: rgba(124,58,237,0.12); border: 1px solid rgba(124,58,237,0.25); border-radius: 100px; padding: 6px 16px; margin-bottom: 20px; }
         .cs-faq-eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: #a78bfa; animation: faqPulse 2s ease-in-out infinite; }
-        .cs-faq-eyebrow-text { font-size: 12px; font-weight: 600; color: #a78bfa; letter-spacing: 0.08em; text-transform: uppercase; font-family: 'Inter Tight', sans-serif; }
+        .cs-faq-eyebrow-text { font-size: 13px; font-weight: 600; color: #a78bfa; letter-spacing: 0.02em; font-family: 'Inter Tight', sans-serif; }
         .cs-faq-h2 { font-family: 'Inter Tight', sans-serif; font-size: 48px; font-weight: 700; color: #fff; letter-spacing: -0.04em; line-height: 1.08; margin-bottom: 16px; }
         @keyframes faqShimmerText { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
         .cs-faq-h2-accent {

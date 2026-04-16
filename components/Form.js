@@ -109,11 +109,10 @@ const formCss = `
 
 .hero-form-dispatch-text {
   font-family: 'Inter Tight', sans-serif;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   color: #16a34a;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .hero-form-body { padding: 20px 28px 28px; }

@@ -168,11 +168,10 @@ function AnnouncementBarMembership({ city }) {
       
         .announcement-quarter {
           font-family: 'DM Sans', sans-serif;
-          font-size: 11px;
+          font-size: 13px;
           font-weight: 600;
-          letter-spacing: 0.12em;
+          letter-spacing: 0.04em;
           color: #6b5c8a;
-          text-transform: uppercase;
         }
       
         .announcement-divider {
@@ -214,7 +213,7 @@ function AnnouncementBarMembership({ city }) {
       
         .announcement-text {
           font-family: 'DM Sans', sans-serif;
-          font-size: 12.5px;
+          font-size: 13px;
           font-weight: 400;
           color: #a8a0c4;
           letter-spacing: 0.01em;
@@ -257,7 +256,7 @@ function AnnouncementBarMembership({ city }) {
       
         @media (max-width: 760px) {
           .announcement-avatars { display: none; }
-          .announcement-text { font-size: 11.5px; }
+          .announcement-text { font-size: 12px; }
         }
       
         @media (max-width: 480px) {
@@ -270,7 +269,7 @@ function AnnouncementBarMembership({ city }) {
         <canvas className="announcement-canvas"></canvas>
       
         <div className="announcement-content">
-          <span className="announcement-quarter">ANNOUNCEMENT</span>
+          <span className="announcement-quarter">Announcement</span>
           <div className="announcement-divider"></div>
       
           <div className="announcement-avatars">
@@ -475,11 +474,10 @@ function AnnouncementBarStandard({ city }) {
       
         .announcement-quarter-2 {
           font-family: 'Inter Tight', sans-serif;
-          font-size: 11px;
+          font-size: 13px;
           font-weight: 600;
-          letter-spacing: 0.12em;
+          letter-spacing: 0.04em;
           color: #6b5c8a;
-          text-transform: uppercase;
         }
       
         .announcement-divider-2 {
@@ -491,7 +489,7 @@ function AnnouncementBarStandard({ city }) {
       
         .announcement-text-2 {
           font-family: 'Inter Tight', sans-serif;
-          font-size: 12.5px;
+          font-size: 13px;
           font-weight: 400;
           color: #a8a0c4;
           letter-spacing: 0.01em;
@@ -536,14 +534,14 @@ function AnnouncementBarStandard({ city }) {
           .announcement-quarter-2 { display: none; }
           .announcement-divider-2 { display: none; }
           .announcement-content-2 { gap: 10px; }
-          .announcement-text-2 { font-size: 11.5px; }
+          .announcement-text-2 { font-size: 12px; }
         }
       `}} />
       <a href={`tel:${city.phone}`} className="announcement-bar-2" style={{ textDecoration: 'none', color: 'inherit' }}>
         <canvas className="announcement-canvas-2"></canvas>
       
         <div className="announcement-content-2">
-          <span className="announcement-quarter-2">ANNOUNCEMENT</span>
+          <span className="announcement-quarter-2">Announcement</span>
           <div className="announcement-divider-2"></div>
       
           <span className="announcement-text-2">

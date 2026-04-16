@@ -190,7 +190,7 @@ export default function Services({ city }) {
         .sv1-cta::after{content:'';position:absolute;left:40px;top:50%;transform:translateY(-50%);width:120px;height:120px;background:radial-gradient(circle,rgba(124,58,237,.2) 0%,transparent 70%);pointer-events:none;z-index:0;animation:sv1CG 3s ease-in-out infinite}
         @keyframes sv1CG{0%,100%{opacity:.6;transform:translateY(-50%) scale(1)}50%{opacity:1;transform:translateY(-50%) scale(1.2)}}
         .sv1-cta-badge{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;flex-shrink:0;padding:32px 36px;position:relative;z-index:1}
-        .sv1-cta-badge-label{font-family:'Inter Tight',sans-serif;font-size:10px;font-weight:700;color:#a78bfa;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
+        .sv1-cta-badge-label{font-family:'Inter Tight',sans-serif;font-size:12px;font-weight:700;color:#a78bfa;letter-spacing:.02em;margin-bottom:4px}
         .sv1-cta-badge-amount{font-family:'Inter Tight',sans-serif;font-size:40px;font-weight:800;letter-spacing:-.03em;line-height:1;background:linear-gradient(180deg,#fff 30%,#a78bfa 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
         .sv1-cta-badge-sub{font-family:'Inter Tight',sans-serif;font-size:11px;font-weight:500;color:rgba(255,255,255,.35);margin-top:2px}
         .sv1-cta-content{padding:32px 36px;position:relative;z-index:1}
@@ -289,7 +289,7 @@ export default function Services({ city }) {
               <span className="sv1-cta-badge-sub">per inspection</span>
             </div>
             <div className="sv1-cta-content">
-              <p className="sv1-cta-heading">Schedule your inspection today</p>
+              <p className="sv1-cta-heading">Schedule your appointment today</p>
               <p className="sv1-cta-desc">Our certified technicians are available this week. Book now and get a full chimney or fireplace assessment.</p>
               <div className="sv1-cta-features">
                 <span className="sv1-cta-feature"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg> Same-week availability</span>

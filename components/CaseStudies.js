@@ -1,7 +1,7 @@
 
 'use client';
 import { useEffect } from 'react';
-import Form from './Form';
+import FormBanner from './FormBanner';
 
 export default function CaseStudies({ city }) {
   useEffect(() => {
@@ -120,7 +120,7 @@ export default function CaseStudies({ city }) {
         .cs-featured-star { position: absolute; z-index: 3; opacity: 0.3; filter: drop-shadow(0 0 4px rgba(167,139,250,0.5)); }
         .cs-crown-wrap { position: absolute; top: 20px; left: 20px; z-index: 5; display: flex; align-items: center; gap: 8px; }
         .cs-crown { font-size: 28px; animation: crownFloat 3s ease-in-out infinite; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4)); }
-        .cs-crown-badge { background: linear-gradient(135deg, rgba(124,58,237,0.9), rgba(167,139,250,0.9)); backdrop-filter: blur(12px); border-radius: 10px; padding: 7px 14px; font-size: 12px; font-weight: 700; color: #fff; font-family: 'Inter Tight', sans-serif; letter-spacing: 0.04em; text-transform: uppercase; box-shadow: 0 4px 16px rgba(124,58,237,0.4); }
+        .cs-crown-badge { background: linear-gradient(135deg, rgba(124,58,237,0.9), rgba(167,139,250,0.9)); backdrop-filter: blur(12px); border-radius: 10px; padding: 7px 14px; font-size: 13px; font-weight: 700; color: #fff; font-family: 'Inter Tight', sans-serif; letter-spacing: 0.01em; box-shadow: 0 4px 16px rgba(124,58,237,0.4); }
       
         .cs-featured-content { background: linear-gradient(135deg, #0f0a18, #1a1025); padding: 48px 40px; display: flex; flex-direction: column; justify-content: center; }
         .cs-featured-meta { font-size: 11px; color: rgba(255,255,255,0.4); font-weight: 500; display: flex; align-items: center; gap: 5px; margin-bottom: 12px; font-family: 'Inter Tight', sans-serif; }
@@ -143,7 +143,7 @@ export default function CaseStudies({ city }) {
         .bento-card:hover .bento-arrow { background: #7c3aed; color: #fff; border-color: #7c3aed; }
         .bento-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; will-change: transform; position: absolute; inset: 0; }
         .bento-card-gradient { position: absolute; inset: 0; z-index: 1; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 50%, transparent 100%); }
-        .bento-tag { position: absolute; top: 14px; left: 14px; z-index: 3; background: rgba(124,58,237,0.85); backdrop-filter: blur(8px); border-radius: 6px; padding: 4px 10px; font-size: 10px; font-weight: 600; color: #fff; font-family: 'Inter Tight', sans-serif; letter-spacing: 0.04em; text-transform: uppercase; }
+        .bento-tag { position: absolute; top: 14px; left: 14px; z-index: 3; background: rgba(124,58,237,0.85); backdrop-filter: blur(8px); border-radius: 6px; padding: 4px 10px; font-size: 11px; font-weight: 600; color: #fff; font-family: 'Inter Tight', sans-serif; letter-spacing: 0.01em; }
         .bento-bottom { position: absolute; bottom: 0; left: 0; right: 0; z-index: 2; padding: 20px; }
         .bento-scope { font-size: 10px; color: rgba(255,255,255,0.4); font-weight: 500; margin-bottom: 5px; display: flex; align-items: center; gap: 4px; font-family: 'Inter Tight', sans-serif; }
         .bento-title { font-size: 16px; font-weight: 700; color: #fff; font-family: 'Inter Tight', sans-serif; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 12px; }
@@ -159,7 +159,7 @@ export default function CaseStudies({ city }) {
         .cs-modal-img { position: relative; height: 300px; }
         .cs-modal-img img { width: 100%; height: 100%; object-fit: cover; }
         .cs-modal-img-fade { position: absolute; inset: 0; background: linear-gradient(to top, #111 0%, transparent 60%); }
-        .cs-modal-tag { position: absolute; top: 16px; left: 16px; background: rgba(124,58,237,0.85); backdrop-filter: blur(8px); border-radius: 8px; padding: 5px 12px; font-size: 11px; font-weight: 600; color: #fff; font-family: 'Inter Tight', sans-serif; letter-spacing: 0.04em; text-transform: uppercase; }
+        .cs-modal-tag { position: absolute; top: 16px; left: 16px; background: rgba(124,58,237,0.85); backdrop-filter: blur(8px); border-radius: 8px; padding: 5px 12px; font-size: 12px; font-weight: 600; color: #fff; font-family: 'Inter Tight', sans-serif; letter-spacing: 0.01em; }
         .cs-modal-body { padding: 0 32px 32px; margin-top: -40px; position: relative; z-index: 2; }
         .cs-modal-meta { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
         .cs-modal-meta-item { display: flex; align-items: center; gap: 5px; font-size: 12px; color: rgba(255,255,255,0.4); font-weight: 500; font-family: 'Inter Tight', sans-serif; }
@@ -174,24 +174,6 @@ export default function CaseStudies({ city }) {
       
         /* CTA Banner */
         .cs-cta-section { background: #0a0a0a; padding: 72px 0 128px; }
-        .cs-cta-card { max-width: 1152px; margin: 0 auto; width: calc(100% - 48px); background: linear-gradient(135deg, #1a1025 0%, #130d1e 50%, #1a1025 100%); border-radius: 24px; overflow: hidden; position: relative; border: 1px solid rgba(124,58,237,0.15); }
-        .cs-cta-aurora { height: 2px; width: 100%; background: linear-gradient(90deg, transparent, #7c3aed, #a78bfa, #c084fc, #a78bfa, #7c3aed, transparent); background-size: 300% 100%; animation: shimmerLine 4s ease-in-out infinite; }
-        .cs-cta-grid { display: grid; grid-template-columns: 1fr 420px; gap: 60px; padding: 64px; position: relative; z-index: 1; align-items: center; }
-        .cs-cta-price { font-family: 'Inter Tight', sans-serif; font-size: 52px; font-weight: 900; color: #fff; letter-spacing: -0.04em; line-height: 1; }
-        .cs-cta-only { font-size: 11px; font-weight: 600; color: #a78bfa; letter-spacing: 0.06em; text-transform: uppercase; font-family: 'Inter Tight', sans-serif; }
-        .cs-cta-per { font-size: 12px; color: rgba(255,255,255,0.35); font-family: 'Inter Tight', sans-serif; }
-        .cs-cta-heading { font-family: 'Inter Tight', sans-serif; font-size: 48px; font-weight: 700; color: #fff; letter-spacing: -0.04em; line-height: 1.08; margin-bottom: 16px; }
-        @keyframes csCtaShimmerText { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
-        .cs-cta-heading-accent {
-          background: linear-gradient(135deg, #a78bfa, #c084fc, #e879f9, #c084fc, #a78bfa);
-          background-size: 200% auto;
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          animation: csCtaShimmerText 4s ease-in-out infinite;
-        }
-        .cs-cta-desc { font-size: 15px; color: rgba(255,255,255,0.4); line-height: 1.7; font-weight: 300; max-width: 420px; margin-bottom: 32px; }
-        .cs-cta-trust { display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.55); font-weight: 400; font-family: 'Inter Tight', sans-serif; margin-bottom: 14px; }
       
         /* Responsive */
         @media (max-width: 960px) {
@@ -199,10 +181,8 @@ export default function CaseStudies({ city }) {
           .cs-featured-img-wrap { min-height: 280px !important; }
           .cs-bento-grid { grid-template-columns: 1fr 1fr !important; }
           .cs-bento-span2 { grid-column: span 1 !important; }
-          .cs-cta-grid { grid-template-columns: 1fr !important; }
           .cs-section { padding: 80px 0 !important; }
           .cs-cta-section { padding: 80px 0 !important; }
-          .cs-cta-grid { padding: 40px 24px !important; }
           .cs-h2 { font-size: 38px !important; }
         }
       
@@ -212,10 +192,6 @@ export default function CaseStudies({ city }) {
           .cs-featured-stats { flex-direction: column; gap: 16px !important; }
           .cs-h2 { font-size: 30px !important; }
           .cs-cta-section { padding: 80px 0 !important; }
-          .cs-cta-card { width: 100% !important; border-radius: 0 !important; border-left: none !important; border-right: none !important; }
-          .cs-cta-grid { padding: 32px 20px !important; gap: 32px !important; }
-          .cs-cta-price { font-size: 40px !important; }
-          .cs-cta-heading { font-size: 38px !important; }
           .cs-modal-inner { margin: 16px !important; max-height: calc(100vh - 32px) !important; }
           .cs-modal-img { height: 220px !important; }
         }
@@ -324,23 +300,7 @@ export default function CaseStudies({ city }) {
       
         {/* ═══════════ CTA BANNER ═══════════ */}
         <section className="cs-cta-section">
-          <div className="cs-cta-card">
-            <div className="cs-cta-aurora"></div>
-            <div className="cs-cta-grid">
-              <div>
-                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', marginBottom: '24px' }}>
-                  <span className="cs-cta-price">$69</span>
-                  <div><div className="cs-cta-only">Only</div><div className="cs-cta-per">per inspection</div></div>
-                </div>
-                <h2 className="cs-cta-heading">Just fill out our form<br />to <span className="cs-cta-heading-accent">get started.</span></h2>
-                <p className="cs-cta-desc">Every project in our case studies started the same way, a homeowner who finally picked up the phone. Book your inspection today and know exactly where your chimney stands.</p>
-                <div className="cs-cta-trust"><span>📅</span> Same-week availability</div>
-                <div className="cs-cta-trust"><span>🛡️</span> Insured & bonded</div>
-                <div className="cs-cta-trust"><span>✅</span> 100% satisfaction guaranteed</div>
-              </div>
-              <Form />
-            </div>
-          </div>
+          <FormBanner />
         </section>
       
       </div>
