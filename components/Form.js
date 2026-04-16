@@ -419,16 +419,14 @@ export default function Form() {
         }
       }
 
-      console.log('[Form] submitting:', data)
+      const formData = new FormData(form)
+      formData.set('phone', '+1' + digits)
 
       fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        body: formData,
       })
-        .then(async (res) => {
-          const body = await res.json().catch(() => null)
-          console.log('[Form] response:', res.status, body)
+        .then((res) => {
           if (res.ok) {
             card.classList.add('submitted')
           } else {
@@ -436,8 +434,7 @@ export default function Form() {
             btn.innerHTML = submitSVG + ' Submit Request'
           }
         })
-        .catch((err) => {
-          console.error('[Form] error:', err)
+        .catch(() => {
           btn.disabled = false
           btn.innerHTML = submitSVG + ' Submit Request'
         })
@@ -487,7 +484,7 @@ export default function Form() {
             <div className="hero-form-group">
               <div className="hero-form-phone-wrap">
                 <span className="hero-form-phone-prefix">+1</span>
-                <input className="hero-form-phone-input" type="tel" name="phone" placeholder="(555) 555-5555" required ref={phoneRef} />
+                <input className="hero-form-phone-input" type="tel" name="phone" placeholder="(123) 456-7890" required ref={phoneRef} />
               </div>
               <div className="hero-form-phone-error" ref={phoneErrorRef}>Please enter a valid 10-digit phone number</div>
             </div>
