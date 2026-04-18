@@ -506,7 +506,7 @@ export default function Footer({ city }) {
       
             <div className="footer-bottom-right">
               <div className="footer-links">
-                <a href="https://docs.google.com/document/u/1/d/e/2PACX-1vTrfTxjbL0tIWJyFueXXAApR-iosr4xp-2aduiR9fKH6mIn5jacQlnb-LDhwfl3SSrXSG3LTi0DhaJJ/pub" className="footer-link" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+                <a href="https://docs.google.com/document/d/e/2PACX-1vTrfTxjbL0tIWJyFueXXAApR-iosr4xp-2aduiR9fKH6mIn5jacQlnb-LDhwfl3SSrXSG3LTi0DhaJJ/pub" className="footer-link" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
                 <a href="https://docs.google.com/document/u/1/d/e/2PACX-1vQqV2Hdakj0GwLotRM2It8GgRA47UglnWjEdPHHYQkLCKwI0G0qyeu4yunB6JC4ddar8zjv6noTszYi/pub" className="footer-link" target="_blank" rel="noopener noreferrer">Terms & Conditions</a>
               </div>
       
