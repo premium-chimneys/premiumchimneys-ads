@@ -1,5 +1,3 @@
-import { supabase } from '@/lib/supabase'
-
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -23,13 +21,19 @@ export async function POST(request) {
     const message = data.message || ''
     const source_url = data['Page URL'] || data.source_url || ''
 
-    const { error } = await supabase
-      .from('form_submissions')
-      .insert({ full_name, phone, email, message, source_url })
+    const res = await fetch(process.env.BEACON_WEBHOOK_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-beacon-secret': process.env.BEACON_WEBHOOK_SECRET,
+      },
+      body: JSON.stringify({ full_name, phone, email, message, source_url }),
+    })
 
-    if (error) {
-      console.error('[webflow contact]', error)
-      return Response.json({ success: false, message: error.message }, { status: 500, headers: corsHeaders })
+    if (!res.ok) {
+      const text = await res.text()
+      console.error('[webflow contact]', res.status, text)
+      return Response.json({ success: false, message: text }, { status: 500, headers: corsHeaders })
     }
 
     return Response.json({ success: true }, { headers: corsHeaders })
