@@ -15,7 +15,7 @@ export async function generateMetadata({ params }) {
 export default async function Page({ params }) {
   const { city: citySlug } = await params
   const city = await getCityData(citySlug)
-  const offersMembership = city.metroplex === 'dallas'
+  const offersMembership = city.metroplex === 'dfw'
 
   return (
     <div>

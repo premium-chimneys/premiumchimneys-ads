@@ -25,7 +25,7 @@ export default async function Page({ params }) {
 
   return (
     <div>
-      <AnnouncementBar city={city} offersMembership={city.metroplex === 'dallas'} />
+      <AnnouncementBar city={city} offersMembership={city.metroplex === 'dfw'} />
       <NavigationBar city={city} />
       <Hero city={city} />
       <Services city={city} />

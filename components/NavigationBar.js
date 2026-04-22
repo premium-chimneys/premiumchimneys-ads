@@ -521,7 +521,7 @@ export default function NavigationBar({ city }) {
                 ))}
               </div>
             </div>
-            {city?.metroplex === 'dallas' && (
+            {city?.metroplex === 'dfw' && (
               <a href={`/membership/${city?.slug ?? ''}`} className="nav-link">Membership</a>
             )}
             <a href={`/blog/${city?.slug ?? ''}`} className="nav-link">Blog</a>

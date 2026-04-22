@@ -41,7 +41,7 @@ export default async function Page({ params }) {
   ])
 
   const heading = `${serviceNames[service]} in ${city.name}`
-  const offersMembership = city.metroplex === 'dallas'
+  const offersMembership = city.metroplex === 'dfw'
 
   return (
     <div>
