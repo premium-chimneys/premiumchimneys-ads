@@ -483,7 +483,7 @@ export default function Form() {
             <div className="hero-form-group">
               <div className="hero-form-phone-wrap">
                 <span className="hero-form-phone-prefix">+1</span>
-                <input className="hero-form-phone-input" type="tel" name="phone" placeholder="(123) 456-7890" required ref={phoneRef} />
+                <input className="hero-form-phone-input" type="tel" name="phone" placeholder="Phone Number" required ref={phoneRef} />
               </div>
               <div className="hero-form-phone-error" ref={phoneErrorRef}>Please enter a valid 10-digit phone number</div>
             </div>
