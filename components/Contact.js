@@ -80,7 +80,11 @@ export default function Contact({ city }) {
           gap: 24px;
           align-items: stretch;
         }
-      
+
+        .ct-layout .hero-form-card {
+          align-self: start;
+        }
+
         .ct-left {
           display: flex;
           flex-direction: column;
