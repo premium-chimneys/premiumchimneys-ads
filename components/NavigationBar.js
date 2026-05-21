@@ -499,12 +499,12 @@ export default function NavigationBar({ city }) {
             <a href={`/homepage/${city?.slug ?? ''}`} className="nav-link">Home</a>
             <a href={`/about/${city?.slug ?? ''}`} className="nav-link">About</a>
             <div className="nav-services-wrapper">
-              <a href="/services" className="nav-link nav-link-services">
+              <span className="nav-link nav-link-services" tabIndex={0}>
                 Services
                 <svg className="nav-caret" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="6 9 12 15 18 9" />
                 </svg>
-              </a>
+              </span>
               <div className="nav-services-dropdown">
                 {services.map((s) => (
                   <a

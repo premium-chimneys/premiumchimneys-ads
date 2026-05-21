@@ -162,17 +162,6 @@ const formCss = `
   background: #ffffff;
   box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1), 0 0 20px rgba(124, 58, 237, 0.04);
 }
-.hero-form-phone-prefix {
-  padding: 12px 0 12px 16px;
-  font-family: 'Inter Tight', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  color: #1a1225;
-  user-select: none;
-  flex-shrink: 0;
-  display: none;
-}
-.hero-form-phone-wrap.active .hero-form-phone-prefix { display: block; }
 .hero-form-phone-input {
   flex: 1;
   font-family: 'Inter Tight', sans-serif;
@@ -184,7 +173,6 @@ const formCss = `
   color: #1a1225;
   outline: none;
 }
-.hero-form-phone-wrap.active .hero-form-phone-input { padding-left: 6px; }
 .hero-form-phone-input::placeholder { color: #b0a4c4; }
 .hero-form-phone-error {
   font-size: 11px;
@@ -371,8 +359,6 @@ export default function Form() {
 
     const submitSVG = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="flex-shrink:0"><path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 
-    const phoneWrap = phoneInput?.parentElement
-
     const onPhoneInput = () => {
       phoneInput.value = formatPhone(phoneInput.value)
       const digits = getDigits(phoneInput.value)
@@ -381,18 +367,11 @@ export default function Form() {
       }
     }
 
-    const onPhoneFocus = () => { if (phoneWrap) phoneWrap.classList.add('active') }
-    const onPhoneBlur = () => {
-      if (phoneWrap && !getDigits(phoneInput.value).length) phoneWrap.classList.remove('active')
-    }
-
     if (phoneInput) {
       phoneInput.addEventListener('input', onPhoneInput)
-      phoneInput.addEventListener('focus', onPhoneFocus)
-      phoneInput.addEventListener('blur', onPhoneBlur)
     }
 
-    const handler = async (e) => {
+    const handler = (e) => {
       e.preventDefault()
 
       const digits = getDigits(phoneInput?.value || '')
@@ -419,25 +398,14 @@ export default function Form() {
         source_url: window.location.href,
       }
 
-      try {
-        const res = await fetch('/api/contact', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        })
-        const body = await res.clone().json()
-        console.log('response:', res.status, body)
-        if (res.ok) {
-          card.classList.add('submitted')
-        } else {
-          btn.disabled = false
-          btn.innerHTML = submitSVG + ' Submit Request'
-        }
-      } catch (err) {
-        console.error('submit error:', err)
-        btn.disabled = false
-        btn.innerHTML = submitSVG + ' Submit Request'
-      }
+      // Fire-and-forget — the success state no longer depends on the request result
+      fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      }).catch((err) => console.error('submit error:', err))
+
+      card.classList.add('submitted')
     }
 
     form.addEventListener('submit', handler)
@@ -445,8 +413,6 @@ export default function Form() {
       form.removeEventListener('submit', handler)
       if (phoneInput) {
         phoneInput.removeEventListener('input', onPhoneInput)
-        phoneInput.removeEventListener('focus', onPhoneFocus)
-        phoneInput.removeEventListener('blur', onPhoneBlur)
       }
     }
   }, [])
@@ -482,7 +448,6 @@ export default function Form() {
             <div className="hero-form-group"><input className="hero-form-input" type="text" name="name" placeholder="Full Name" required /></div>
             <div className="hero-form-group">
               <div className="hero-form-phone-wrap">
-                <span className="hero-form-phone-prefix">+1</span>
                 <input className="hero-form-phone-input" type="tel" name="phone" placeholder="Phone Number" required ref={phoneRef} />
               </div>
               <div className="hero-form-phone-error" ref={phoneErrorRef}>Please enter a valid 10-digit phone number</div>
