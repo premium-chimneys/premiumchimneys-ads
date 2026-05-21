@@ -100,6 +100,10 @@ export default function PrivacyPolicy() {
             including appointment confirmations, service updates, payment receipts, and post-service
             feedback requests.
           </p>
+          <p>
+            Premium Chimneys sends transactional SMS only (service-related). We do not send
+            marketing or promotional text messages.
+          </p>
           <ul>
             <li>
               <strong>Message frequency:</strong> Varies based on your service activity. Typically
@@ -113,6 +117,10 @@ export default function PrivacyPolicy() {
               <strong>Opt-out:</strong> You may opt out at any time by replying STOP to any text
               message. You may also reply HELP for assistance or contact us at{' '}
               <a href="mailto:hello@premiumchimneys.com">hello@premiumchimneys.com</a>.
+            </li>
+            <li>
+              Consent to receive SMS is not a condition of purchasing any service from Premium
+              Chimneys.
             </li>
             <li>
               <strong>No sharing for marketing:</strong> We do not share your phone number or SMS
