@@ -1,7 +1,5 @@
 'use client'
 
-import { openCalendly } from '@/lib/useCalendlyTracking'
-
 export default function Footer({ city }) {
   return (
     <>
@@ -490,7 +488,7 @@ export default function Footer({ city }) {
             </div>
       
             <div className="footer-right">
-              <button className="footer-btn-book" onClick={(e) => { e.preventDefault(); openCalendly({ location: 'footer' }); }}>
+              <button className="footer-btn-book">
                 Book Appointment
               </button>
               <a href={`tel:${city.phone}`} className="footer-btn-phone">{`

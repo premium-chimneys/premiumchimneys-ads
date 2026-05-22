@@ -32,6 +32,13 @@ export default function RootLayout({ children }) {
           src="https://elfsightcdn.com/platform.js"
           strategy="afterInteractive"
         />
+        <Script
+          id="gateway-booking"
+          src="https://gateway.serviceroot.io/booking.js"
+          strategy="afterInteractive"
+          data-tenant="premium-chimneys"
+          data-book-selector=".footer-btn-book"
+        />
 
         <Script id="gtm-loader" strategy="afterInteractive">
           {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
