@@ -15,7 +15,7 @@ const SERVICE_NAME = 'Chimney Caps'
 
 const SERVICE_DATA = {
   hero_image_url: 'https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/6944464c3d3dac45d014f642_chimney-cap-installation-metal-roof.webp',
-  hero_description: 'Our team handles everything relating to chimney caps whether you need a chimney cap installation, replacement, or repair.',
+  hero_description: 'Our team handles everything relating to chimney caps whether you need a chimney cap installation, replacement, or repair, we\'ve got you covered.',
   whatsincluded_1_title: 'Custom-Fit Cap Sizing',
   whatsincluded_1_body: 'We measure your flue opening precisely and select a cap that fits correctly every time.',
   whatsincluded_2_title: 'Stainless or Copper Cap Options',
