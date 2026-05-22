@@ -15,7 +15,7 @@ const SERVICE_NAME = 'Chimney Caps'
 
 const SERVICE_DATA = {
   hero_image_url: 'https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/6944464c3d3dac45d014f642_chimney-cap-installation-metal-roof.webp',
-  hero_description: 'A chimney without a cap is an open invitation for rain, animals, and debris. Cap installation protects your entire system for years and is one of the highest return upgrades you can make.',
+  hero_description: 'Our team handles everything relating to chimney caps whether you need a chimney cap installation, replacement, or repair.',
   whatsincluded_1_title: 'Custom-Fit Cap Sizing',
   whatsincluded_1_body: 'We measure your flue opening precisely and select a cap that fits correctly every time.',
   whatsincluded_2_title: 'Stainless or Copper Cap Options',
@@ -47,7 +47,7 @@ export default async function Page({ params }) {
   const { city: citySlug } = await params
   const city = await getCityData(citySlug)
 
-  const heading = `${SERVICE_NAME} in ${city.name}`
+  const heading = `Chimney Cap Services in ${city.name}`
   const offersMembership = city.metroplex === 'dfw'
 
   return (
