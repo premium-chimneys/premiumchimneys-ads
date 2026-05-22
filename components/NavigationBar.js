@@ -1,7 +1,6 @@
 
 'use client';
 import { useEffect } from 'react';
-import { openCalendly } from '@/lib/useCalendlyTracking';
 
 const svgProps = {
   width: 20,
@@ -130,13 +129,6 @@ export default function NavigationBar({ city }) {
               nav.classList.remove('scrolled');
             }
           }, { passive: true });
-        }
-      
-        var openBtn = document.getElementById('openCalendly');
-        if (openBtn) {
-          openBtn.addEventListener('click', function() {
-            openCalendly({ location: 'nav' });
-          });
         }
       })();
     } catch (e) { console.error('[component script]', e); }
@@ -531,7 +523,7 @@ export default function NavigationBar({ city }) {
               </svg>{`
               ${city.phone_text}
             `}</a>
-            <button type="button" className="nav-apply" id="openCalendly">
+            <button type="button" className="nav-apply">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ flexShrink: '0' }}>
                 <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.8" />
                 <line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />

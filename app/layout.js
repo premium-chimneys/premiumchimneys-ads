@@ -21,24 +21,12 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" />
-        <link rel="stylesheet" href="https://assets.calendly.com/assets/external/widget.css" />
-        <Script
-          id="calendly-widget"
-          src="https://assets.calendly.com/assets/external/widget.js"
-          strategy="afterInteractive"
-        />
         <Script
           id="elfsight-platform"
           src="https://elfsightcdn.com/platform.js"
           strategy="afterInteractive"
         />
-        <Script
-          id="gateway-booking"
-          src="https://gateway.serviceroot.io/booking.js"
-          strategy="afterInteractive"
-          data-tenant="premium-chimneys"
-          data-book-selector=".footer-btn-book"
-        />
+        <Script id="gateway-booking" src="https://gateway.serviceroot.io/booking.js" strategy="afterInteractive" data-tenant="premium-chimneys" data-mode="popup" />
 
         <Script id="gtm-loader" strategy="afterInteractive">
           {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':

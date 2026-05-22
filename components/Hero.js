@@ -1,27 +1,8 @@
 
 'use client';
-import { useEffect } from 'react';
-import { openCalendly } from '@/lib/useCalendlyTracking';
 import Form from './Form';
 
 export default function Hero({ city }) {
-  useEffect(() => {
-    // ---- script block ----
-    try {
-      (function() {
-        // ─── Calendly button ─────────────────────────────────────────────────────────
-        // Uses initPopupWidget so the GCLID/MSCLKID intercept in the footer fires correctly
-        var heroCalBtn = document.getElementById('heroOpenCalendly');
-      
-        if (heroCalBtn) {
-          heroCalBtn.addEventListener('click', function() {
-            openCalendly({ location: 'hero' });
-          });
-        }
-      
-      })();
-    } catch (e) { console.error('[component script]', e); }
-  }, []);
   return (
     <>
 
@@ -267,7 +248,7 @@ export default function Hero({ city }) {
             </div>
       
             <div className="hero-ctas">
-              <button type="button" className="hero-cta-primary" id="heroOpenCalendly">
+              <button type="button" className="hero-cta-primary">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ flexShrink: '0' }}><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.8" /><line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /><line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /><line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" strokeWidth="1.8" /></svg>
                 Book Appointment
               </button>

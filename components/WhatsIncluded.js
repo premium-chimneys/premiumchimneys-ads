@@ -1,6 +1,4 @@
 'use client';
-import { useEffect } from 'react';
-import { openCalendly } from '@/lib/useCalendlyTracking';
 
 const ICONS = [
   <svg key="0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" /><circle cx="12" cy="13" r="4" /></svg>,
@@ -22,15 +20,6 @@ export default function WhatsIncluded({ city, serviceData }) {
     text:  serviceData?.[`whatsincluded_${n}_body`]  || FALLBACK[i].text,
     icon:  ICONS[i],
   }));
-  useEffect(() => {
-    try {
-      const btn = document.getElementById('wiCtaBtn');
-      if (!btn) return;
-      const handler = () => openCalendly({ location: 'whats_included' });
-      btn.addEventListener('click', handler);
-      return () => btn.removeEventListener('click', handler);
-    } catch (e) { console.error('[WhatsIncluded cta]', e); }
-  }, []);
 
   return (
     <>

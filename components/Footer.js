@@ -4,10 +4,6 @@ export default function Footer({ city }) {
   return (
     <>
 
-      {/* Calendly widget assets */}
-      
-      
-      
       <style dangerouslySetInnerHTML={{__html: `
       @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800&display=swap');
       

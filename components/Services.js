@@ -1,7 +1,6 @@
 
 'use client';
 import { useEffect } from 'react';
-import { openCalendly } from '@/lib/useCalendlyTracking';
 
 export default function Services({ city }) {
   useEffect(() => {
@@ -96,13 +95,6 @@ export default function Services({ city }) {
           copyBtn.textContent = '✓ Copied'; copyBtn.classList.add('copied');
           setTimeout(function() { copyBtn.textContent = 'Copy Code'; copyBtn.classList.remove('copied'); }, 2000);
         });
-      
-        var ctaBtn = document.getElementById('servicesCtaBtn');
-        if (ctaBtn) {
-          ctaBtn.addEventListener('click', function() {
-            openCalendly({ location: 'services' });
-          });
-        }
       })();
     } catch (e) { console.error('[component script]', e); }
   }, []);
