@@ -1,7 +1,7 @@
 
 'use client';
 import { useEffect } from 'react';
-import { getCalendlyUrl } from '@/lib/useCalendlyTracking';
+import { openCalendly } from '@/lib/useCalendlyTracking';
 
 export default function Services({ city }) {
   useEffect(() => {
@@ -100,12 +100,7 @@ export default function Services({ city }) {
         var ctaBtn = document.getElementById('servicesCtaBtn');
         if (ctaBtn) {
           ctaBtn.addEventListener('click', function() {
-            var url = getCalendlyUrl('https://calendly.com/premiumchimneys/inspection');
-            function open() { if (window.Calendly) window.Calendly.initPopupWidget({ url: url }); }
-            if (window.Calendly) { open(); }
-            else {
-              var t = setInterval(function() { if (window.Calendly) { clearInterval(t); open(); } }, 100);
-            }
+            openCalendly({ location: 'services' });
           });
         }
       })();

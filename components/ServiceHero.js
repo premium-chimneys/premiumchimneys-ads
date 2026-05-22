@@ -1,7 +1,7 @@
 
 'use client';
 import { useEffect } from 'react';
-import { getCalendlyUrl } from '@/lib/useCalendlyTracking';
+import { openCalendly } from '@/lib/useCalendlyTracking';
 import Form from './Form';
 
 export default function ServiceHero({ city, heading, serviceData }) {
@@ -15,25 +15,9 @@ export default function ServiceHero({ city, heading, serviceData }) {
         // Uses initPopupWidget so the GCLID/MSCLKID intercept in the footer fires correctly
         var heroCalBtn = document.getElementById('heroOpenCalendly');
 
-        function openCalendly() {
-          if (window.Calendly) {
-            Calendly.initPopupWidget({ url: getCalendlyUrl('https://calendly.com/premiumchimneys/inspection') });
-          }
-        }
-
         if (heroCalBtn) {
           heroCalBtn.addEventListener('click', function() {
-            if (window.Calendly) {
-              openCalendly();
-            } else {
-              // Calendly script hasn't loaded yet — wait for it
-              var check = setInterval(function() {
-                if (window.Calendly) {
-                  clearInterval(check);
-                  openCalendly();
-                }
-              }, 100);
-            }
+            openCalendly({ location: 'service_hero' });
           });
         }
 

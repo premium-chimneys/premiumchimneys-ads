@@ -1,6 +1,6 @@
 'use client'
 
-import { getCalendlyUrl } from '@/lib/useCalendlyTracking'
+import { openCalendly } from '@/lib/useCalendlyTracking'
 
 export default function Footer({ city }) {
   return (
@@ -490,7 +490,7 @@ export default function Footer({ city }) {
             </div>
       
             <div className="footer-right">
-              <button className="footer-btn-book" onClick={(e) => { e.preventDefault(); if (typeof window !== 'undefined' && window.Calendly) { window.Calendly.initPopupWidget({ url: getCalendlyUrl('https://calendly.com/premiumchimneys/inspection') }); } }}>
+              <button className="footer-btn-book" onClick={(e) => { e.preventDefault(); openCalendly({ location: 'footer' }); }}>
                 Book Appointment
               </button>
               <a href={`tel:${city.phone}`} className="footer-btn-phone">{`
