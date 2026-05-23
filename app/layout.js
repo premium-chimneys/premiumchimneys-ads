@@ -18,6 +18,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         <script async src="https://cdn.serviceroot.io/capture.js" data-tenant="premium-chimneys"></script>
+        <script async src="https://gateway.serviceroot.io/booking.js" data-tenant="premium-chimneys" data-mode="popup"></script>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" />
@@ -26,7 +27,6 @@ export default function RootLayout({ children }) {
           src="https://elfsightcdn.com/platform.js"
           strategy="afterInteractive"
         />
-        <Script id="gateway-booking" src="https://gateway.serviceroot.io/booking.js" strategy="afterInteractive" data-tenant="premium-chimneys" data-mode="popup" />
 
         <Script id="gtm-loader" strategy="afterInteractive">
           {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
