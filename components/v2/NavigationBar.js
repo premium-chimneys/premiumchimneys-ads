@@ -89,9 +89,7 @@ export default function NavigationBar({ city }) {
             position: static;
             transform: none;
             width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: block;
             white-space: normal;
             text-align: center;
             margin-top: 10px;
