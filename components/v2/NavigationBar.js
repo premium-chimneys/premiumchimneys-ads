@@ -78,7 +78,26 @@ export default function NavigationBar({ city }) {
         }
 
         @media (max-width: 900px) {
-          .nav-center { display: none; }
+          .nav-inner {
+            flex-wrap: wrap;
+            height: auto;
+            padding-top: 10px;
+            padding-bottom: 0;
+          }
+          .nav-center {
+            order: 3;
+            position: static;
+            transform: none;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: normal;
+            text-align: center;
+            margin-top: 10px;
+            padding: 10px 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+          }
         }
       
         .nav-logo {
@@ -212,7 +231,7 @@ export default function NavigationBar({ city }) {
       
         @media (max-width: 760px) {
           .nav-phone { display: none; }
-          .nav-inner { padding: 0 20px; }
+          .nav-inner { padding: 10px 20px 0; }
         }
       `}} />
       

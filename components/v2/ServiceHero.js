@@ -294,8 +294,9 @@ export default function ServiceHero({ city, heading, serviceData }) {
 
         @media (max-width: 480px) {
           .hero-inner { padding: 189px 24px 80px; }
-          .hero-h1 { font-size: 30px; }
-          .hero-ctas { flex-direction: column; align-items: stretch; }
+          .hero-h1 { font-size: 30px; width: 100%; }
+          .hero-desc { max-width: 100%; width: 100%; }
+          .hero-ctas { flex-direction: column; align-items: stretch; width: 100%; }
           .hero-cta-primary, .hero-cta-secondary { width: 100%; }
         }
       `}} />

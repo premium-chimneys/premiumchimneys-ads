@@ -235,7 +235,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
               <img className="hero-badge-img" src="https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/69498dcf9a206ed260446ac6_bbb-accredited-business-logo.webp" alt="BBB Accredited Business" />
               <img className="hero-badge-img" src="https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/65ea3566667e1e282004fb81_Home%20Advisor%20Badge.svg" alt="HomeAdvisor" />
               <div className="hero-reviews">
-                <div className="elfsight-app-5b84b319-0dc0-446d-bab1-a30a175838f4" data-elfsight-app-lazy={true}></div>
+                <div className="elfsight-app-78d5d8f1-b6c0-487e-bc47-52b7a1546592" data-elfsight-app-lazy={true}></div>
               </div>
             </div>
 
