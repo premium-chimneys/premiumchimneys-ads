@@ -115,10 +115,11 @@ export default function Education({ city, serviceData }) {
                   </div>
                   <div className="pa-row-right">
                     <span className="pa-severity">{s.severity}</span>
-                    <div className="pa-arrow" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <div className="pa-arrow">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
                       </svg>
+                      {city?.phone_text && <span className="pa-arrow-num">{city.phone_text}</span>}
                     </div>
                   </div>
                   <div className="pa-row-frame" aria-hidden="true" />
@@ -515,15 +516,20 @@ const css = `
   .pa-tone-red    .pa-severity { color: #fda4af; border-color: rgba(251,113,133,0.4); background: rgba(251,113,133,0.08); }
   .pa-tone-violet .pa-severity { color: #c4b5fd; border-color: rgba(167,139,250,0.4); background: rgba(167,139,250,0.08); }
   .pa-arrow {
-    width: 38px; height: 38px;
-    display: grid; place-items: center;
+    display: inline-flex; align-items: center; gap: 8px;
+    height: 38px; padding: 0 14px;
     border-radius: 100px;
     border: 1px solid rgba(255,255,255,0.12);
     background: rgba(255,255,255,0.03);
-    color: rgba(255,255,255,0.7);
+    color: rgba(255,255,255,0.85);
     transition: all 0.3s ease;
+    font-size: 13px; font-weight: 600;
+    letter-spacing: 0.01em;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
   }
-  .pa-arrow svg { width: 16px; height: 16px; }
+  .pa-arrow svg { width: 16px; height: 16px; flex-shrink: 0; }
+  .pa-arrow-num { line-height: 1; }
   .pa-row:hover .pa-arrow {
     background: var(--tone, rgba(245,158,11,0.18));
     border-color: var(--tone, rgba(245,158,11,0.6));
