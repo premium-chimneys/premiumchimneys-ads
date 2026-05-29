@@ -265,42 +265,11 @@ function AnnouncementBarMembership({ city }) {
           .announcement-content { gap: 10px; }
         }
       `}} />
-      <a href="https://buy.stripe.com/8x2dRb0LI6pF11k8a1c7u00" target="_blank" rel="noopener noreferrer" className="announcement-bar" style={{ textDecoration: 'none', color: 'inherit' }}>
+      <a href="https://buy.stripe.com/8x2dRb0LI6pF11k8a1c7u00" target="_blank" rel="noopener noreferrer" data-gateway-book className="announcement-bar" style={{ textDecoration: 'none', color: 'inherit' }}>
         <canvas className="announcement-canvas"></canvas>
       
         <div className="announcement-content">
-          <span className="announcement-quarter">Announcement</span>
-          <div className="announcement-divider"></div>
-      
-          <div className="announcement-avatars">
-            <div className="announcement-avatar claimed">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                <circle cx="12" cy="8" r="3.5" fill="rgba(255,255,255,0.85)"></circle>
-                <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="rgba(255,255,255,0.85)" strokeWidth="1.8" strokeLinecap="round"></path>
-              </svg>
-            </div>
-            <div className="announcement-avatar open">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                <circle cx="12" cy="8" r="3.5" stroke="#3d2858" strokeWidth="1.5" strokeDasharray="2 2"></circle>
-                <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="#3d2858" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="2 2"></path>
-              </svg>
-            </div>
-            <div className="announcement-avatar open">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                <circle cx="12" cy="8" r="3.5" stroke="#3d2858" strokeWidth="1.5" strokeDasharray="2 2"></circle>
-                <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="#3d2858" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="2 2"></path>
-              </svg>
-            </div>
-          </div>
-      
-          <span className="announcement-text">
-            <strong>Yearly Club Membership</strong> — spots are filling fast.
-          </span>
-      
-          <div className="announcement-pill">
-            <span className="pulse-dot"></span>
-            Claim Spot
-          </div>
+          <span className="announcement-text"><strong>Claim your free inspection today</strong> • value of $299!</span>
         </div>
       </a>
     </>
@@ -537,21 +506,11 @@ function AnnouncementBarStandard({ city }) {
           .announcement-text-2 { font-size: 12px; }
         }
       `}} />
-      <a href={`tel:${city.phone}`} className="announcement-bar-2" style={{ textDecoration: 'none', color: 'inherit' }}>
+      <a href={`tel:${city.phone}`} data-gateway-book className="announcement-bar-2" style={{ textDecoration: 'none', color: 'inherit' }}>
         <canvas className="announcement-canvas-2"></canvas>
       
         <div className="announcement-content-2">
-          <span className="announcement-quarter-2">Announcement</span>
-          <div className="announcement-divider-2"></div>
-      
-          <span className="announcement-text-2">
-            <strong>Spring Fix & Save</strong> — $149 off repairs.
-          </span>
-      
-          <div className="announcement-pill-2">
-            <span className="pulse-dot-2"></span>
-            Claim Now
-          </div>
+          <span className="announcement-text-2"><strong>Claim your free inspection today</strong> • value of $299!</span>
         </div>
       </a>
     </>
