@@ -160,7 +160,9 @@ export default function ServiceHero({ city, heading, serviceData }) {
           letter-spacing: -0.03em;
           color: #ffffff;
           margin: 0;
+          width: 100%;
           max-width: 100%;
+          text-align: left;
         }
 
         .hero-desc {
@@ -170,7 +172,9 @@ export default function ServiceHero({ city, heading, serviceData }) {
           line-height: 1.65;
           color: rgba(255, 255, 255, 0.6);
           margin: 0;
+          width: 100%;
           max-width: 100%;
+          text-align: left;
         }
 
         .hero-location {
@@ -284,17 +288,21 @@ export default function ServiceHero({ city, heading, serviceData }) {
         }
 
         /* ─── RESPONSIVE ─────────────────────────────────────── */
+        @media (min-width: 961px) {
+          .hero-h1, .hero-desc { width: 50%; align-self: flex-start; }
+        }
+
         @media (max-width: 960px) {
           .hero-inner { gap: 32px; padding: 145px 24px 80px; }
           .hero-row { grid-template-columns: 1fr; gap: 40px; }
           .hero-side-video { min-height: 240px; max-height: 340px; }
-          .hero-h1 { font-size: 38px; max-width: 100%; }
+          .hero-h1 { font-size: 48px; max-width: 100%; }
           .hero-form-card { max-width: 480px; }
         }
 
         @media (max-width: 480px) {
           .hero-inner { padding: 145px 24px 80px; }
-          .hero-h1 { font-size: 30px; width: 100%; }
+          .hero-h1 { font-size: 48px; width: 100%; }
           .hero-desc { max-width: 100%; width: 100%; }
           .hero-ctas { flex-direction: column; align-items: stretch; width: 100%; }
           .hero-cta-primary, .hero-cta-secondary { width: 100%; }
