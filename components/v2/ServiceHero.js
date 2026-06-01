@@ -176,9 +176,9 @@ export default function ServiceHero({ city, heading, serviceData }) {
           font-family: 'Inter Tight', sans-serif;
           font-size: 14px;
           font-weight: 600;
-          color: rgba(0, 0, 0, 0.5);
-          background: #F5F5F7;
-          border: 1px solid #d2d2d7;
+          color: #7c3aed;
+          background: rgba(124, 58, 237, 0.1);
+          border: 1px solid #7c3aed;
           border-radius: 10px;
           padding: 8px;
           width: fit-content;
