@@ -63,7 +63,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
           max-width: 1200px;
           width: 100%;
           margin: 0 auto;
-          padding: 193px 24px 128px;
+          padding: 152px 24px 24px;
           display: flex;
           flex-direction: column;
           gap: 40px;

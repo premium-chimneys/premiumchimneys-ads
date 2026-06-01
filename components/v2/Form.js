@@ -131,9 +131,9 @@ const formCss = `
   font-size: 14px;
   font-weight: 400;
   padding: 12px 16px;
-  border: 1.5px solid rgba(124, 58, 237, 0.12);
+  border: 1.5px solid #d2d2d7;
   border-radius: 12px;
-  background: #f8f6fd;
+  background: #ffffff;
   color: #1a1225;
   outline: none;
   transition: all 0.25s ease;
@@ -141,7 +141,7 @@ const formCss = `
 }
 
 .hero-form-input::placeholder,
-.hero-form-textarea::placeholder { color: #b0a4c4; }
+.hero-form-textarea::placeholder { color: #b0b0b8; }
 
 .hero-form-input:focus,
 .hero-form-textarea:focus {
@@ -156,9 +156,9 @@ const formCss = `
 .hero-form-phone-wrap {
   display: flex;
   align-items: center;
-  border: 1.5px solid rgba(124, 58, 237, 0.12);
+  border: 1.5px solid #d2d2d7;
   border-radius: 12px;
-  background: #f8f6fd;
+  background: #ffffff;
   overflow: hidden;
   transition: all 0.25s ease;
 }
@@ -178,7 +178,7 @@ const formCss = `
   color: #1a1225;
   outline: none;
 }
-.hero-form-phone-input::placeholder { color: #b0a4c4; }
+.hero-form-phone-input::placeholder { color: #b0b0b8; }
 .hero-form-phone-error {
   font-size: 11px;
   color: #ef4444;
