@@ -345,6 +345,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
         /* ─── RESPONSIVE ─────────────────────────────────────── */
         @media (min-width: 961px) {
           .hero-h1, .hero-desc { width: 50%; align-self: center; text-align: center; color: #ffffff; }
+          .hero-h1 { width: 75%; }
           .hero-media { border-radius: 20px; }
           .hero-pill {
             align-self: center;
