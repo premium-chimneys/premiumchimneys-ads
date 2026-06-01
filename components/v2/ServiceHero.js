@@ -95,7 +95,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
           flex: 1;
           min-height: 420px;
           object-fit: cover;
-          border-radius: 16px;
+          border-radius: 8px 8px 16px 16px;
           border: 1px solid rgba(255, 255, 255, 0.12);
           box-shadow: 0 24px 48px rgba(0, 0, 0, 0.25);
           display: block;
