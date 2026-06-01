@@ -344,16 +344,17 @@ export default function ServiceHero({ city, heading, serviceData }) {
 
         /* ─── RESPONSIVE ─────────────────────────────────────── */
         @media (min-width: 961px) {
-          .hero-h1, .hero-desc { width: 50%; align-self: flex-start; color: #ffffff; }
+          .hero-h1, .hero-desc { width: 50%; align-self: center; text-align: center; color: #ffffff; }
           .hero-media { border-radius: 20px; }
           .hero-pill {
+            align-self: center;
             color: rgba(255, 255, 255, 0.6);
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.18);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
           }
-          .hero-ctas { align-self: flex-start; }
+          .hero-ctas { align-self: center; }
           .hero-cta-primary { width: auto; }
         }
 
