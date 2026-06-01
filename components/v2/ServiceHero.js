@@ -63,7 +63,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
           max-width: 1200px;
           width: 100%;
           margin: 0 auto;
-          padding: 172px 24px 24px;
+          padding: 189px 24px 128px;
           display: flex;
           flex-direction: column;
           gap: 24px;
@@ -344,11 +344,22 @@ export default function ServiceHero({ city, heading, serviceData }) {
 
         /* ─── RESPONSIVE ─────────────────────────────────────── */
         @media (min-width: 961px) {
-          .hero-h1, .hero-desc { width: 50%; align-self: flex-start; }
+          .hero-h1, .hero-desc { width: 50%; align-self: flex-start; color: #ffffff; }
+          .hero-media { border-radius: 20px; }
+          .hero-pill {
+            color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+          }
+          .hero-ctas { align-self: flex-start; }
+          .hero-cta-primary { width: auto; }
         }
 
         @media (max-width: 960px) {
           .hero-inner { gap: 24px; padding: 172px 24px 24px; }
+          .hero-video, .hero-overlay { display: none; }
           .hero-row { grid-template-columns: 1fr; gap: 24px; }
           .hero-side-video { min-height: 240px; max-height: 340px; }
           .hero-h1 { font-size: 36px; max-width: 100%; }
@@ -365,6 +376,8 @@ export default function ServiceHero({ city, heading, serviceData }) {
       `}} />
 
       <section className="hero">
+        <img className="hero-video" src={heroImage} alt="" />
+        <div className="hero-overlay"></div>
         <div className="hero-inner">
           <div className="hero-heading-group">
             <span className="hero-pill">{heading}</span>

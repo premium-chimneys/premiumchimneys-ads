@@ -19,8 +19,8 @@ export default function NavigationBar({ city }) {
           position: relative;
           max-width: 1200px;
           margin: 0 auto;
-          padding: 0 24px;
-          height: 64px;
+          padding: 12px 24px;
+          height: auto;
           display: flex;
           align-items: center;
           justify-content: space-between;

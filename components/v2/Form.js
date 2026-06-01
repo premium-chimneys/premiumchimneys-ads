@@ -298,6 +298,12 @@ const formCss = `
   to { transform: translateX(-50%); }
 }
 
+/* Desktop: stack "Trusted by" above the logos, matching the mobile layout */
+@media (min-width: 961px) {
+  .hero-form-trust { flex-direction: column; align-items: stretch; gap: 16px; }
+  .hero-form-trust-label { margin-bottom: 0; }
+}
+
 .hero-form-success {
   text-align: center;
   padding: 56px 28px;
