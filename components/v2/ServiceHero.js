@@ -34,7 +34,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
           align-items: center;
           justify-content: center;
           overflow: hidden;
-          background: #000000;
+          background: #ffffff;
         }
 
         .hero-video {
@@ -79,14 +79,21 @@ export default function ServiceHero({ city, heading, serviceData }) {
         .hero-media {
           position: relative;
           height: 100%;
+          padding: 8px;
+          background: #F5F5F7;
+          border-radius: 24px;
+          box-sizing: border-box;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
         }
 
         .hero-side-video {
           width: 100%;
-          height: 100%;
+          flex: 1;
           min-height: 420px;
           object-fit: cover;
-          border-radius: 20px;
+          border-radius: 16px;
           border: 1px solid rgba(255, 255, 255, 0.12);
           box-shadow: 0 24px 48px rgba(0, 0, 0, 0.25);
           display: block;
@@ -164,7 +171,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
           font-weight: 700;
           line-height: 1.1;
           letter-spacing: -0.03em;
-          color: #ffffff;
+          color: #000000;
           margin: 0;
           width: 100%;
           max-width: 100%;
@@ -176,32 +183,23 @@ export default function ServiceHero({ city, heading, serviceData }) {
           font-size: 16px;
           font-weight: 400;
           line-height: 1.65;
-          color: #ffffff;
+          color: #000000;
           margin: 0;
           width: 100%;
           max-width: 100%;
           text-align: left;
         }
 
-        /* Address pill overlaid on the hero video, full width with padding insets */
+        /* Location header sitting in the top of the media container */
         .hero-location {
-          position: absolute;
-          left: 16px;
-          right: 16px;
-          bottom: 16px;
           display: flex;
           align-items: center;
           gap: 10px;
+          padding: 8px 6px;
           font-family: 'Inter Tight', sans-serif;
           font-size: 14px;
           font-weight: 600;
-          color: #ffffff;
-          background: rgba(0, 0, 0, 0.45);
-          border: 1px solid rgba(255, 255, 255, 0.14);
-          border-radius: 14px;
-          padding: 12px 16px;
-          backdrop-filter: blur(10px);
-          -webkit-backdrop-filter: blur(10px);
+          color: #000000;
         }
 
         .hero-location-pin {
@@ -236,11 +234,11 @@ export default function ServiceHero({ city, heading, serviceData }) {
           align-items: center;
           gap: 8px;
           font-family: 'Inter Tight', sans-serif;
-          font-size: 15px;
+          font-size: 18px;
           font-weight: 600;
           color: #f0e0fd;
           text-decoration: none;
-          padding: 24px 24px;
+          padding: 20px 24px;
           border: 1px solid #7c3aed;
           border-radius: 10px;
           background: linear-gradient(160deg, #9b5de5 0%, #7c3aed 25%, #5b21b6 50%, #6d28d9 72%, #8b5cf6 100%);
@@ -341,7 +339,6 @@ export default function ServiceHero({ city, heading, serviceData }) {
 
             <div className="hero-ctas">
               <button type="button" className="hero-cta-primary">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ flexShrink: '0' }}><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.8" /><line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /><line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /><line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" strokeWidth="1.8" /></svg>
                 Book your free inspection
               </button>
             </div>
@@ -349,26 +346,18 @@ export default function ServiceHero({ city, heading, serviceData }) {
 
           <div className="hero-row">
             <div className="hero-media">
-              <video className="hero-side-video" autoPlay muted loop playsInline>
-                <source src="https://res.cloudinary.com/dnr8oynlg/video/upload/v1775893214/premium-chimneys-background-video_i1w9ta.mp4" type="video/mp4" />
-              </video>
               <div className="hero-location">
                 <span className="hero-location-pin">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ flexShrink: '0' }}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /><circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="1.8" /></svg>
                 </span>
                 We're local to {city.name}
               </div>
+              <video className="hero-side-video" autoPlay muted loop playsInline>
+                <source src="https://res.cloudinary.com/dnr8oynlg/video/upload/v1775893214/premium-chimneys-background-video_i1w9ta.mp4" type="video/mp4" />
+              </video>
             </div>
             <div className="hero-form-wrap">
               <Form />
-            </div>
-          </div>
-
-          <div className="hero-badge-carousel">
-            <div className="hero-badge-track">
-              {[...HERO_BADGE_HALF, ...HERO_BADGE_HALF].map((b, i) => (
-                <img key={i} className="hero-badge-img" src={b.src} alt={b.alt} aria-hidden={i >= HERO_BADGE_HALF.length} />
-              ))}
             </div>
           </div>
         </div>
