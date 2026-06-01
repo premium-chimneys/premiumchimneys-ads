@@ -1,4 +1,4 @@
-import AnnouncementBar from '@/components/v2/AnnouncementBar'
+import HideChatling from '@/components/v2/HideChatling'
 import NavigationBar from '@/components/v2/NavigationBar'
 import ServiceHero from '@/components/v2/ServiceHero'
 import WhatsIncluded from '@/components/v2/WhatsIncluded'
@@ -17,7 +17,7 @@ import Footer from '@/components/v2/Footer'
 export default function ServicePageV2({ city, service, serviceData, heading, offersMembership }) {
   return (
     <div data-variant="v2">
-      <AnnouncementBar city={city} offersMembership={offersMembership} />
+      <HideChatling />
       <NavigationBar city={city} />
       <ServiceHero city={city} service={service} heading={heading} serviceData={serviceData} />
       <WhatsIncluded city={city} serviceData={serviceData} />

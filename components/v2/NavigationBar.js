@@ -26,7 +26,7 @@ export default function NavigationBar({ city }) {
       <style dangerouslySetInnerHTML={{__html: `
         .nav-wrapper {
           position: fixed;
-          top: 44px;
+          top: 0;
           left: 0;
           width: 100%;
           z-index: 999;
@@ -57,24 +57,7 @@ export default function NavigationBar({ city }) {
           left: 50%;
           top: 50%;
           transform: translate(-50%, -50%);
-          font-family: 'Inter Tight', sans-serif;
-          font-size: 14px;
-          font-weight: 500;
-          color: #4a3870;
-          letter-spacing: 0.01em;
           white-space: nowrap;
-          pointer-events: none;
-        }
-
-        .nav-center strong {
-          font-weight: 700;
-          color: #2a1e42;
-        }
-
-        .nav-star {
-          color: #f5a623;
-          vertical-align: -2px;
-          margin-right: 4px;
         }
 
         @media (max-width: 900px) {
@@ -241,8 +224,8 @@ export default function NavigationBar({ city }) {
             <img src="https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/65e2c8c7fdd2f9e01030c70f_Premium%20Chimneys%20(Dark).svg" alt="Premium Chimneys" />
           </div>
 
-          {/* Center trust line */}
-          <div className="nav-center"><svg className="nav-star" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.95 5.98 6.6.96-4.78 4.66 1.13 6.57L12 17.77l-5.9 3.1 1.13-6.57L2.45 8.94l6.6-.96L12 2z" /></svg><strong>4.9</strong> rated • Trusted by <strong>1,000+</strong> DFW homeowners</div>
+          {/* Center reviews widget */}
+          <div className="nav-center"><div className="elfsight-app-5b84b319-0dc0-446d-bab1-a30a175838f4" data-elfsight-app-lazy={true}></div></div>
 
           {/* CTAs */}
           <div className="nav-ctas">
