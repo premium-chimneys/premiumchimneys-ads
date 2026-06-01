@@ -131,8 +131,8 @@ const formCss = `
   font-size: 14px;
   font-weight: 400;
   padding: 12px 16px;
-  border: 1.5px solid #d2d2d7;
-  border-radius: 12px;
+  border: 1px solid #d2d2d7;
+  border-radius: 8px;
   background: #ffffff;
   color: #1a1225;
   outline: none;
@@ -156,8 +156,8 @@ const formCss = `
 .hero-form-phone-wrap {
   display: flex;
   align-items: center;
-  border: 1.5px solid #d2d2d7;
-  border-radius: 12px;
+  border: 1px solid #d2d2d7;
+  border-radius: 8px;
   background: #ffffff;
   overflow: hidden;
   transition: all 0.25s ease;

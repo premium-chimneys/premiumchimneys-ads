@@ -63,7 +63,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
           max-width: 1200px;
           width: 100%;
           margin: 0 auto;
-          padding: 152px 24px 24px;
+          padding: 172px 24px 24px;
           display: flex;
           flex-direction: column;
           gap: 40px;
@@ -97,7 +97,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
           object-fit: cover;
           border-radius: 8px 8px 16px 16px;
           border: 1px solid rgba(255, 255, 255, 0.12);
-          box-shadow: 0 24px 48px rgba(0, 0, 0, 0.25);
+          box-shadow: none;
           display: block;
         }
 
@@ -166,6 +166,21 @@ export default function ServiceHero({ city, heading, serviceData }) {
         .hero-reviews {
           max-width: 280px;
           margin: 0 auto;
+        }
+
+        .hero-pill {
+          align-self: flex-start;
+          display: inline-flex;
+          align-items: center;
+          font-family: 'Inter Tight', sans-serif;
+          font-size: 14px;
+          font-weight: 600;
+          color: #000000;
+          background: #F5F5F7;
+          border: 1px solid #d2d2d7;
+          border-radius: 100px;
+          padding: 8px 16px;
+          width: fit-content;
         }
 
         .hero-h1 {
@@ -332,7 +347,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
         }
 
         @media (max-width: 960px) {
-          .hero-inner { gap: 32px; padding: 256px 24px 128px; }
+          .hero-inner { gap: 32px; padding: 172px 24px 24px; }
           .hero-row { grid-template-columns: 1fr; gap: 40px; }
           .hero-side-video { min-height: 240px; max-height: 340px; }
           .hero-h1 { font-size: 36px; max-width: 100%; }
@@ -340,7 +355,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
         }
 
         @media (max-width: 480px) {
-          .hero-inner { padding: 256px 24px 128px; }
+          .hero-inner { padding: 172px 24px 24px; }
           .hero-h1 { font-size: 36px; width: 100%; }
           .hero-desc { max-width: 100%; width: 100%; }
           .hero-ctas { flex-direction: column; align-items: stretch; width: 100%; }
@@ -351,6 +366,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
       <section className="hero">
         <div className="hero-inner">
           <div className="hero-heading-group">
+            <span className="hero-pill">{heading}</span>
             <h1 className="hero-h1">{heroHeading}</h1>
 
             <p className="hero-desc">{heroDescription}</p>
