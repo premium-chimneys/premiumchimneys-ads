@@ -2,6 +2,20 @@
 
 import { useEffect, useRef } from 'react'
 
+const FORM_BADGES = [
+  { src: 'https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/69498dcf9a206ed260446ac6_bbb-accredited-business-logo.webp', alt: 'BBB Accredited Business' },
+  { src: 'https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/65ea3566667e1e282004fb81_Home%20Advisor%20Badge.svg', alt: 'HomeAdvisor' },
+  { src: '/images/angi_logo.png', alt: 'Angi' },
+  { src: '/images/thumbtack_logo.png', alt: 'Thumbtack' },
+  { src: '/images/yelp_logo.png', alt: 'Yelp' },
+  { src: '/images/facebook_logo.png', alt: 'Facebook' },
+  { src: '/images/instagram_logo.png', alt: 'Instagram' },
+  { src: '/images/houzz_logo.png', alt: 'Houzz' },
+  { src: '/images/nextdoor_logo.png', alt: 'Nextdoor' },
+]
+// One half of the seamless marquee — the full badge set repeated so each half overflows the carousel width.
+const FORM_BADGE_HALF = [...FORM_BADGES, ...FORM_BADGES]
+
 const formCss = `
 .hero-form-card {
   position: relative;
@@ -254,10 +268,45 @@ const formCss = `
   color: #6b5c8a;
 }
 
-.hero-form-reviews {
-  margin-top: 16px;
+.hero-form-trust {
+  margin-top: 18px;
 }
-.hero-form-reviews > div { width: 100% !important; }
+.hero-form-trust-label {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(42, 30, 66, 0.5);
+  text-align: center;
+  margin-bottom: 10px;
+}
+.hero-form-badge-carousel {
+  width: 100%;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+}
+.hero-form-badge-track {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  width: max-content;
+  animation: heroFormBadgeScroll 40s linear infinite;
+}
+.hero-form-badge-track:hover {
+  animation-play-state: paused;
+}
+.hero-form-badge-img {
+  height: 30px;
+  width: auto;
+  display: block;
+  border-radius: 5px;
+}
+@keyframes heroFormBadgeScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
 
 .hero-form-success {
   text-align: center;
@@ -461,8 +510,15 @@ export default function Form() {
               </svg>
               Submit Request
             </button>
-            <div className="hero-form-reviews">
-              <div className="elfsight-app-5b84b319-0dc0-446d-bab1-a30a175838f4" data-elfsight-app-lazy={true}></div>
+            <div className="hero-form-trust">
+              <div className="hero-form-trust-label">Trusted by</div>
+              <div className="hero-form-badge-carousel">
+                <div className="hero-form-badge-track">
+                  {[...FORM_BADGE_HALF, ...FORM_BADGE_HALF].map((b, i) => (
+                    <img key={i} className="hero-form-badge-img" src={b.src} alt={b.alt} aria-hidden={i >= FORM_BADGE_HALF.length} />
+                  ))}
+                </div>
+              </div>
             </div>
           </form>
         </div>

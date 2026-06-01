@@ -1,25 +1,7 @@
 
 'use client';
-import { useEffect } from 'react';
 
 export default function NavigationBar({ city }) {
-  useEffect(() => {
-    // ---- script block ----
-    try {
-      (function() {
-        var nav = document.getElementById('navWrapper');
-        if (nav) {
-          window.addEventListener('scroll', function() {
-            if (window.scrollY > 8) {
-              nav.classList.add('scrolled');
-            } else {
-              nav.classList.remove('scrolled');
-            }
-          }, { passive: true });
-        }
-      })();
-    } catch (e) { console.error('[component script]', e); }
-  }, []);
   return (
     <>
 
@@ -31,15 +13,8 @@ export default function NavigationBar({ city }) {
           width: 100%;
           z-index: 999;
           background: #ffffff;
-          transition: background 0.3s ease, backdrop-filter 0.3s ease;
         }
-      
-        .nav-wrapper.scrolled {
-          background: rgba(255, 255, 255, 0.82);
-          backdrop-filter: blur(12px);
-          -webkit-backdrop-filter: blur(12px);
-        }
-      
+
         .nav-inner {
           position: relative;
           max-width: 1200px;

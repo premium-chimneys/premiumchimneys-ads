@@ -76,6 +76,11 @@ export default function ServiceHero({ city, heading, serviceData }) {
           align-items: stretch;
         }
 
+        .hero-media {
+          position: relative;
+          height: 100%;
+        }
+
         .hero-side-video {
           width: 100%;
           height: 100%;
@@ -178,19 +183,37 @@ export default function ServiceHero({ city, heading, serviceData }) {
           text-align: left;
         }
 
+        /* Address pill overlaid on the hero video, full width with padding insets */
         .hero-location {
+          position: absolute;
+          left: 16px;
+          right: 16px;
+          bottom: 16px;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          font-family: 'Inter Tight', sans-serif;
+          font-size: 14px;
+          font-weight: 600;
+          color: #ffffff;
+          background: rgba(0, 0, 0, 0.45);
+          border: 1px solid rgba(255, 255, 255, 0.14);
+          border-radius: 14px;
+          padding: 12px 16px;
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+        }
+
+        .hero-location-pin {
           display: inline-flex;
           align-items: center;
-          gap: 8px;
-          font-family: 'Inter Tight', sans-serif;
-          font-size: 13px;
-          font-weight: 500;
-          color: rgba(255, 255, 255, 0.55);
-          background: rgba(255, 255, 255, 0.06);
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          border-radius: 100px;
-          padding: 8px 16px 8px 12px;
-          width: fit-content;
+          justify-content: center;
+          flex-shrink: 0;
+          width: 30px;
+          height: 30px;
+          border-radius: 9px;
+          background: rgba(124, 58, 237, 0.9);
+          color: #ffffff;
         }
 
         .hero-ctas {
@@ -203,7 +226,6 @@ export default function ServiceHero({ city, heading, serviceData }) {
         .hero-cta-primary,
         .hero-cta-secondary {
           width: 210px;
-          height: 46px;
           justify-content: center;
           text-align: center;
           box-sizing: border-box;
@@ -218,7 +240,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
           font-weight: 600;
           color: #f0e0fd;
           text-decoration: none;
-          padding: 12px 24px;
+          padding: 24px 24px;
           border: 1px solid #7c3aed;
           border-radius: 10px;
           background: linear-gradient(160deg, #9b5de5 0%, #7c3aed 25%, #5b21b6 50%, #6d28d9 72%, #8b5cf6 100%);
@@ -323,17 +345,20 @@ export default function ServiceHero({ city, heading, serviceData }) {
                 Book your free inspection
               </button>
             </div>
-
-            <div className="hero-location">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ flexShrink: '0' }}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /><circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="1.8" /></svg>
-              {city.service_area}
-            </div>
           </div>
 
           <div className="hero-row">
-            <video className="hero-side-video" autoPlay muted loop playsInline>
-              <source src="https://res.cloudinary.com/dnr8oynlg/video/upload/v1775893214/premium-chimneys-background-video_i1w9ta.mp4" type="video/mp4" />
-            </video>
+            <div className="hero-media">
+              <video className="hero-side-video" autoPlay muted loop playsInline>
+                <source src="https://res.cloudinary.com/dnr8oynlg/video/upload/v1775893214/premium-chimneys-background-video_i1w9ta.mp4" type="video/mp4" />
+              </video>
+              <div className="hero-location">
+                <span className="hero-location-pin">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ flexShrink: '0' }}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /><circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="1.8" /></svg>
+                </span>
+                We're local to {city.name}
+              </div>
+            </div>
             <div className="hero-form-wrap">
               <Form />
             </div>
