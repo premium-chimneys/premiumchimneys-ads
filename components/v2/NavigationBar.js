@@ -77,10 +77,6 @@ export default function NavigationBar({ city }) {
             text-align: center;
             margin-top: 10px;
             padding: 10px 0;
-            border-top: 1px solid rgba(0, 0, 0, 0.08);
-          }
-          .nav-separator {
-            display: none;
           }
         }
       

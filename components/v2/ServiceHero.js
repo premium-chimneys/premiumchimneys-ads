@@ -293,7 +293,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
         }
 
         @media (max-width: 960px) {
-          .hero-inner { gap: 32px; padding: 145px 24px 80px; }
+          .hero-inner { gap: 32px; padding: 256px 24px 128px; }
           .hero-row { grid-template-columns: 1fr; gap: 40px; }
           .hero-side-video { min-height: 240px; max-height: 340px; }
           .hero-h1 { font-size: 48px; max-width: 100%; }
@@ -301,7 +301,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
         }
 
         @media (max-width: 480px) {
-          .hero-inner { padding: 145px 24px 80px; }
+          .hero-inner { padding: 256px 24px 128px; }
           .hero-h1 { font-size: 48px; width: 100%; }
           .hero-desc { max-width: 100%; width: 100%; }
           .hero-ctas { flex-direction: column; align-items: stretch; width: 100%; }
