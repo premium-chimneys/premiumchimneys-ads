@@ -30,7 +30,7 @@ export default function NavigationBar({ city }) {
           left: 0;
           width: 100%;
           z-index: 999;
-          background: rgba(255, 255, 255, 0.96);
+          background: #ffffff;
           transition: background 0.3s ease, backdrop-filter 0.3s ease;
         }
       
