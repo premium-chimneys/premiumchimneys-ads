@@ -79,6 +79,9 @@ export default function NavigationBar({ city }) {
             padding: 10px 0;
             border-top: 1px solid rgba(0, 0, 0, 0.08);
           }
+          .nav-separator {
+            display: none;
+          }
         }
       
         .nav-logo {
