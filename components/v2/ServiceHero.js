@@ -66,7 +66,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
           padding: 189px 24px 128px;
           display: flex;
           flex-direction: column;
-          gap: 24px;
+          gap: 64px;
         }
 
         .hero-row {
