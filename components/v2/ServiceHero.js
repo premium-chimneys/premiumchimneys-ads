@@ -71,7 +71,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
 
         .hero-row {
           display: grid;
-          grid-template-columns: 1fr 420px;
+          grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
           gap: 48px;
           align-items: stretch;
         }
@@ -79,6 +79,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
         .hero-media {
           position: relative;
           height: 100%;
+          min-width: 0;
           padding: 8px;
           background: #F5F5F7;
           border-radius: 24px;
@@ -90,6 +91,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
 
         .hero-side-video {
           width: 100%;
+          min-width: 0;
           flex: 1;
           min-height: 420px;
           object-fit: cover;
@@ -101,6 +103,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
 
         .hero-form-wrap {
           width: 100%;
+          min-width: 0;
           max-width: 420px;
           margin: 0 auto;
           display: flex;
@@ -197,9 +200,25 @@ export default function ServiceHero({ city, heading, serviceData }) {
           gap: 10px;
           padding: 8px 6px;
           font-family: 'Inter Tight', sans-serif;
+        }
+
+        .hero-location-text {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          line-height: 1.25;
+        }
+
+        .hero-location-title {
           font-size: 14px;
           font-weight: 600;
           color: #000000;
+        }
+
+        .hero-location-area {
+          font-size: 12px;
+          font-weight: 500;
+          color: rgba(0, 0, 0, 0.5);
         }
 
         .hero-location-pin {
@@ -242,7 +261,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
           border: 1px solid #7c3aed;
           border-radius: 10px;
           background: linear-gradient(160deg, #9b5de5 0%, #7c3aed 25%, #5b21b6 50%, #6d28d9 72%, #8b5cf6 100%);
-          box-shadow: inset 0 1px 0 rgba(196,155,240,0.55), inset 0 -1px 0 rgba(0,0,0,0.22), 0 4px 16px rgba(91,33,182,0.45);
+          box-shadow: none;
           cursor: pointer;
           transition: all 0.22s ease;
           position: relative;
@@ -265,7 +284,6 @@ export default function ServiceHero({ city, heading, serviceData }) {
 
         .hero-cta-primary:hover {
           transform: translateY(-2px);
-          box-shadow: inset 0 1px 0 rgba(196,155,240,0.55), inset 0 -1px 0 rgba(0,0,0,0.22), 0 8px 24px rgba(91,33,182,0.5);
         }
 
         .hero-cta-primary:hover::before { left: 130%; }
@@ -350,7 +368,10 @@ export default function ServiceHero({ city, heading, serviceData }) {
                 <span className="hero-location-pin">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ flexShrink: '0' }}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /><circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="1.8" /></svg>
                 </span>
-                We're local to {city.name}
+                <span className="hero-location-text">
+                  <span className="hero-location-title">We're local to {city.name}</span>
+                  <span className="hero-location-area">{city.service_area}</span>
+                </span>
               </div>
               <video className="hero-side-video" autoPlay muted loop playsInline>
                 <source src="https://res.cloudinary.com/dnr8oynlg/video/upload/v1775893214/premium-chimneys-background-video_i1w9ta.mp4" type="video/mp4" />

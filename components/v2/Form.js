@@ -19,13 +19,11 @@ const FORM_BADGE_HALF = [...FORM_BADGES, ...FORM_BADGES]
 const formCss = `
 .hero-form-card {
   position: relative;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  background: #F5F5F7;
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.6);
   overflow: hidden;
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.2), 0 0 80px rgba(124, 58, 237, 0.08);
+  box-shadow: none;
   font-family: 'Inter Tight', sans-serif;
   box-sizing: border-box;
 }
@@ -33,14 +31,7 @@ const formCss = `
 .hero-form-card *, .hero-form-card *::before, .hero-form-card *::after { box-sizing: border-box; }
 
 .hero-form-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #7c3aed, #a78bfa, #c084fc, #e879f9, #c084fc, #a78bfa, #7c3aed);
-  background-size: 300% 100%;
-  animation: auroraSlide 4s ease-in-out infinite;
-  z-index: 5;
+  display: none;
 }
 
 @keyframes auroraSlide {
@@ -55,7 +46,7 @@ const formCss = `
   top: 0; left: 15%; right: 15%;
   height: 1px;
   background: transparent;
-  box-shadow: 0 0 30px 8px rgba(124, 58, 237, 0.08);
+  box-shadow: none;
   pointer-events: none;
   z-index: 0;
   animation: glowPulse 4s ease-in-out infinite;
@@ -156,7 +147,7 @@ const formCss = `
 .hero-form-textarea:focus {
   border-color: #7c3aed;
   background: #ffffff;
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1), 0 0 20px rgba(124, 58, 237, 0.04);
+  box-shadow: none;
 }
 
 .hero-form-textarea { resize: none; min-height: 80px; }
@@ -174,7 +165,7 @@ const formCss = `
 .hero-form-phone-wrap:focus-within {
   border-color: #7c3aed;
   background: #ffffff;
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1), 0 0 20px rgba(124, 58, 237, 0.04);
+  box-shadow: none;
 }
 .hero-form-phone-input {
   flex: 1;
@@ -216,7 +207,7 @@ const formCss = `
   overflow: hidden;
   margin-top: 6px;
   letter-spacing: 0.01em;
-  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+  box-shadow: none;
 }
 
 .hero-form-submit::before {
@@ -231,7 +222,6 @@ const formCss = `
 
 .hero-form-submit:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(124, 58, 237, 0.5);
 }
 
 .hero-form-submit:hover::before { left: 140%; }
@@ -348,7 +338,7 @@ const formCss = `
   border: 1.5px solid rgba(34, 197, 94, 0.25);
   display: flex; align-items: center; justify-content: center;
   position: relative; z-index: 1;
-  box-shadow: 0 0 32px rgba(34, 197, 94, 0.12);
+  box-shadow: none;
 }
 
 .hero-form-success-circle svg { animation: heroFormCheckDraw 0.5s ease-out 0.3s both; }
