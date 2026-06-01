@@ -21,7 +21,7 @@ const formCss = `
   position: relative;
   background: #F5F5F7;
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  border: 1px solid #d2d2d7;
   overflow: hidden;
   box-shadow: none;
   font-family: 'Inter Tight', sans-serif;

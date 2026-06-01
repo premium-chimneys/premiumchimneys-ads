@@ -66,7 +66,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
           padding: 172px 24px 24px;
           display: flex;
           flex-direction: column;
-          gap: 40px;
+          gap: 24px;
         }
 
         .hero-row {
@@ -82,6 +82,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
           min-width: 0;
           padding: 8px;
           background: #F5F5F7;
+          border: 1px solid #d2d2d7;
           border-radius: 24px;
           box-sizing: border-box;
           display: flex;
@@ -175,11 +176,11 @@ export default function ServiceHero({ city, heading, serviceData }) {
           font-family: 'Inter Tight', sans-serif;
           font-size: 14px;
           font-weight: 600;
-          color: #000000;
+          color: rgba(0, 0, 0, 0.5);
           background: #F5F5F7;
           border: 1px solid #d2d2d7;
-          border-radius: 100px;
-          padding: 8px 16px;
+          border-radius: 10px;
+          padding: 8px;
           width: fit-content;
         }
 
@@ -347,8 +348,8 @@ export default function ServiceHero({ city, heading, serviceData }) {
         }
 
         @media (max-width: 960px) {
-          .hero-inner { gap: 32px; padding: 172px 24px 24px; }
-          .hero-row { grid-template-columns: 1fr; gap: 40px; }
+          .hero-inner { gap: 24px; padding: 172px 24px 24px; }
+          .hero-row { grid-template-columns: 1fr; gap: 24px; }
           .hero-side-video { min-height: 240px; max-height: 340px; }
           .hero-h1 { font-size: 36px; max-width: 100%; }
           .hero-form-card { max-width: 480px; }
@@ -372,7 +373,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
             <p className="hero-desc">{heroDescription}</p>
 
             <div className="hero-ctas">
-              <button type="button" className="hero-cta-primary">
+              <button type="button" className="hero-cta-primary" data-gateway-book>
                 Book your free inspection
               </button>
             </div>
