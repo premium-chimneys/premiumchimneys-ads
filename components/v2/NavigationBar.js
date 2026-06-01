@@ -64,7 +64,7 @@ export default function NavigationBar({ city }) {
           .nav-inner {
             flex-wrap: wrap;
             height: auto;
-            padding-top: 10px;
+            padding-top: 20px;
             padding-bottom: 0;
           }
           .nav-center {
@@ -76,7 +76,7 @@ export default function NavigationBar({ city }) {
             white-space: normal;
             text-align: center;
             margin-top: 10px;
-            padding: 10px 0;
+            padding: 10px 0 20px;
           }
         }
       
@@ -211,7 +211,7 @@ export default function NavigationBar({ city }) {
       
         @media (max-width: 760px) {
           .nav-phone { display: none; }
-          .nav-inner { padding: 10px 20px 0; }
+          .nav-inner { padding: 20px 20px 0; }
         }
       `}} />
       

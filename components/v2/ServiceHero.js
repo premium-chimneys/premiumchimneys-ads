@@ -34,6 +34,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
           align-items: center;
           justify-content: center;
           overflow: hidden;
+          background: #000000;
         }
 
         .hero-video {
@@ -170,7 +171,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
           font-size: 16px;
           font-weight: 400;
           line-height: 1.65;
-          color: rgba(255, 255, 255, 0.6);
+          color: #ffffff;
           margin: 0;
           width: 100%;
           max-width: 100%;
@@ -296,13 +297,13 @@ export default function ServiceHero({ city, heading, serviceData }) {
           .hero-inner { gap: 32px; padding: 256px 24px 128px; }
           .hero-row { grid-template-columns: 1fr; gap: 40px; }
           .hero-side-video { min-height: 240px; max-height: 340px; }
-          .hero-h1 { font-size: 48px; max-width: 100%; }
+          .hero-h1 { font-size: 40px; max-width: 100%; }
           .hero-form-card { max-width: 480px; }
         }
 
         @media (max-width: 480px) {
           .hero-inner { padding: 256px 24px 128px; }
-          .hero-h1 { font-size: 48px; width: 100%; }
+          .hero-h1 { font-size: 40px; width: 100%; }
           .hero-desc { max-width: 100%; width: 100%; }
           .hero-ctas { flex-direction: column; align-items: stretch; width: 100%; }
           .hero-cta-primary, .hero-cta-secondary { width: 100%; }
@@ -310,9 +311,6 @@ export default function ServiceHero({ city, heading, serviceData }) {
       `}} />
 
       <section className="hero">
-        <img className="hero-video" src={heroImage} alt="" />
-        <div className="hero-overlay"></div>
-
         <div className="hero-inner">
           <div className="hero-heading-group">
             <h1 className="hero-h1">{heroHeading}</h1>
