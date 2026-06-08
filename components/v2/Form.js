@@ -122,6 +122,9 @@ const formCss = `
 
 .hero-form-body { padding: 20px 28px 28px; }
 
+/* Wrapper is a layout no-op by default; the hero turns it into a card on desktop */
+.hero-form-fields { display: contents; }
+
 .hero-form-group { margin-bottom: 10px; position: relative; }
 
 .hero-form-input,
@@ -480,7 +483,7 @@ export default function Form() {
             </div>
           </div>
           <h3>Submission Received</h3>
-          <p>Our dispatch team will reach out shortly.</p>
+          <p>Our dispatch team will reach out in a few minutes. Please ensure you're available.</p>
         </div>
 
         <div className="hero-form-top">
@@ -490,15 +493,17 @@ export default function Form() {
         <div className="hero-form-body">
           <form ref={formRef} name="contact" data-form-type="contact">
             <input type="hidden" name="source_url" ref={urlRef} value="" />
-            <div className="hero-form-group"><input className="hero-form-input" type="text" name="name" placeholder="Full Name" required /></div>
-            <div className="hero-form-group">
-              <div className="hero-form-phone-wrap">
-                <input className="hero-form-phone-input" type="tel" name="phone" placeholder="Phone Number" required ref={phoneRef} />
+            <div className="hero-form-fields">
+              <div className="hero-form-group"><input className="hero-form-input" type="text" name="name" placeholder="Full Name" required /></div>
+              <div className="hero-form-group">
+                <div className="hero-form-phone-wrap">
+                  <input className="hero-form-phone-input" type="tel" name="phone" placeholder="Phone Number" required ref={phoneRef} />
+                </div>
+                <div className="hero-form-phone-error" ref={phoneErrorRef}>Please enter a valid 10-digit phone number</div>
               </div>
-              <div className="hero-form-phone-error" ref={phoneErrorRef}>Please enter a valid 10-digit phone number</div>
+              <div className="hero-form-group"><input className="hero-form-input" type="email" name="email" placeholder="Email Address" required /></div>
+              <div className="hero-form-group"><textarea className="hero-form-textarea" name="message" placeholder="How can we help?"></textarea></div>
             </div>
-            <div className="hero-form-group"><input className="hero-form-input" type="email" name="email" placeholder="Email Address" required /></div>
-            <div className="hero-form-group"><textarea className="hero-form-textarea" name="message" placeholder="How can we help?"></textarea></div>
             <button className="hero-form-submit" type="submit">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}>
                 <path d="M22 2L11 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
