@@ -30,7 +30,7 @@ const currencyFmt = new Intl.NumberFormat('en-US', { style: 'currency', currency
 // Display-only status pills. The DB value is unchanged ('upcoming' stays
 // 'upcoming'); this only maps it to a label + colors.
 const STATUS_BADGES = {
-  closed: { bg: '#d1fae5', color: '#065f46', label: 'Closed' },
+  closed: { bg: '#d1fae5', color: '#065f46', label: 'Paid' },
   upcoming: { bg: '#fef3c7', color: '#92400e', label: 'Scheduled' },
   unpaid: { bg: '#dbeafe', color: '#1e40af', label: 'Unpaid' },
   lost: { bg: '#e5e7eb', color: '#374151', label: 'Lost' },
