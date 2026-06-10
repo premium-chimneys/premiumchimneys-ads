@@ -66,9 +66,8 @@ function renderIncomeCell(key, row) {
   if (key === 'status') return <StatusBadge status={val} />
 
   if (MONEY_KEYS.has(key)) {
-    if (isMoneyNA(val, row.status)) {
-      return <span style={{ color: '#9aa0a8' }}>N/A</span>
-    }
+    // Empty/zero on a non-closed row reads as the same dash as Technician/Jobber ID.
+    if (isMoneyNA(val, row.status)) return '—'
     const n = Number(val)
     return Number.isNaN(n) ? String(val) : currencyFmt.format(n)
   }
