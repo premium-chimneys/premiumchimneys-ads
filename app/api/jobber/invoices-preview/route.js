@@ -36,6 +36,8 @@ export async function GET(request) {
         webhook_topic_count: result.webhookTopics?.topics?.length ?? null,
         request_field_count: result.requestFields?.fields?.length ?? null,
         user_name_kind: result.userName?.nameTypeKind ?? null,
+        assessment_field_count: result.teamFields?.assessment?.fields?.length ?? null,
+        job_field_count: result.teamFields?.job?.fields?.length ?? null,
       })
     )
 
