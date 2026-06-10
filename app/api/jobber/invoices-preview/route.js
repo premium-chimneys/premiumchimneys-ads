@@ -34,6 +34,7 @@ export async function GET(request) {
         joblink_ok: result.jobLink?.ok ?? false,
         joblink_errors: result.jobLink?.errors?.map((e) => e.message) ?? null,
         webhook_topic_count: result.webhookTopics?.topics?.length ?? null,
+        request_field_count: result.requestFields?.fields?.length ?? null,
       })
     )
 
