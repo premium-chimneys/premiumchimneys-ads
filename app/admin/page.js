@@ -9,8 +9,8 @@ const PASSWORD = 'rocket99'
 const INCOME_FIELDS = [
   { label: 'Date', key: 'report_date' },
   { label: 'technician', key: 'technician_name' },
-  { label: 'jobber ID', key: 'jobber_id' },
   { label: 'customer', key: 'customer_name' },
+  { label: 'Invoice Number', key: 'jobber_id' },
   { label: 'amount', key: 'sale_amount' },
   { label: 'parts', key: 'parts' },
   { label: 'gross', key: 'gross_profit' },
