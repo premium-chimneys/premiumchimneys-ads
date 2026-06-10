@@ -23,13 +23,65 @@ const INCOME_COLUMNS = INCOME_FIELDS.map((f) => f.label)
 const MONEY_KEYS = new Set(['sale_amount', 'parts', 'gross_profit'])
 const currencyFmt = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
 
-function formatCell(key, val) {
-  if (val === null || val === undefined || val === '') return '—'
+// Display-only status pills. The DB value is unchanged ('upcoming' stays
+// 'upcoming'); this only maps it to a label + colors.
+const STATUS_BADGES = {
+  closed: { bg: '#d1fae5', color: '#065f46', label: 'Closed' },
+  upcoming: { bg: '#fef3c7', color: '#92400e', label: 'Scheduled' },
+  lost: { bg: '#e5e7eb', color: '#374151', label: 'Lost' },
+}
+
+function StatusBadge({ status }) {
+  const cfg = STATUS_BADGES[String(status || '').toLowerCase()]
+  if (!cfg) return status ? String(status) : '—'
+  return (
+    <span
+      style={{
+        display: 'inline-block',
+        padding: '3px 10px',
+        borderRadius: '999px',
+        fontSize: '12px',
+        fontWeight: 600,
+        lineHeight: 1.5,
+        backgroundColor: cfg.bg,
+        color: cfg.color,
+      }}
+    >
+      {cfg.label}
+    </span>
+  )
+}
+
+// True when a money value should read "N/A" instead of $0.00: empty/zero on a
+// row that isn't closed.
+function isMoneyNA(val, status) {
+  const empty = val === null || val === undefined || val === '' || Number(val) === 0
+  return empty && String(status || '').toLowerCase() !== 'closed'
+}
+
+// Renders one income cell (returns JSX, not just a string).
+function renderIncomeCell(key, row) {
+  const val = row[key]
+
+  if (key === 'status') return <StatusBadge status={val} />
+
   if (MONEY_KEYS.has(key)) {
+    if (isMoneyNA(val, row.status)) {
+      return <span style={{ color: '#9aa0a8' }}>N/A</span>
+    }
     const n = Number(val)
     return Number.isNaN(n) ? String(val) : currencyFmt.format(n)
   }
+
+  // Technician, Jobber ID, Customer, Date: keep the dash when empty.
+  if (val === null || val === undefined || val === '') return '—'
   return String(val)
+}
+
+// Footer total for a money column: sums real numeric values, treating N/A
+// (empty/zero) as 0.
+function moneyTotal(rows, key) {
+  return rows.reduce((sum, r) => sum + (Number(r[key]) || 0), 0)
 }
 
 // Placeholder column headings — rename these to your real ad metrics.
@@ -398,6 +450,15 @@ export default function AdminPage() {
         .adm-table tbody tr:last-child td { border-bottom: none; }
         .adm-table tbody tr:hover td { background: #fafbfc; }
         .adm-num { font-variant-numeric: tabular-nums; }
+        .adm-table tfoot td {
+          font-size: 14px;
+          font-weight: 700;
+          color: #11141a;
+          padding: 16px 20px;
+          border-top: 2px solid #eceef1;
+          background: #fbfbfc;
+          white-space: nowrap;
+        }
         .adm-empty {
           padding: 64px 24px;
           text-align: center;
@@ -558,7 +619,7 @@ export default function AdminPage() {
                                     key={f.key}
                                     className={MONEY_KEYS.has(f.key) ? 'adm-num' : undefined}
                                   >
-                                    {formatCell(f.key, row[f.key])}
+                                    {renderIncomeCell(f.key, row)}
                                   </td>
                                 ))}
                               </tr>
@@ -575,6 +636,22 @@ export default function AdminPage() {
                           </tr>
                         )}
                       </tbody>
+                      {tab === 'income' && rows.length > 0 && (
+                        <tfoot>
+                          <tr>
+                            {INCOME_FIELDS.map((f, idx) => {
+                              if (MONEY_KEYS.has(f.key)) {
+                                return (
+                                  <td key={f.key} className="adm-num">
+                                    {currencyFmt.format(moneyTotal(rows, f.key))}
+                                  </td>
+                                )
+                              }
+                              return <td key={f.key}>{idx === 0 ? 'Total' : ''}</td>
+                            })}
+                          </tr>
+                        </tfoot>
+                      )}
                     </table>
                   </div>
                 </div>
