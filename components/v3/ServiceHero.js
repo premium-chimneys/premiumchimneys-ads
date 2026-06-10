@@ -27,7 +27,6 @@ export default function ServiceHero({ city, heading, serviceData }) {
 
 
       <style dangerouslySetInnerHTML={{__html: `
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         .hero {
           position: relative;
           width: 100%;
@@ -155,74 +154,9 @@ export default function ServiceHero({ city, heading, serviceData }) {
           display: none;
         }
 
-        /* Custom elegant rating block (lives inside .hero-media-reviews, desktop only) */
-        /* Compact reviews chip */
-        .hero-rating {
-          display: inline-flex;
-          align-items: center;
-          gap: 7px;
-          background: rgba(255, 255, 255, 0.1);
-          border: 1px solid rgba(255, 255, 255, 0.18);
-          border-radius: 10px;
-          padding: 8px 8px;
-          backdrop-filter: blur(8px);
-          -webkit-backdrop-filter: blur(8px);
-        }
-        .hero-rating-stars {
-          display: inline-flex;
-          align-items: center;
-          gap: 2px;
-          color: #FFB400;
-        }
-        .hero-rating-stars svg {
-          width: 15px;
-          height: 15px;
-          display: block;
-          stroke: currentColor;
-          stroke-width: 1.5px;
-          stroke-linejoin: round;
-          stroke-linecap: round;
-        }
-        .hero-rating-score {
-          font-family: 'Inter Tight', sans-serif;
-          font-size: 14px;
-          font-weight: 700;
-          color: #ffffff;
-          font-variant-numeric: tabular-nums;
-          line-height: 1;
-        }
-        .hero-rating-label {
-          font-family: 'Inter', 'Inter Tight', sans-serif;
-          font-size: 13px;
-          font-weight: 500;
-          color: #ffffff;
-          line-height: 1;
-        }
-
-        /* Service-in-city tag — exact same chip container as the reviews chip */
-        .hero-loc-tag {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          font-family: 'Inter Tight', sans-serif;
-          font-size: 13px;
-          font-weight: 500;
-          line-height: 1;
-          white-space: nowrap;
-          color: #ffffff;
-          letter-spacing: 0.01em;
-          background: rgba(255, 255, 255, 0.1);
-          border: 1px solid rgba(255, 255, 255, 0.18);
-          border-radius: 10px;
-          padding: 8px 8px;
-          backdrop-filter: blur(8px);
-          -webkit-backdrop-filter: blur(8px);
-        }
-        .hero-loc-tag svg {
-          width: 14px;
-          height: 14px;
-          flex-shrink: 0;
-          color: #ffffff;
+        /* Video sits below the two hero panels on desktop only; hidden by default */
+        .hero-under-video {
+          display: none;
         }
 
         .hero-left {
@@ -385,30 +319,6 @@ export default function ServiceHero({ city, heading, serviceData }) {
 
         .hero-cta-primary:hover::before { left: 130%; }
 
-        .hero-cta-wrap { position: relative; display: inline-block; }
-        .hero-cta-badge {
-          position: absolute;
-          top: 0;
-          right: 0;
-          transform: translate(30%, -50%);
-          display: inline-flex;
-          align-items: center;
-          gap: 4px;
-          background: #FFB400;
-          color: #2a1e42;
-          font-family: 'Inter Tight', sans-serif;
-          font-size: 10px;
-          font-weight: 800;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-          padding: 5px 9px;
-          border-radius: 100px;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
-          white-space: nowrap;
-          pointer-events: none;
-        }
-        .hero-cta-badge svg { width: 11px; height: 11px; flex-shrink: 0; }
-
         .hero-cta-secondary {
           display: inline-flex;
           align-items: center;
@@ -451,8 +361,15 @@ export default function ServiceHero({ city, heading, serviceData }) {
         @media (min-width: 961px) {
           .hero-h1, .hero-desc { width: 50%; align-self: center; text-align: center; color: #ffffff; }
           .hero-h1 { width: 60%; }
-          /* Overlay so the video reads behind the frosted glass panels */
-          .hero-overlay { background: rgba(0, 0, 0, 0.65); }
+          /* Solid light hero background; the video moves below the two panels */
+          .hero { background: #F5F5F7; }
+          .hero-under-video {
+            display: block;
+            width: 100vw;
+            margin-left: calc(50% - 50vw);
+            height: 560px;
+            object-fit: cover;
+          }
           .hero-pill {
             align-self: center;
             color: rgba(255, 255, 255, 0.6);
@@ -462,24 +379,14 @@ export default function ServiceHero({ city, heading, serviceData }) {
             -webkit-backdrop-filter: blur(12px);
           }
           .hero-ctas { align-self: center; }
-          /* Match the form's Submit Request button design */
-          .hero-cta-primary {
-            width: 340px;
-            background: linear-gradient(160deg, #9b5de5 0%, #7c3aed 40%, #6d28d9 100%);
-            border: none;
-            border-radius: 12px;
-            color: #ffffff;
-            font-size: 15px;
-            font-weight: 600;
-            padding: 14px 24px;
-          }
+          .hero-cta-primary { width: auto; }
 
           /* Desktop: move hero content into the container, drop the top copy + side video */
           .hero-heading-top { display: none; }
           .hero-side-video { display: none; }
           .hero-heading-inner {
             display: flex;
-            flex: none;
+            flex: 1;
             justify-content: center;
             align-items: flex-start;
             text-align: left;
@@ -487,48 +394,45 @@ export default function ServiceHero({ city, heading, serviceData }) {
             padding: 0;
           }
           .hero-heading-inner .hero-h1 {
-            width: 85%;
-            align-self: flex-start;
+            width: 100%;
+            align-self: stretch;
             text-align: left;
-            color: #ffffff;
+            color: rgba(0, 0, 0, 0.85);
           }
           .hero-heading-inner .hero-desc {
-            width: 85%;
-            align-self: flex-start;
+            width: 100%;
+            align-self: stretch;
             text-align: left;
-            color: rgba(255, 255, 255, 0.72);
+            color: rgba(0, 0, 0, 0.6);
           }
-          /* Pill tag removed on desktop */
-          .hero-heading-inner .hero-pill { display: none; }
+          .hero-heading-inner .hero-pill {
+            align-self: flex-start;
+            color: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+          }
           .hero-heading-inner .hero-ctas { align-self: flex-start; }
 
-          /* Desktop: show the reviews row, hide the mobile location header */
+          /* Desktop: show the reviews widget, hide the mobile location header */
           .hero-media .hero-location { display: none; }
-          .hero-media-reviews {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-          }
+          .hero-media-reviews { display: block; }
 
-          /* ─── Left content sits directly on the background video (no card) ─── */
+          /* ─── White content panel, matched pair with the white form card ─── */
           .hero-media {
-            background: transparent;
+            background: #ffffff;
             border: none;
-            border-radius: 0;
+            border-radius: 20px;
             box-shadow: none;
-            padding: 0;
-            justify-content: center;
-            gap: 14px;
+            padding: 40px;
           }
 
-          /* Frosted-glass form card floating over the hero video */
+          /* White form card (no shadow) */
           .hero .hero-form-card {
             background: #ffffff;
             border: none;
-            box-shadow:
-              0 30px 70px rgba(0, 0, 0, 0.45),
-              0 4px 14px rgba(0, 0, 0, 0.25);
+            box-shadow: none;
           }
           /* Generous 40px padding on all four outer edges of the form card */
           .hero .hero-form-top { padding: 40px 40px 0; }
@@ -568,10 +472,6 @@ export default function ServiceHero({ city, heading, serviceData }) {
       `}} />
 
       <section className="hero">
-        <video className="hero-video" autoPlay muted loop playsInline>
-          <source src="https://res.cloudinary.com/dnr8oynlg/video/upload/v1775893214/premium-chimneys-background-video_i1w9ta.mp4" type="video/mp4" />
-        </video>
-        <div className="hero-overlay"></div>
         <div className="hero-inner">
           <div className="hero-heading-group hero-heading-top">
             <span className="hero-pill">{heading}</span>
@@ -589,17 +489,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
           <div className="hero-row">
             <div className="hero-media">
               <div className="hero-media-reviews">
-                <div className="hero-rating">
-                  <span className="hero-rating-stars" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 5.88 6.49.94-4.7 4.58 1.11 6.46L12 17.8l-5.8 3.05 1.11-6.46-4.7-4.58 6.49-.94L12 2.5z" /></svg>
-                  </span>
-                  <span className="hero-rating-score">4.9</span>
-                  <span className="hero-rating-label">Google rated</span>
-                </div>
-                <span className="hero-loc-tag">
-                  <svg viewBox="0 0 24 24" fill="none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /><circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="1.8" /></svg>
-                  {heading}
-                </span>
+                <div className="elfsight-app-5b84b319-0dc0-446d-bab1-a30a175838f4" data-elfsight-app-lazy={true}></div>
               </div>
               <div className="hero-location">
                 <span className="hero-location-pin">
@@ -617,19 +507,9 @@ export default function ServiceHero({ city, heading, serviceData }) {
                 <p className="hero-desc">{heroDescription}</p>
 
                 <div className="hero-ctas">
-                  <span className="hero-cta-wrap">
-                    <button type="button" className="hero-cta-primary" data-gateway-book>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}>
-                        <path d="M22 2L11 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                      Book your free inspection
-                    </button>
-                    <span className="hero-cta-badge">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
-                      Limited Time
-                    </span>
-                  </span>
+                  <button type="button" className="hero-cta-primary" data-gateway-book>
+                    Book your free inspection
+                  </button>
                 </div>
               </div>
               <video className="hero-side-video" autoPlay muted loop playsInline>
@@ -640,6 +520,10 @@ export default function ServiceHero({ city, heading, serviceData }) {
               <Form />
             </div>
           </div>
+
+          <video className="hero-under-video" autoPlay muted loop playsInline>
+            <source src="https://res.cloudinary.com/dnr8oynlg/video/upload/v1775893214/premium-chimneys-background-video_i1w9ta.mp4" type="video/mp4" />
+          </video>
         </div>
       </section>
     </>

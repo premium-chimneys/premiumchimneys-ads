@@ -209,16 +209,6 @@ export default function NavigationBar({ city }) {
           .nav-phone { display: none; }
           .nav-inner { padding: 20px 20px 0; }
         }
-
-        /* ─── Desktop: 80% white nav with blur ─── */
-        @media (min-width: 901px) {
-          .nav-wrapper {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(20px) saturate(120%);
-            -webkit-backdrop-filter: blur(20px) saturate(120%);
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
-          }
-        }
       `}} />
       
       <nav className="nav-wrapper" id="navWrapper">
@@ -229,8 +219,12 @@ export default function NavigationBar({ city }) {
             <img src="https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/65e2c8c7fdd2f9e01030c70f_Premium%20Chimneys%20(Dark).svg" alt="Premium Chimneys" />
           </div>
 
-          {/* Center: reviews widget (mobile only) */}
+          {/* Center: location pin tag (desktop) / reviews widget (mobile) */}
           <div className="nav-center">
+            <span className="nav-location">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ flexShrink: '0' }}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /><circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="1.8" /></svg>
+              Dallas, TX
+            </span>
             <div className="nav-reviews"><div className="elfsight-app-5b84b319-0dc0-446d-bab1-a30a175838f4" data-elfsight-app-lazy={true}></div></div>
           </div>
 
