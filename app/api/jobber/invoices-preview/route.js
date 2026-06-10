@@ -33,6 +33,7 @@ export async function GET(request) {
         invoices_errors: result.invoices?.errors?.map((e) => e.message) ?? null,
         joblink_ok: result.jobLink?.ok ?? false,
         joblink_errors: result.jobLink?.errors?.map((e) => e.message) ?? null,
+        webhook_enums: result.webhookTopics?.enums ? Object.keys(result.webhookTopics.enums) : null,
       })
     )
 
