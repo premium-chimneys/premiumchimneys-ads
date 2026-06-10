@@ -32,6 +32,7 @@ const currencyFmt = new Intl.NumberFormat('en-US', { style: 'currency', currency
 const STATUS_BADGES = {
   closed: { bg: '#d1fae5', color: '#065f46', label: 'Closed' },
   upcoming: { bg: '#fef3c7', color: '#92400e', label: 'Scheduled' },
+  unpaid: { bg: '#dbeafe', color: '#1e40af', label: 'Unpaid' },
   lost: { bg: '#e5e7eb', color: '#374151', label: 'Lost' },
 }
 
