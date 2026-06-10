@@ -64,13 +64,14 @@ function isMoneyNA(val, status) {
   return empty && String(status || '').toLowerCase() !== 'closed'
 }
 
-// A closed row that sold above the assessment floor but carries no parts cost
-// — its cost probably hasn't been entered in Jobber yet.
+// A closed or unpaid row that sold above the assessment floor but carries no
+// parts cost — its cost probably hasn't been entered in Jobber yet.
 function needsCost(row) {
-  const isClosed = String(row.status || '').toLowerCase() === 'closed'
+  const status = String(row.status || '').toLowerCase()
+  const flaggable = status === 'closed' || status === 'unpaid'
   const partsEmpty = row.parts == null || Number(row.parts) === 0
   const amount = Number(row.sale_amount)
-  return isClosed && partsEmpty && Number.isFinite(amount) && amount > ASSESSMENT_FLOOR
+  return flaggable && partsEmpty && Number.isFinite(amount) && amount > ASSESSMENT_FLOOR
 }
 
 // Subtle amber tag shown in the Parts cell for flagged rows.
