@@ -31,6 +31,8 @@ export async function GET(request) {
         enum_ok: result.enumValues?.ok ?? false,
         invoices_ok: result.invoices?.ok ?? false,
         invoices_errors: result.invoices?.errors?.map((e) => e.message) ?? null,
+        joblink_ok: result.jobLink?.ok ?? false,
+        joblink_errors: result.jobLink?.errors?.map((e) => e.message) ?? null,
       })
     )
 
