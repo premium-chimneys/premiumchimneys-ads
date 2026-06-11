@@ -58,7 +58,19 @@ const BENEFITS = [
   },
 ];
 
-export default function InspectionValue() {
+export default function InspectionValue({ city, landing }) {
+  // ── landing_v2 bindings (fall back to built-in copy/images when absent) ──
+  const problemHeading = landing?.problem_heading || 'Worried something is wrong with your chimney?';
+  const problemText = landing?.problem_text || 'Odd smells, smoke backing up, or staining are early warning signs worth a closer look.';
+  const solutionHeading = landing?.solution_heading || 'Ready to get your chimney clean and safe again?';
+  const solutionText = landing?.solution_text || 'One thorough sweep clears the buildup, restores airflow, and makes it safe to light again.';
+  const beforeImage = landing?.before_image || 'https://images.unsplash.com/photo-1543599538-a6c4f6cc5c05?auto=format&fit=crop&w=1400&q=80';
+  const afterImage = landing?.after_image || 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1400&q=80';
+  const benefitCards = [1, 2, 3, 4, 5].map((n, i) => ({
+    body: landing?.[`benefit_${n}_desc`] || BENEFITS[i].body,
+    img: landing?.[`benefit_${n}_image`] || CARD_IMAGES[i],
+  }));
+
   // ── Before/after slider ──
   const sliderRef = useRef(null);
   const [pos, setPos] = useState(50);
@@ -156,8 +168,8 @@ export default function InspectionValue() {
                   <circle cx="60" cy="83" r="4.6" fill="url(#psWarnMark)" />
                 </svg>
               </span>
-              <p className="ps-rect-q">Worried something is wrong with your chimney?</p>
-              <p className="ps-rect-sub">Odd smells, smoke backing up, or staining are early warning signs worth a closer look.</p>
+              <p className="ps-rect-q">{problemHeading}</p>
+              <p className="ps-rect-sub">{problemText}</p>
             </div>
             <div className="ps-rect ps-rect-green">
               <span className="ps-rect-icon ps-rect-icon-green" aria-hidden="true">
@@ -198,8 +210,8 @@ export default function InspectionValue() {
                   <path d="M45 61 L55 71 L76 49" stroke="url(#psFixMark)" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" fill="none" />
                 </svg>
               </span>
-              <p className="ps-rect-q">Ready to get your chimney clean and safe again?</p>
-              <p className="ps-rect-sub">One thorough sweep clears the buildup, restores airflow, and makes it safe to light again.</p>
+              <p className="ps-rect-q">{solutionHeading}</p>
+              <p className="ps-rect-sub">{solutionText}</p>
             </div>
           </div>
 
@@ -218,18 +230,18 @@ export default function InspectionValue() {
             aria-valuemin={0}
             aria-valuemax={100}
           >
-            {/* AFTER — clean (placeholder) */}
+            {/* AFTER — clean */}
             <img
               className="ps-ba-img"
-              src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1400&q=80"
-              alt="After: clean, freshly swept fireplace (placeholder)"
+              src={afterImage}
+              alt="After: clean, freshly swept fireplace"
               draggable="false"
             />
-            {/* BEFORE — dirty (placeholder), clipped to the handle position */}
+            {/* BEFORE — dirty, clipped to the handle position */}
             <img
               className="ps-ba-img ps-ba-before"
-              src="https://images.unsplash.com/photo-1543599538-a6c4f6cc5c05?auto=format&fit=crop&w=1400&q=80"
-              alt="Before: dirty, creosote-caked flue (placeholder)"
+              src={beforeImage}
+              alt="Before: dirty, creosote-caked flue"
               draggable="false"
               style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
             />
@@ -255,12 +267,11 @@ export default function InspectionValue() {
           {/* ── Benefit cards — endless slow marquee (set duplicated for seamless loop) ── */}
           <div className="ps-carousel">
             <div className="ps-track">
-              {[...BENEFITS, ...BENEFITS].map((b, i) => (
-                <div className="ps-benefit" key={i} aria-hidden={i >= BENEFITS.length ? 'true' : undefined}>
-                  {/* TODO: Unsplash placeholders — swap for real photos */}
+              {[...benefitCards, ...benefitCards].map((b, i) => (
+                <div className="ps-benefit" key={i} aria-hidden={i >= benefitCards.length ? 'true' : undefined}>
                   <img
                     className="ps-card"
-                    src={CARD_IMAGES[i % BENEFITS.length]}
+                    src={b.img}
                     alt=""
                     loading="lazy"
                     draggable="false"
@@ -273,6 +284,34 @@ export default function InspectionValue() {
 
           </div>{/* ── end composed card ── */}
 
+          {/* ── CTA banner (grafted from V1 "What to expect" section) ── */}
+          <div className="ps-cta">
+            <div className="ps-cta-badge">
+              <span className="ps-cta-badge-label">Rated</span>
+              <span className="ps-cta-badge-amount">#1</span>
+              <span className="ps-cta-badge-sub">in your area</span>
+            </div>
+            <div className="ps-cta-content">
+              <p className="ps-cta-heading">Schedule your appointment today</p>
+              <p className="ps-cta-desc">Our certified technicians are available this week. Book now and get a full chimney or fireplace assessment.</p>
+              <div className="ps-cta-features">
+                <span className="ps-cta-feature"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg> Same-week availability</span>
+                <span className="ps-cta-feature"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg> Insured & Bonded</span>
+                <span className="ps-cta-feature"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg> Satisfaction guaranteed</span>
+              </div>
+            </div>
+            <div className="ps-cta-action">
+              <button type="button" className="ps-cta-btn" data-gateway-book>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ flexShrink: '0' }}><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.8" /><line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /><line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /><line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" strokeWidth="1.8" /></svg>
+                Book Appointment
+              </button>
+              <a href={`tel:${city?.phone ?? ''}`} className="ps-cta-call">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ flexShrink: '0' }}><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                {city?.phone_text}
+              </a>
+            </div>
+          </div>
+
         </div>
       </section>
     </>
@@ -283,7 +322,7 @@ const css = `
   @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&display=swap');
 
   .ps-section {
-    background: #ffffff;
+    background: transparent;
     font-family: 'Inter Tight', sans-serif;
   }
   .ps-inner { position: relative; max-width: 1200px; margin: 0 auto; padding: 128px 24px; }
@@ -357,8 +396,9 @@ const css = `
     margin-top: 80px;
     border-radius: 20px;
     padding: 64px 36px;
-    background: #F5F5F7;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+    background: #ffffff;
+    border: none;
+    box-shadow: none;
   }
   .ps-frame > * { position: relative; z-index: 1; }
   .ps-frame-head { text-align: center; margin-bottom: 40px; }
@@ -525,6 +565,94 @@ const css = `
     0%, 100% { transform: translateY(0.6px); }
     50%      { transform: translateY(-1.4px); }
   }
+
+  /* ── CTA banner (grafted from V1 "What to expect" — mirrors Services sv1-cta) ── */
+  .ps-cta {
+    margin-top: 56px;
+    border-radius: 20px;
+    background: linear-gradient(135deg,#0e0b14,#1a1030 50%,#0e0b14);
+    border: 1px solid rgba(124,58,237,.2);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 0;
+    position: relative;
+    overflow: hidden;
+    transition: all .3s ease;
+  }
+  .ps-cta:hover { border-color: rgba(124,58,237,.4); box-shadow: 0 16px 48px rgba(124,58,237,.12), 0 0 80px rgba(124,58,237,.04); }
+  .ps-cta::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #7c3aed, #a78bfa, #c084fc, #a78bfa, #7c3aed, transparent);
+    background-size: 300% 100%;
+    animation: ps-cta-anim 4s ease-in-out infinite;
+    z-index: 2;
+  }
+  @keyframes ps-cta-anim { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+  .ps-cta::after {
+    content: '';
+    position: absolute; left: 40px; top: 50%;
+    transform: translateY(-50%);
+    width: 120px; height: 120px;
+    background: radial-gradient(circle, rgba(124,58,237,.2) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+    animation: ps-cta-glow 3s ease-in-out infinite;
+  }
+  @keyframes ps-cta-glow { 0%,100% { opacity: .6; transform: translateY(-50%) scale(1); } 50% { opacity: 1; transform: translateY(-50%) scale(1.2); } }
+  .ps-cta-badge { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; flex-shrink: 0; padding: 32px 36px; position: relative; z-index: 1; }
+  .ps-cta-badge-label { font-size: 12px; font-weight: 700; color: #a78bfa; letter-spacing: .02em; margin-bottom: 4px; }
+  .ps-cta-badge-amount { font-size: 40px; font-weight: 800; letter-spacing: -.03em; line-height: 1; background: linear-gradient(180deg,#fff 30%,#a78bfa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .ps-cta-badge-sub { font-size: 11px; font-weight: 500; color: rgba(255,255,255,.35); margin-top: 2px; }
+  .ps-cta-content { padding: 32px 36px; position: relative; z-index: 1; }
+  .ps-cta-heading { font-size: 20px; font-weight: 700; color: #fff; margin: 0 0 6px; letter-spacing: -.02em; }
+  .ps-cta-desc { font-size: 14px; font-weight: 400; color: rgba(255,255,255,.45); margin: 0 0 16px; line-height: 1.5; }
+  .ps-cta-features { display: flex; gap: 20px; }
+  .ps-cta-feature { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; color: rgba(255,255,255,.6); }
+  .ps-cta-feature svg { flex-shrink: 0; }
+  .ps-cta-action { padding: 32px 36px; display: flex; flex-direction: column; align-items: center; gap: 10px; position: relative; z-index: 1; }
+  .ps-cta-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 15px; font-weight: 600; color: #f0e0fd;
+    padding: 14px 32px; border-radius: 12px;
+    border: 1px solid #7c3aed;
+    background: linear-gradient(160deg,#9b5de5,#7c3aed 25%,#5b21b6 50%,#6d28d9 72%,#8b5cf6);
+    box-shadow: inset 0 1px 0 rgba(196,155,240,.55), inset 0 -1px 0 rgba(0,0,0,.22), 0 4px 20px rgba(91,33,182,.5);
+    transition: all .22s ease;
+    position: relative; overflow: hidden;
+    cursor: pointer;
+    text-shadow: 0 1px 2px rgba(45,15,80,.35);
+    text-decoration: none; white-space: nowrap;
+    width: 100%; justify-content: center;
+  }
+  .ps-cta-btn::before {
+    content: '';
+    position: absolute; top: 0; left: -70%;
+    width: 40%; height: 100%;
+    background: linear-gradient(105deg, transparent 35%, rgba(210,175,255,.35) 50%, transparent 65%);
+    transform: skewX(-12deg);
+    pointer-events: none;
+    transition: left .55s ease;
+  }
+  .ps-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: inset 0 1px 0 rgba(196,155,240,.55), inset 0 -1px 0 rgba(0,0,0,.22), 0 8px 28px rgba(91,33,182,.6);
+    border-color: #8b5cf6;
+  }
+  .ps-cta-btn:hover::before { left: 130%; }
+  .ps-cta-call {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    font-size: 14px; font-weight: 500;
+    color: rgba(255,255,255,.7);
+    text-decoration: none;
+    padding: 12px 24px; border-radius: 10px;
+    border: 1px solid rgba(255,255,255,.1);
+    background: rgba(255,255,255,.04);
+    transition: all .22s ease;
+    white-space: nowrap; width: 100%;
+  }
+  .ps-cta-call:hover { color: #fff; border-color: rgba(255,255,255,.2); background: rgba(255,255,255,.08); transform: translateY(-1px); }
 
   /* ── Responsive ── */
   @media (max-width: 960px) {

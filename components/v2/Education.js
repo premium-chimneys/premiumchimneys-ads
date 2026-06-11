@@ -72,7 +72,6 @@ export default function Education({ city, serviceData }) {
     <>
       <style dangerouslySetInnerHTML={{ __html: css }} />
       <section className="ed">
-        <div className="ed-bg-grid" aria-hidden="true" />
         <div className="ed-bg-glow" aria-hidden="true" />
         <div className="ed-bg-scan" aria-hidden="true" />
 
@@ -274,15 +273,6 @@ const css = `
     padding: 140px 0;
     overflow: hidden;
     font-family: 'Inter Tight', sans-serif;
-  }
-  .ed-bg-grid {
-    position: absolute; inset: 0;
-    background-image:
-      linear-gradient(rgba(167,139,250,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(167,139,250,0.04) 1px, transparent 1px);
-    background-size: 56px 56px;
-    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, #000 40%, transparent 100%);
-    pointer-events: none;
   }
   .ed-bg-glow {
     position: absolute; inset: 0;

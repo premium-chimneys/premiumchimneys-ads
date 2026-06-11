@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import { getCityData } from '@/lib/getCityData'
 import { getServiceData } from '@/lib/getServiceData'
+import { getLandingV2Data } from '@/lib/getLandingV2Data'
 import ServicePageV2 from '@/components/variants/ServicePageV2'
 
 function serviceNameFromSlug(slug) {
@@ -26,7 +27,10 @@ export default async function Page({ params }) {
   const serviceData = await getServiceData(serviceSlug)
   if (!serviceData) notFound()
 
-  const city = await getCityData(citySlug)
+  const [city, landing] = await Promise.all([
+    getCityData(citySlug),
+    getLandingV2Data(serviceSlug),
+  ])
 
   const serviceName = serviceNameFromSlug(serviceSlug)
   const heading = `${serviceName} in ${city.name}`
@@ -39,6 +43,7 @@ export default async function Page({ params }) {
       serviceData={serviceData}
       heading={heading}
       offersMembership={offersMembership}
+      landing={landing}
     />
   )
 }

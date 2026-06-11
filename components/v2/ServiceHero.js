@@ -16,10 +16,10 @@ const HERO_BADGES = [
 // One half of the seamless marquee — the full badge set repeated so each half overflows the carousel width.
 const HERO_BADGE_HALF = [...HERO_BADGES, ...HERO_BADGES];
 
-export default function ServiceHero({ city, heading, serviceData }) {
+export default function ServiceHero({ city, heading, serviceData, landing }) {
   const heroImage = serviceData?.hero_image_url || 'https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/694441da86840f464e36c79b_chimney-inspection-roofline-flue-evaluation.webp';
-  const heroDescription = serviceData?.hero_description || 'Premium Chimneys provides professional fireplace and chimney services for your home. Our mission is to help you enjoy your fireplace safely and efficiently, with complete peace of mind.';
-  const heroHeading = (serviceData?.h1 || heading || '').replace(/\{city\}/g, city.name);
+  const heroDescription = landing?.hero_subtext || serviceData?.hero_description || 'Premium Chimneys provides professional fireplace and chimney services for your home. Our mission is to help you enjoy your fireplace safely and efficiently, with complete peace of mind.';
+  const heroHeading = (landing?.hero_h1 || serviceData?.h1 || heading || '').replace(/\{city\}/g, city.name);
   return (
     <>
 
@@ -394,15 +394,15 @@ export default function ServiceHero({ city, heading, serviceData }) {
           display: inline-flex;
           align-items: center;
           gap: 4px;
-          background: #FFB400;
-          color: #2a1e42;
+          background: #ec4899;
+          color: #ffffff;
           font-family: 'Inter Tight', sans-serif;
           font-size: 10px;
           font-weight: 800;
           letter-spacing: 0.1em;
           text-transform: uppercase;
           padding: 5px 9px;
-          border-radius: 100px;
+          border-radius: 6px;
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
           white-space: nowrap;
           pointer-events: none;
@@ -626,8 +626,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
                       Book your free inspection
                     </button>
                     <span className="hero-cta-badge">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
-                      Limited Time
+                      100% OFF
                     </span>
                   </span>
                 </div>

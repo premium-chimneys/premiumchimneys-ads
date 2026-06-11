@@ -10,14 +10,16 @@ import Footer from '@/components/v2/Footer'
 //
 // V2 uses its OWN copies of the section components under components/v2/, so
 // editing those (or this wrapper) never affects V1. Edit components/v2/* freely.
-export default function ServicePageV2({ city, service, serviceData, heading, offersMembership }) {
+export default function ServicePageV2({ city, service, serviceData, heading, offersMembership, landing }) {
   return (
     <div data-variant="v2">
       <HideChatling />
       <NavigationBar city={city} />
-      <ServiceHero city={city} service={service} heading={heading} serviceData={serviceData} />
-      <InspectionValue />
-      <Portfolio city={city} />
+      <ServiceHero city={city} service={service} heading={heading} serviceData={serviceData} landing={landing} />
+      <section className="v2-band" style={{ background: '#F5F5F7' }}>
+        <InspectionValue city={city} landing={landing} />
+        <Portfolio city={city} landing={landing} />
+      </section>
       <Footer city={city} />
     </div>
   )

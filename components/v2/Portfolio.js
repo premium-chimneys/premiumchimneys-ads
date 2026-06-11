@@ -1,44 +1,363 @@
 'use client';
 
-import Reviews from '@/components/v2/Reviews'
+import { useEffect, useRef, useState } from 'react';
 import FinalCTA from '@/components/v2/FinalCTA'
 
 /* ── Portfolio (section 3) ──────────────────────────────────────────────────
-   Dark, spacious section with ambient orbs. Holds the bento gallery, then the
-   reviews block, then the CTA banner. Reviews + FinalCTA render with transparent
-   backgrounds so this section's dark backdrop shows through behind them. */
+   Dark, spacious section with ambient orbs. Holds the benefits smart card, then
+   the recent-work carousel, then the CTA banner. The carousel is a faithful port
+   of the serviceroot "Our products." slideshow (heading + polygon arrows +
+   pointer-drag track, 2 cards on desktop / 1 on mobile), recolored for dark. */
 
-export default function Portfolio({ city }) {
+// TODO: placeholder reviews + avatars — swap for real Google reviews.
+const REVIEWS = [
+  { name: 'Sarah M.', text: 'Showed up on time, walked me through every step with photos, and left the place spotless. Honest pricing — no surprise upsells.' },
+  { name: 'David R.', text: 'Booked a free inspection and they caught a cracked flue liner I had no idea about. Fixed it the same week. Genuine lifesavers.' },
+  { name: 'Jennifer K.', text: 'The most professional chimney crew we have ever hired. Friendly, knowledgeable, and the written report was incredibly detailed.' },
+  { name: 'Michael T.', text: 'Fireplace runs cleaner than it has in years. Fair quote, quick turnaround, and they respected my home the whole time.' },
+  { name: 'Emily C.', text: 'From the first call to the final sweep, everything was easy. They earned my trust and all of my future business.' },
+];
+
+const avatarUrl = (name) =>
+  `https://placehold.co/96x96/1a1030/c4b5fd?text=${encodeURIComponent(name.charAt(0))}`;
+
+// TODO: placeholder rating summary — swap for the real Google aggregate.
+const RATING = { score: '4.9', count: 127 };
+const RATING_DIST = [
+  { stars: 5, pct: 94 },
+  { stars: 4, pct: 4 },
+  { stars: 3, pct: 1 },
+  { stars: 2, pct: 0 },
+  { stars: 1, pct: 1 },
+];
+
+const STAR_PATH = 'M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01L12 2z';
+
+function GoogleLogo() {
+  return (
+    <svg className="rv-google" viewBox="0 0 24 24" aria-label="Google review">
+      <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+      <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+      <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" />
+      <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+    </svg>
+  );
+}
+
+function Stars({ className = 'rv-stars' }) {
+  return (
+    <span className={className} aria-label="5 out of 5 stars">
+      {[0, 1, 2, 3, 4].map((i) => (
+        <svg key={i} viewBox="0 0 24 24" aria-hidden="true">
+          <path d={STAR_PATH} />
+        </svg>
+      ))}
+    </span>
+  );
+}
+
+// Placeholder Unsplash imagery — swap for real Premium Chimneys job photos.
+const tiles = [
+  { label: 'Chimney Rebuild', id: 'photo-1556009762-36a907690bda' },
+  { label: 'Crown Repair', id: 'photo-1588712757679-06a3428ce119' },
+  { label: 'Full Masonry Restoration', id: 'photo-1604413950933-073730fba9f2' },
+  { label: 'Cap Installation', id: 'photo-1513321203182-6146b02eadef' },
+  { label: 'Liner Replacement', id: 'photo-1609874491280-5be6de8780ab' },
+  { label: 'Tuckpointing', id: 'photo-1627367420115-67487e59f498' },
+];
+
+function PolygonLeft() {
+  return (
+    <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polyline points="8,2 4,6 8,10" />
+    </svg>
+  );
+}
+
+function PolygonRight() {
+  return (
+    <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polyline points="4,2 8,6 4,10" />
+    </svg>
+  );
+}
+
+export default function Portfolio({ city, landing }) {
+  // gallery_1_image…gallery_6_image from landing_v2, falling back to placeholders.
+  const galleryTiles = tiles.map((t, i) => ({
+    label: t.label,
+    src: landing?.[`gallery_${i + 1}_image`] || `https://images.unsplash.com/${t.id}?auto=format&fit=crop&w=800&h=800&q=80`,
+  }));
+
+  const [index, setIndex] = useState(0);
+  // cardsPerView is read from a CSS media query to keep JS + CSS in sync.
+  const [cardsPerView, setCardsPerView] = useState(2);
+  const [isDragging, setIsDragging] = useState(false);
+
+  useEffect(() => {
+    const mql = window.matchMedia('(max-width: 720px)');
+    const update = () => setCardsPerView(mql.matches ? 1 : 2);
+    update();
+    if (mql.addEventListener) mql.addEventListener('change', update);
+    else mql.addListener(update);
+    return () => {
+      if (mql.removeEventListener) mql.removeEventListener('change', update);
+      else mql.removeListener(update);
+    };
+  }, []);
+
+  const maxIndex = Math.max(0, tiles.length - cardsPerView);
+
+  // Clamp current index if viewport change reduces the available range.
+  useEffect(() => {
+    if (index > maxIndex) setIndex(maxIndex);
+  }, [maxIndex, index]);
+
+  const prev = () => setIndex((i) => Math.max(0, i - 1));
+  const next = () => setIndex((i) => Math.min(maxIndex, i + 1));
+
+  /* ---------- Pointer-drag carousel ---------- */
+  const trackRef = useRef(null);
+  const cardStepRef = useRef(0);
+  const dragRef = useRef({
+    active: false,
+    pointerId: null,
+    startX: 0,
+    lastX: 0,
+    lastTime: 0,
+    velocity: 0,
+    startIndex: 0,
+    totalDx: 0,
+    didDrag: false,
+  });
+
+  const measureStep = () => {
+    const track = trackRef.current;
+    if (!track) return;
+    const card = track.firstElementChild;
+    if (!card) return;
+    const cardWidth = card.getBoundingClientRect().width;
+    const computed = window.getComputedStyle(track);
+    const gap = parseFloat(computed.columnGap || computed.gap) || 24;
+    cardStepRef.current = cardWidth + gap;
+  };
+
+  useEffect(() => {
+    measureStep();
+    window.addEventListener('resize', measureStep);
+    return () => window.removeEventListener('resize', measureStep);
+  }, [cardsPerView]);
+
+  const setDragOffset = (px) => {
+    const track = trackRef.current;
+    if (track) track.style.setProperty('--drag', `${px}px`);
+  };
+
+  const onPointerDown = (e) => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    if (e.target.closest('a, button')) return;
+    const track = trackRef.current;
+    if (!track) return;
+    measureStep();
+    dragRef.current = {
+      active: true,
+      pointerId: e.pointerId,
+      startX: e.clientX,
+      lastX: e.clientX,
+      lastTime: performance.now(),
+      velocity: 0,
+      startIndex: index,
+      totalDx: 0,
+      didDrag: false,
+      captured: false,
+    };
+  };
+
+  const onPointerMove = (e) => {
+    const d = dragRef.current;
+    if (!d.active || e.pointerId !== d.pointerId) return;
+    const dx = e.clientX - d.startX;
+    d.totalDx = dx;
+    if (!d.didDrag && Math.abs(dx) > 5) {
+      d.didDrag = true;
+      setIsDragging(true);
+      const track = trackRef.current;
+      if (track && !d.captured) {
+        try { track.setPointerCapture(e.pointerId); d.captured = true; } catch {}
+      }
+    }
+    if (!d.didDrag) return;
+
+    const now = performance.now();
+    const instDx = e.clientX - d.lastX;
+    const dt = now - d.lastTime;
+    if (dt > 0) d.velocity = instDx / dt;
+    d.lastX = e.clientX;
+    d.lastTime = now;
+
+    let visualDx = dx;
+    const step = cardStepRef.current;
+    if (step > 0) {
+      const projected = d.startIndex - dx / step;
+      if (projected < 0) {
+        const overshootPx = -projected * step;
+        visualDx = dx - overshootPx + overshootPx * 0.3;
+      } else if (projected > maxIndex) {
+        const overshootPx = (projected - maxIndex) * step;
+        visualDx = dx + overshootPx - overshootPx * 0.3;
+      }
+    }
+    setDragOffset(visualDx);
+  };
+
+  const endDrag = (e) => {
+    const d = dragRef.current;
+    if (!d.active) return;
+    if (e && e.pointerId !== undefined && e.pointerId !== d.pointerId) return;
+    d.active = false;
+    const track = trackRef.current;
+    if (track && e && e.pointerId !== undefined) {
+      try { track.releasePointerCapture(e.pointerId); } catch {}
+    }
+    setIsDragging(false);
+
+    const step = cardStepRef.current || 1;
+    const projectionPx = d.velocity * 220;
+    const targetPx = d.totalDx + projectionPx;
+    const deltaIndex = -Math.round(targetPx / step);
+    const newIndex = Math.max(0, Math.min(maxIndex, d.startIndex + deltaIndex));
+    setIndex(newIndex);
+    setDragOffset(0);
+  };
+
+  const onClickCapture = (e) => {
+    if (dragRef.current.didDrag) {
+      e.preventDefault();
+      e.stopPropagation();
+      dragRef.current.didDrag = false;
+    }
+  };
+
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: css }} />
 
       <section className="pf-section" id="portfolio">
-        <div className="pf-bg" aria-hidden="true" />
-        <div className="pf-grid" aria-hidden="true" />
-
         <div className="pf-content">
-          {/* ── Gallery ── */}
           <div className="pf-inner">
-            <div className="gal-head">
-              <h2 className="gal-title">Take a look at some of our recent work</h2>
+            {/* ── Benefits smart card (dark) ── */}
+            <div className="bf-frame">
+              <h2 className="gal-title bf-title">We don't ask for your trust. We earn it.</h2>
+
+              {/* ── Review overview strip ── */}
+              <div className="ro-strip">
+                <div className="ro-score">
+                  <div className="ro-score-top">
+                    <span className="ro-score-num">{RATING.score}</span>
+                    <Stars className="ro-stars" />
+                  </div>
+                  <span className="ro-score-count">Based on {RATING.count} Google reviews</span>
+                </div>
+
+                <span className="ro-sep" aria-hidden="true" />
+
+                <div className="ro-bars">
+                  {RATING_DIST.map(({ stars, pct }) => (
+                    <div className="ro-bar-row" key={stars}>
+                      <span className="ro-bar-label">{stars}</span>
+                      <svg className="ro-bar-star" viewBox="0 0 24 24" aria-hidden="true"><path d={STAR_PATH} /></svg>
+                      <span className="ro-bar-track"><span className="ro-bar-fill" style={{ width: `${pct}%` }} /></span>
+                    </div>
+                  ))}
+                </div>
+
+                <span className="ro-sep" aria-hidden="true" />
+
+                <div className="ro-badge">
+                  <GoogleLogo />
+                  <div className="ro-badge-text">
+                    <span className="ro-badge-title">Google Reviews</span>
+                    <span className="ro-badge-sub">Verified business</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bf-carousel">
+                <div className="bf-track">
+                  {[...REVIEWS, ...REVIEWS].map((r, i) => (
+                    <article className="rv-card" key={i} aria-hidden={i >= REVIEWS.length ? 'true' : undefined}>
+                      <div className="rv-head">
+                        <img className="rv-avatar" src={avatarUrl(r.name)} alt="" loading="lazy" draggable="false" />
+                        <div className="rv-meta">
+                          <span className="rv-name">{r.name}</span>
+                          <Stars />
+                        </div>
+                        <GoogleLogo />
+                      </div>
+                      <p className="rv-text">{r.text}</p>
+                    </article>
+                  ))}
+                </div>
+              </div>
             </div>
-            {/* TODO: replace gray tiles with real Premium Chimneys job photos */}
-            <div className="gal-bento">
-              <div className="gal-tile gal-t1" aria-hidden="true" />
-              <div className="gal-tile gal-t2" aria-hidden="true" />
-              <div className="gal-tile gal-t3" aria-hidden="true" />
-              <div className="gal-tile gal-t4" aria-hidden="true" />
-              <div className="gal-tile gal-t5" aria-hidden="true" />
-              <div className="gal-tile gal-t6" aria-hidden="true" />
+
+            {/* ── Recent-work carousel (ported from serviceroot Products) ── */}
+            <div className="pc-head">
+              <h2 className="pc-heading">Homes we've cared for</h2>
+              <div className="pc-controls" role="group" aria-label="Slideshow navigation">
+                <button
+                  type="button"
+                  className="pc-arrow"
+                  onClick={prev}
+                  disabled={index === 0}
+                  aria-label="Previous"
+                >
+                  <PolygonLeft />
+                </button>
+                <button
+                  type="button"
+                  className="pc-arrow"
+                  onClick={next}
+                  disabled={index >= maxIndex}
+                  aria-label="Next"
+                >
+                  <PolygonRight />
+                </button>
+              </div>
+            </div>
+
+            {/* TODO: replace placeholders with real Premium Chimneys job photos */}
+            <div
+              ref={trackRef}
+              className={`pc-track ${isDragging ? 'pc-track-dragging' : ''}`}
+              style={{ '--index': index }}
+              role="region"
+              aria-label="Recent work"
+              onPointerDown={maxIndex > 0 ? onPointerDown : undefined}
+              onPointerMove={maxIndex > 0 ? onPointerMove : undefined}
+              onPointerUp={maxIndex > 0 ? endDrag : undefined}
+              onPointerCancel={maxIndex > 0 ? endDrag : undefined}
+              onLostPointerCapture={maxIndex > 0 ? endDrag : undefined}
+              onClickCapture={maxIndex > 0 ? onClickCapture : undefined}
+            >
+              {galleryTiles.map((t, i) => (
+                <div className="pc-card" key={i}>
+                  <div className="pc-tile">
+                    <img
+                      className="pc-img"
+                      src={t.src}
+                      alt={t.label}
+                      loading="lazy"
+                      draggable="false"
+                    />
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* ── Reviews ── */}
-          <Reviews city={city} />
-
           {/* ── CTA banner ── */}
-          <FinalCTA />
+          <FinalCTA landing={landing} />
         </div>
       </section>
     </>
@@ -51,68 +370,279 @@ const css = `
   .pf-section {
     position: relative;
     overflow: hidden;
-    background: #06030c;
+    background: transparent;
     font-family: 'Inter Tight', sans-serif;
-  }
-  .pf-bg {
-    position: absolute; inset: 0;
-    pointer-events: none;
-    background:
-      radial-gradient(ellipse 90% 18% at 50% 0%, rgba(124,58,237,0.22), transparent 70%),
-      radial-gradient(circle 720px at 12% 14%, rgba(192,132,252,0.12), transparent 70%),
-      radial-gradient(circle 720px at 88% 20%, rgba(251,113,133,0.08), transparent 70%),
-      radial-gradient(circle 820px at 16% 52%, rgba(124,58,237,0.16), transparent 65%),
-      radial-gradient(circle 820px at 84% 60%, rgba(245,158,11,0.11), transparent 65%),
-      radial-gradient(circle 760px at 50% 96%, rgba(124,58,237,0.15), transparent 70%);
-  }
-  .pf-grid {
-    position: absolute; inset: 0;
-    pointer-events: none;
-    background-image:
-      linear-gradient(rgba(167,139,250,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(167,139,250,0.04) 1px, transparent 1px);
-    background-size: 56px 56px;
-    -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, #000 35%, transparent 100%);
-    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, #000 35%, transparent 100%);
+
+    /* Each card is exactly (visible-container - gap) / 2 on desktop, so two
+       cards fit inside the container and the rest spill into the gutter. */
+    --card-width: calc((min(100vw, 1200px) - 48px - 24px) / 2);
+    --card-gap: 24px;
   }
   .pf-content { position: relative; z-index: 1; }
 
-  /* ── Gallery (bento) — dark ── */
-  .pf-inner { max-width: 1200px; margin: 0 auto; padding: 140px 24px 0; }
-  .gal-head { text-align: center; margin-bottom: 40px; }
+  .pf-inner { position: relative; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
   .gal-title {
     margin: 0;
     font-size: 48px;
     font-weight: 700;
     line-height: 1.1;
     letter-spacing: -0.03em;
-    color: #ffffff;
+    color: #1a1225;
   }
-  .gal-bento {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: 300px;
-    gap: 16px;
+
+  /* ── Reviews smart card (light) ── */
+  .bf-frame {
+    position: relative;
+    overflow: hidden;
+    margin: 0 0 96px;
+    border-radius: 24px;
+    padding: 52px 40px 36px;
+    background: #ffffff;
+    border: 1px solid rgba(15, 15, 20, 0.07);
+    box-shadow: 0 12px 44px rgba(15, 15, 20, 0.07);
   }
-  .gal-tile {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.09);
+  .bf-title {
+    text-align: center;
+    margin: 0 0 32px;
+  }
+
+  /* ── Review overview strip ── */
+  .ro-strip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+    max-width: 720px;
+    margin: 0 auto 12px;
+    padding: 22px 32px;
     border-radius: 16px;
+    background: #ffffff;
+    border: 1px solid rgba(15, 15, 20, 0.06);
+    box-shadow: 0 4px 18px rgba(15, 15, 20, 0.05);
   }
-  .gal-t1 { grid-column: span 2; }  /* row 1: 2/3 */
-  .gal-t2 { grid-column: span 1; }  /* row 1: 1/3 */
-  .gal-t3 { grid-column: span 3; }  /* row 2: full width */
-  .gal-t4 { grid-column: span 1; }  /* row 3: thirds */
-  .gal-t5 { grid-column: span 1; }
-  .gal-t6 { grid-column: span 1; }
+  .ro-score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    flex-shrink: 0;
+  }
+  .ro-score-top { display: flex; align-items: center; gap: 12px; }
+  .ro-score-num {
+    font-size: 42px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: #1a1225;
+  }
+  .ro-stars { display: inline-flex; gap: 3px; }
+  .ro-stars svg { width: 18px; height: 18px; fill: #fbbf24; display: block; filter: drop-shadow(0 1px 3px rgba(251, 191, 36, 0.3)); }
+  .ro-score-count {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: #6b5b86;
+    letter-spacing: 0.01em;
+  }
+  .ro-sep {
+    align-self: stretch;
+    width: 1px;
+    background: linear-gradient(180deg, transparent, rgba(26, 18, 37, 0.12), transparent);
+  }
+  .ro-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+    min-width: 190px;
+    max-width: 260px;
+  }
+  .ro-bar-row { display: flex; align-items: center; gap: 8px; }
+  .ro-bar-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #6b5b86;
+    font-variant-numeric: tabular-nums;
+  }
+  .ro-bar-star { width: 11px; height: 11px; fill: #fbbf24; flex-shrink: 0; }
+  .ro-bar-track {
+    position: relative;
+    flex: 1;
+    height: 5px;
+    border-radius: 100px;
+    background: rgba(26, 18, 37, 0.08);
+    overflow: hidden;
+  }
+  .ro-bar-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    height: 100%;
+    border-radius: 100px;
+    background: linear-gradient(90deg, #d97706, #fbbf24);
+  }
+  .ro-badge { display: flex; align-items: center; gap: 11px; flex-shrink: 0; }
+  .ro-badge .rv-google { width: 26px; height: 26px; }
+  .ro-badge-text { display: flex; flex-direction: column; gap: 1px; }
+  .ro-badge-title { font-size: 13px; font-weight: 700; color: #1a1225; letter-spacing: -0.01em; }
+  .ro-badge-sub { font-size: 11px; font-weight: 500; color: #6b5b86; }
+  .bf-carousel {
+    overflow: hidden;
+    padding: 30px 0;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 9%, #000 91%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, #000 9%, #000 91%, transparent 100%);
+  }
+  .bf-track {
+    display: flex;
+    width: max-content;
+    animation: bf-marquee 80s linear infinite;
+  }
+  @keyframes bf-marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* ── Review cards (Google reviews, light) ── */
+  .rv-card {
+    flex: 0 0 360px;
+    width: 360px;
+    margin-right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 24px;
+    border-radius: 16px;
+    background: #ffffff;
+    border: 1px solid rgba(15, 15, 20, 0.06);
+    box-shadow: 0 10px 30px rgba(15, 15, 20, 0.08);
+    box-sizing: border-box;
+  }
+  .rv-head { display: flex; align-items: center; gap: 12px; }
+  .rv-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1px solid rgba(26, 18, 37, 0.10);
+  }
+  .rv-meta { display: flex; flex-direction: column; gap: 4px; min-width: 0; flex: 1; }
+  .rv-name { font-size: 15px; font-weight: 700; color: #1a1225; letter-spacing: -0.01em; }
+  .rv-stars { display: inline-flex; gap: 2px; }
+  .rv-stars svg { width: 14px; height: 14px; fill: #fbbf24; display: block; }
+  .rv-google { width: 20px; height: 20px; flex-shrink: 0; align-self: flex-start; }
+  .rv-text {
+    font-size: 14px;
+    line-height: 1.55;
+    color: #4a4a55;
+    margin: 0;
+  }
+
+  /* ── Recent-work carousel (ported from serviceroot Products) ── */
+  .pc-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 44px;
+    flex-wrap: wrap;
+  }
+  .pc-heading {
+    font-size: clamp(36px, 5.2vw, 64px);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+    color: #1a1225;
+    margin: 0;
+  }
+  .pc-controls {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 6px;
+  }
+  .pc-arrow {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(15, 15, 20, 0.04);
+    border: 1px solid rgba(15, 15, 20, 0.10);
+    color: #0f0f14;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: inherit;
+    padding: 0;
+    transition: background 200ms ease,
+                border-color 200ms ease,
+                color 200ms ease,
+                transform 180ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .pc-arrow:hover {
+    background: rgba(15, 15, 20, 0.08);
+    border-color: rgba(15, 15, 20, 0.16);
+  }
+  .pc-arrow:disabled {
+    opacity: 0.28;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  .pc-track {
+    display: flex;
+    gap: var(--card-gap);
+    transform: translate3d(
+      calc(-1 * (var(--card-width) + var(--card-gap)) * var(--index, 0) + var(--drag, 0px)),
+      0, 0
+    );
+    transition: transform 620ms cubic-bezier(0.32, 0.72, 0, 1);
+    will-change: transform;
+    user-select: none;
+    touch-action: pan-y;
+  }
+  .pc-track img {
+    -webkit-user-drag: none;
+    user-select: none;
+  }
+  .pc-track-dragging {
+    transition: none;
+  }
+  .pc-card {
+    width: var(--card-width);
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .pc-tile {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border-radius: 24px;
+    overflow: hidden;
+    border: 1px solid rgba(26, 18, 37, 0.08);
+    box-shadow:
+      0 14px 40px rgba(15, 15, 20, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  }
+  .pc-img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
 
   @media (max-width: 960px) {
     .pf-inner { padding: 96px 20px 0; }
     .gal-title { font-size: 36px; }
-    .gal-bento { grid-auto-rows: 180px; gap: 12px; }
+  }
+  @media (max-width: 720px) {
+    /* Switch to a 1-card view; JS reads this same breakpoint via matchMedia. */
+    .pf-section { --card-width: calc(min(100vw, 1200px) - 48px); }
   }
   @media (max-width: 560px) {
-    .gal-bento { grid-template-columns: 1fr; grid-auto-rows: 200px; }
-    .gal-tile { grid-column: auto; }
+    .pc-head { margin-bottom: 32px; }
+    .pc-tile { border-radius: 20px; }
+    .pc-arrow { width: 36px; height: 36px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .bf-track { animation: none; }
+    .pc-track { transition-duration: 0ms !important; }
   }
 `;

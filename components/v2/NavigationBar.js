@@ -7,12 +7,69 @@ export default function NavigationBar({ city }) {
 
       <style dangerouslySetInnerHTML={{__html: `
         .nav-wrapper {
-          position: fixed;
+          position: sticky;
           top: 0;
           left: 0;
           width: 100%;
           z-index: 999;
           background: #ffffff;
+        }
+
+        /* ─── Top sale bar: black, scrolling marquee ─── */
+        .nav-sale {
+          position: relative;
+          width: 100%;
+          background: #000000;
+          overflow: hidden;
+          cursor: pointer;
+        }
+        /* Full-bar transparent click targets (desktop = book, mobile = call) */
+        .nav-sale-hit {
+          position: absolute;
+          inset: 0;
+          display: block;
+          z-index: 1;
+          margin: 0;
+          padding: 0;
+          border: none;
+          background: transparent;
+          cursor: pointer;
+        }
+        .nav-sale-hit-mobile { display: none; }
+        @media (max-width: 900px) {
+          .nav-sale-hit-desktop { display: none; }
+          .nav-sale-hit-mobile { display: block; }
+        }
+        .nav-sale-track {
+          display: flex;
+          width: max-content;
+          animation: navSaleMarquee 55s linear infinite;
+        }
+        .nav-sale-item {
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          padding: 15px 26px;
+          color: #ffffff;
+          font-family: 'Inter Tight', sans-serif;
+          font-size: 12.5px;
+          font-weight: 600;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          white-space: nowrap;
+        }
+        .nav-sale-item svg {
+          width: 15px;
+          height: 15px;
+          flex-shrink: 0;
+          color: #ffffff;
+        }
+        @keyframes navSaleMarquee {
+          from { transform: translateX(0); }
+          to   { transform: translateX(-50%); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .nav-sale-track { animation: none; }
         }
 
         .nav-inner {
@@ -210,18 +267,27 @@ export default function NavigationBar({ city }) {
           .nav-inner { padding: 20px 20px 0; }
         }
 
-        /* ─── Desktop: 80% white nav with blur ─── */
-        @media (min-width: 901px) {
-          .nav-wrapper {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(20px) saturate(120%);
-            -webkit-backdrop-filter: blur(20px) saturate(120%);
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
-          }
-        }
       `}} />
       
       <nav className="nav-wrapper" id="navWrapper">
+
+        {/* Top sale bar — black scrolling marquee (desktop: book popup, mobile: call) */}
+        <div className="nav-sale">
+          <div className="nav-sale-track" aria-hidden="true">
+            {Array.from({ length: 12 }).map((_, i) => (
+              <span className="nav-sale-item" key={i}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+                  <line x1="7" y1="7" x2="7.01" y2="7" />
+                </svg>
+                Offering free inspections for limited time
+              </span>
+            ))}
+          </div>
+          <button type="button" className="nav-sale-hit nav-sale-hit-desktop" data-gateway-book aria-label="Book your free assessment" />
+          <a href={`tel:${city.phone}`} className="nav-sale-hit nav-sale-hit-mobile" aria-label={`Call ${city.phone_text}`} />
+        </div>
+
         <div className="nav-inner">
       
           {/* Logo */}

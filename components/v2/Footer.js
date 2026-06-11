@@ -9,7 +9,7 @@ export default function Footer({ city }) {
       
       .footer-wrap {
         font-family: 'Inter Tight', sans-serif;
-        background: linear-gradient(180deg, #000000 0%, #000000 35%, #05031a 50%, #0a0724 58%, #110d38 65%, #1a1454 72%, #2a2072 80%, #3d3199 88%, #6053f6 100%);
+        background: linear-gradient(180deg, #06030c 0%, #06030c 35%, #05031a 50%, #0a0724 58%, #110d38 65%, #1a1454 72%, #2a2072 80%, #3d3199 88%, #6053f6 100%);
         color: #fff;
         padding: 60px 40px 30px;
         margin-top: 0;
@@ -25,8 +25,7 @@ export default function Footer({ city }) {
         left: 0;
         width: 100%;
         height: 100%;
-        background: #000000;
-        opacity: 0.8;
+        background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.8) 22%);
         pointer-events: none;
         z-index: 0;
         backdrop-filter: blur(20px);
@@ -63,7 +62,7 @@ export default function Footer({ city }) {
       .footer-inner {
         position: relative;
         z-index: 1;
-        max-width: 1200px;
+        max-width: 1248px;
         margin: 0 auto;
         padding-left: 24px;
         padding-right: 24px;
@@ -219,14 +218,18 @@ export default function Footer({ city }) {
       .footer-top {
         display: flex;
         justify-content: space-between;
-        align-items: flex-start;
+        align-items: flex-end;
         gap: 40px;
         flex-wrap: wrap;
       }
       .footer-left {
         flex: 1;
         min-width: 280px;
+        display: flex;
+        align-items: flex-end;
+        gap: 64px;
       }
+      .footer-info-group { flex-shrink: 0; }
       .footer-heading {
         font-family: 'Inter Tight', sans-serif;
         font-size: 48px;
@@ -245,25 +248,28 @@ export default function Footer({ city }) {
       .footer-hours {
         font-size: 14px;
         color: rgba(255,255,255,0.55);
-        margin: 0 0 4px;
+        margin: 0;
         line-height: 1.6;
       }
       .footer-service-title {
         font-size: 15px;
         font-weight: 600;
-        margin: 20px 0 6px;
+        margin: 0 0 6px;
         color: #fff;
       }
       .footer-service-area {
         font-size: 14px;
         color: rgba(255,255,255,0.55);
         margin: 0;
+        line-height: 1.6;
       }
       .footer-bbb {
         display: flex;
         align-items: center;
         gap: 14px;
-        margin-top: 28px;
+        flex-shrink: 0;
+        width: 293px;
+        max-width: 100%;
       }
       .footer-right {
         display: flex;
@@ -468,31 +474,25 @@ export default function Footer({ city }) {
         <div className="footer-inner">
           <div className="footer-top">
             <div className="footer-left">
-              <h2 className="footer-heading">Your local chimney &<br />fireplace experts</h2>
-      
-              <p className="footer-hours-title">Working Hours:</p>
-              <p className="footer-hours">
-                Everyday: 8:00 AM - 7:00 PM
-              </p>
-      
-              <p className="footer-service-title">Office Address:</p>
-              <p className="footer-service-area">{city.service_area}</p>
-      
-              <div className="footer-bbb">
-                <img src="https://seal-dallas.bbb.org/seals/blue-seal-293-61-whitetxt-bbb-91352067.png" alt="Premium Chimneys BBB Business Review" style={{ border: '0', maxWidth: '293px', width: '100%', height: 'auto', display: 'block', pointerEvents: 'none' }} />
+              <div className="footer-info-group">
+                <p className="footer-service-title">Office Address:</p>
+                <p className="footer-service-area">{city.service_area}</p>
+              </div>
+
+              <div className="footer-info-group">
+                <p className="footer-hours-title">Working Hours:</p>
+                <p className="footer-hours">
+                  Everyday: 8:00 AM - 7:00 PM
+                </p>
               </div>
             </div>
-      
-            <div className="footer-right">
-              <button className="footer-btn-book">
-                Book Appointment
-              </button>
-              <a href={`tel:${city.phone}`} className="footer-btn-phone">{`
-                ${city.phone_text}
-              `}</a>
+
+            <div className="footer-bbb">
+              <img src="https://seal-dallas.bbb.org/seals/blue-seal-293-61-whitetxt-bbb-91352067.png" alt="Premium Chimneys BBB Business Review" style={{ border: '0', maxWidth: '293px', width: '100%', height: 'auto', display: 'block', pointerEvents: 'none' }} />
             </div>
+
           </div>
-      
+
           <hr className="footer-divider" />
       
           <div className="footer-bottom">
