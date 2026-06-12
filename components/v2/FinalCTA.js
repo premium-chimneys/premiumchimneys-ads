@@ -28,6 +28,7 @@ function FlamesMark({ style }) {
 export default function FinalCTA({ landing } = {}) {
   const heading = landing?.cta_heading || 'Stop chasing your business. Start running it.';
   const subtext = landing?.cta_subtext || 'Every call, lead, and job lives in one place and finally works together. See the whole picture, catch what matters, and stay a step ahead.';
+  const ctaLabel = landing?.cta || 'Book your free inspection';
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: css }} />
@@ -110,11 +111,11 @@ export default function FinalCTA({ landing } = {}) {
                   fontSize: 12.5,
                   fontWeight: 600,
                   letterSpacing: '0.04em',
-                  textTransform: 'uppercase',
+                  textTransform: 'none',
                 }}
               >
                 <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#a78bfa', boxShadow: '0 0 8px 1px rgba(167,139,250,0.9)' }} />
-                Your move
+                Let's get started
               </span>
 
               <h2
@@ -154,7 +155,7 @@ export default function FinalCTA({ landing } = {}) {
                       <path d="M22 2L11 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                       <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
-                    Book your free inspection
+                    {ctaLabel}
                   </button>
                   <span className="hero-cta-badge">
                     100% OFF

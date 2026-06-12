@@ -20,6 +20,7 @@ export default function ServiceHero({ city, heading, serviceData, landing }) {
   const heroImage = serviceData?.hero_image_url || 'https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/694441da86840f464e36c79b_chimney-inspection-roofline-flue-evaluation.webp';
   const heroDescription = landing?.hero_subtext || serviceData?.hero_description || 'Premium Chimneys provides professional fireplace and chimney services for your home. Our mission is to help you enjoy your fireplace safely and efficiently, with complete peace of mind.';
   const heroHeading = (landing?.hero_h1 || serviceData?.h1 || heading || '').replace(/\{city\}/g, city.name);
+  const ctaLabel = landing?.cta || 'Book your free inspection';
   return (
     <>
 
@@ -581,7 +582,7 @@ export default function ServiceHero({ city, heading, serviceData, landing }) {
 
             <div className="hero-ctas">
               <button type="button" className="hero-cta-primary" data-gateway-book>
-                Book your free inspection
+                {ctaLabel}
               </button>
             </div>
           </div>
@@ -623,7 +624,7 @@ export default function ServiceHero({ city, heading, serviceData, landing }) {
                         <path d="M22 2L11 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
-                      Book your free inspection
+                      {ctaLabel}
                     </button>
                     <span className="hero-cta-badge">
                       100% OFF
@@ -636,7 +637,7 @@ export default function ServiceHero({ city, heading, serviceData, landing }) {
               </video>
             </div>
             <div className="hero-form-wrap">
-              <Form />
+              <Form heading={landing?.form_heading} />
             </div>
           </div>
         </div>

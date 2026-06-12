@@ -3,7 +3,7 @@ import NavigationBar from '@/components/v2/NavigationBar'
 import ServiceHero from '@/components/v2/ServiceHero'
 import InspectionValue from '@/components/v2/InspectionValue'
 import Portfolio from '@/components/v2/Portfolio'
-import Footer from '@/components/v2/Footer'
+import Footer from '@/components/Footer'
 
 // V2 is currently an identical copy of V1. It renders at /[service]/[city]/v2
 // (data fetching and metadata live in that route's page.js).

@@ -394,7 +394,7 @@ function getDigits(value) {
   return value.replace(/\D/g, '')
 }
 
-export default function Form() {
+export default function Form({ heading }) {
   const cardRef = useRef(null)
   const formRef = useRef(null)
   const phoneRef = useRef(null)
@@ -487,7 +487,7 @@ export default function Form() {
         </div>
 
         <div className="hero-form-top">
-          <h2 className="hero-form-title">Request your free inspection</h2>
+          <h2 className="hero-form-title">{heading || 'Request your free inspection'}</h2>
         </div>
 
         <div className="hero-form-body">

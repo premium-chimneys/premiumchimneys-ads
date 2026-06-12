@@ -9,20 +9,23 @@ import FinalCTA from '@/components/v2/FinalCTA'
    of the serviceroot "Our products." slideshow (heading + polygon arrows +
    pointer-drag track, 2 cards on desktop / 1 on mobile), recolored for dark. */
 
-// TODO: placeholder reviews + avatars — swap for real Google reviews.
+// Real Google reviews. `avatar` is the reviewer's Google profile photo; when
+// absent we fall back to a generated initial avatar.
 const REVIEWS = [
-  { name: 'Sarah M.', text: 'Showed up on time, walked me through every step with photos, and left the place spotless. Honest pricing — no surprise upsells.' },
-  { name: 'David R.', text: 'Booked a free inspection and they caught a cracked flue liner I had no idea about. Fixed it the same week. Genuine lifesavers.' },
-  { name: 'Jennifer K.', text: 'The most professional chimney crew we have ever hired. Friendly, knowledgeable, and the written report was incredibly detailed.' },
-  { name: 'Michael T.', text: 'Fireplace runs cleaner than it has in years. Fair quote, quick turnaround, and they respected my home the whole time.' },
-  { name: 'Emily C.', text: 'From the first call to the final sweep, everything was easy. They earned my trust and all of my future business.' },
+  { name: 'Bonnie A. Crist', avatar: 'https://lh3.googleusercontent.com/a-/ALV-UjWfDA4Fc4EZ0OfXoFpvWUTuUT12Y7JgUmVeacKg7CEDpuK40m1A=w79-h79-p-rp-mo-br100', text: 'Ben with Premium Chimneys was outstanding! He was quick, proficient and knowledgable. He answered all of our questions with patience and diagnosed our chimney issues with ease. He is an expert in this field! My husband and I could not be more thrilled with his cleaning of our chimney and services.' },
+  { name: 'Raymond Portley', avatar: 'https://lh3.googleusercontent.com/a-/ALV-UjXGzVUMfP3DcODDlCXdH0AtGjooTWu8AEttu7yKeEpgMzMQmlk=w79-h79-p-rp-mo-br100', text: 'Had a great experience with Idan, came out and helped to solve the problem. I appreciate the time and the patience he had with me, and his explanation on what the problem was. They are a premium company, I recommend them to anyone that needs chimney and fireplace work.' },
+  { name: 'Allison McFadden', avatar: 'https://lh3.googleusercontent.com/a-/ALV-UjV7DUEgsqLCi-xxrPX-r85p4EaYbNjIpqmeEW41ZryJOQaEvdVC=w79-h79-p-rp-mo-ba12-br100', text: "I called Premium Chimneys on Friday, November 21st, 2025 and got an inspection scheduled the following Monday, which I couldn't believe, as it was the week before Thanksgiving. We haven't used our chimney in 22 years (house is 51 yrs old) which is crazy, and something told me to get it working again." },
+  { name: 'KD', avatar: 'https://lh3.googleusercontent.com/a-/ALV-UjV1RTZ5Gnzc3mdLEZb6VEVSaUWTPZQwoBeFHml9RwweFLUVfWdP3w=w79-h79-p-rp-mo-ba12-br100', text: 'I highly recommend Premium Chimney. The crew, as well as the team member that came out quickly to give us a quote on a Sunday, were so professional, hard-working, and were able to complete our job in less than two hours.' },
+  { name: 'Tammie Jacobs', avatar: 'https://lh3.googleusercontent.com/a-/ALV-UjW437g7_SHLU4d1IX1ZzhDBGaSHo0R4sQeLTyM_6UVkvuLICYVT=w79-h79-p-rp-mo-br100', text: 'Idan, Alex and Ben came to inspect my chimney. I did not know it was so old. Due to their knowledge and expertise they were able to repair the old chimney to look like new, and just in time for the holidays as promised. They were wonderful, very professional and very friendly.' },
+  { name: 'Roy Fowler', avatar: 'https://lh3.googleusercontent.com/a-/ALV-UjU1g8ph6czTEyCpcNUxHjaX8rHwevKjdoO5TmcBWwkEt0tm5NR-=w79-h79-p-rp-mo-ba12-br100', text: 'Amit (technician) is exceptionally personable and very skilled at his assessment ability. While the offers of a new fireplace are very tempting, we have decided to find a maintenance tech who might be able to restore our current setup.' },
+  { name: 'Janet Haley', avatar: 'https://lh3.googleusercontent.com/a-/ALV-UjU_hnITt2siQA6zYINskb-P0BcQnmwJpgzDDz6rxPnxDx7htsQ4=w79-h79-p-rp-mo-br100', text: 'This is the 5th company we had look at fixing our fireplace! We have waited 2 years for this fireplace to work and Premium Chimneys has professionally solved our issues. Thank you. They really are PREMIUM!' },
+  { name: 'Abby Cotton', avatar: 'https://lh3.googleusercontent.com/a-/ALV-UjWfyjsEwY2mEAqFkfEjn05WVbZ8NLBo7lLu-7yCyMkr-9A0CjzGbQ=w79-h79-p-rp-mo-br100', text: 'Idan did an amazing job cleaning our chimney. He was on time, professional, and explained everything clearly. You can tell he takes pride in his work. Our chimney looks great, and the whole process was super smooth. Highly recommend!' },
 ];
 
 const avatarUrl = (name) =>
   `https://placehold.co/96x96/1a1030/c4b5fd?text=${encodeURIComponent(name.charAt(0))}`;
 
-// TODO: placeholder rating summary — swap for the real Google aggregate.
-const RATING = { score: '4.9', count: 127 };
+const RATING = { score: '4.9', count: 216 };
 const RATING_DIST = [
   { stars: 5, pct: 94 },
   { stars: 4, pct: 4 },
@@ -287,7 +290,7 @@ export default function Portfolio({ city, landing }) {
                   {[...REVIEWS, ...REVIEWS].map((r, i) => (
                     <article className="rv-card" key={i} aria-hidden={i >= REVIEWS.length ? 'true' : undefined}>
                       <div className="rv-head">
-                        <img className="rv-avatar" src={avatarUrl(r.name)} alt="" loading="lazy" draggable="false" />
+                        <img className="rv-avatar" src={r.avatar || avatarUrl(r.name)} alt="" loading="lazy" draggable="false" />
                         <div className="rv-meta">
                           <span className="rv-name">{r.name}</span>
                           <Stars />
@@ -398,8 +401,8 @@ const css = `
     border-radius: 24px;
     padding: 52px 40px 36px;
     background: #ffffff;
-    border: 1px solid rgba(15, 15, 20, 0.07);
-    box-shadow: 0 12px 44px rgba(15, 15, 20, 0.07);
+    border: 1px solid rgba(124, 58, 237, 0.10);
+    box-shadow: 0 6px 28px rgba(26, 18, 37, 0.05);
   }
   .bf-title {
     text-align: center;
@@ -417,9 +420,8 @@ const css = `
     margin: 0 auto 12px;
     padding: 22px 32px;
     border-radius: 16px;
-    background: #ffffff;
-    border: 1px solid rgba(15, 15, 20, 0.06);
-    box-shadow: 0 4px 18px rgba(15, 15, 20, 0.05);
+    background: #f7f5fc;
+    border: 1px solid rgba(124, 58, 237, 0.10);
   }
   .ro-score {
     display: flex;
@@ -511,9 +513,8 @@ const css = `
     gap: 14px;
     padding: 24px;
     border-radius: 16px;
-    background: #ffffff;
-    border: 1px solid rgba(15, 15, 20, 0.06);
-    box-shadow: 0 10px 30px rgba(15, 15, 20, 0.08);
+    background: #f7f5fc;
+    border: 1px solid rgba(124, 58, 237, 0.10);
     box-sizing: border-box;
   }
   .rv-head { display: flex; align-items: center; gap: 12px; }
@@ -522,7 +523,7 @@ const css = `
     border-radius: 50%;
     object-fit: cover;
     flex-shrink: 0;
-    border: 1px solid rgba(26, 18, 37, 0.10);
+    border: 1px solid rgba(124, 58, 237, 0.15);
   }
   .rv-meta { display: flex; flex-direction: column; gap: 4px; min-width: 0; flex: 1; }
   .rv-name { font-size: 15px; font-weight: 700; color: #1a1225; letter-spacing: -0.01em; }
@@ -534,6 +535,14 @@ const css = `
     line-height: 1.55;
     color: #4a4a55;
     margin: 0;
+    /* Clamp every review to the same 6 lines so all cards share one height;
+       longer reviews get a trailing ellipsis. */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 6;
+    line-clamp: 6;
+    overflow: hidden;
+    height: calc(1.55em * 6);
   }
 
   /* ── Recent-work carousel (ported from serviceroot Products) ── */
@@ -617,9 +626,7 @@ const css = `
     border-radius: 24px;
     overflow: hidden;
     border: 1px solid rgba(26, 18, 37, 0.08);
-    box-shadow:
-      0 14px 40px rgba(15, 15, 20, 0.12),
-      inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
   }
   .pc-img {
     position: absolute; inset: 0;
