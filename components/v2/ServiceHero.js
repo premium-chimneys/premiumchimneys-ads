@@ -551,16 +551,43 @@ export default function ServiceHero({ city, heading, serviceData, landing }) {
         }
 
         @media (max-width: 960px) {
-          .hero-inner { gap: 24px; padding: 172px 24px 24px; }
-          .hero-video, .hero-overlay { display: none; }
+          .hero-inner { gap: 24px; padding: 40px 24px 24px; }
+          /* Full-bleed background video with the same dark overlay as desktop */
+          .hero-video { display: block; }
+          .hero-overlay { display: block; background: rgba(0, 0, 0, 0.65); }
           .hero-row { grid-template-columns: 1fr; gap: 24px; }
-          .hero-side-video { min-height: 240px; max-height: 340px; }
+          /* Empty media card removed (no side video / location header on mobile) */
+          .hero-media { display: none; }
           .hero-h1 { font-size: 36px; max-width: 100%; }
           .hero-form-card { max-width: 480px; }
+          /* Hero copy now sits on the dark video — switch it to the desktop light treatment */
+          .hero-heading-top .hero-h1 { color: #ffffff; }
+          .hero-heading-top .hero-desc { color: rgba(255, 255, 255, 0.72); }
+          /* Match the desktop service-in-city tag (.hero-loc-tag) */
+          .hero-heading-top .hero-pill {
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            line-height: 1;
+            letter-spacing: 0.01em;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+          }
+          .hero-heading-top .hero-pill svg {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
+            color: #ffffff;
+          }
+          /* Center the pink tag on the button, keeping it floated on the top edge */
+          .hero-cta-badge { left: 50%; right: auto; transform: translate(-50%, -50%); }
         }
 
         @media (max-width: 480px) {
-          .hero-inner { padding: 172px 24px 24px; }
+          .hero-inner { padding: 32px 24px 24px; }
           .hero-h1 { font-size: 36px; width: 100%; }
           .hero-desc { max-width: 100%; width: 100%; }
           .hero-ctas { flex-direction: column; align-items: stretch; width: 100%; }
@@ -575,15 +602,27 @@ export default function ServiceHero({ city, heading, serviceData, landing }) {
         <div className="hero-overlay"></div>
         <div className="hero-inner">
           <div className="hero-heading-group hero-heading-top">
-            <span className="hero-pill">{heading}</span>
+            <span className="hero-pill">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /><circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="1.8" /></svg>
+              {heading}
+            </span>
             <h1 className="hero-h1">{heroHeading}</h1>
 
             <p className="hero-desc">{heroDescription}</p>
 
             <div className="hero-ctas">
-              <button type="button" className="hero-cta-primary" data-gateway-book>
-                {ctaLabel}
-              </button>
+              <span className="hero-cta-wrap">
+                <button type="button" className="hero-cta-primary" data-gateway-book>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}>
+                    <path d="M22 2L11 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  {ctaLabel}
+                </button>
+                <span className="hero-cta-badge">
+                  100% OFF
+                </span>
+              </span>
             </div>
           </div>
 
@@ -600,15 +639,6 @@ export default function ServiceHero({ city, heading, serviceData, landing }) {
                 <span className="hero-loc-tag">
                   <svg viewBox="0 0 24 24" fill="none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /><circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="1.8" /></svg>
                   {heading}
-                </span>
-              </div>
-              <div className="hero-location">
-                <span className="hero-location-pin">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ flexShrink: '0' }}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /><circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="1.8" /></svg>
-                </span>
-                <span className="hero-location-text">
-                  <span className="hero-location-title">We're local to {city.name}</span>
-                  <span className="hero-location-area">{city.service_area}</span>
                 </span>
               </div>
               <div className="hero-heading-group hero-heading-inner">
@@ -632,9 +662,6 @@ export default function ServiceHero({ city, heading, serviceData, landing }) {
                   </span>
                 </div>
               </div>
-              <video className="hero-side-video" autoPlay muted loop playsInline>
-                <source src="https://res.cloudinary.com/dnr8oynlg/video/upload/v1775893214/premium-chimneys-background-video_i1w9ta.mp4" type="video/mp4" />
-              </video>
             </div>
             <div className="hero-form-wrap">
               <Form heading={landing?.form_heading} />

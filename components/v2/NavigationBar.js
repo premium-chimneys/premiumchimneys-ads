@@ -84,15 +84,7 @@ export default function NavigationBar({ city }) {
           font-family: 'Inter Tight', sans-serif;
         }
 
-        .nav-center {
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          transform: translate(-50%, -50%);
-          white-space: nowrap;
-        }
-
-        /* Desktop: compact location pin tag (mobile keeps the reviews widget) */
+        /* Desktop: compact location pin tag */
         .nav-location {
           display: inline-flex;
           align-items: center;
@@ -109,7 +101,9 @@ export default function NavigationBar({ city }) {
           white-space: nowrap;
         }
         .nav-location svg { color: #7c3aed; }
-        .nav-reviews { display: none; }
+
+        /* Google rated badge — desktop hidden, shown full-width on mobile */
+        .nav-google { display: none; }
 
         @media (max-width: 900px) {
           .nav-inner {
@@ -118,19 +112,59 @@ export default function NavigationBar({ city }) {
             padding-top: 20px;
             padding-bottom: 0;
           }
-          .nav-center {
-            order: 3;
-            position: static;
-            transform: none;
-            width: 100%;
-            display: block;
-            white-space: normal;
-            text-align: center;
-            margin-top: 10px;
-            padding: 10px 0 20px;
-          }
           .nav-location { display: none; }
-          .nav-reviews { display: block; }
+
+          .nav-google {
+            order: 3;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin: 14px 0 18px;
+            padding: 9px 14px;
+            background: rgba(124, 58, 237, 0.05);
+            border: 1px solid rgba(124, 58, 237, 0.14);
+            border-radius: 10px;
+            box-sizing: border-box;
+          }
+          .nav-google-g {
+            width: 17px;
+            height: 17px;
+            flex-shrink: 0;
+            display: block;
+          }
+          .nav-google-stars {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+            color: #FFB400;
+          }
+          .nav-google-stars svg {
+            width: 14px;
+            height: 14px;
+            display: block;
+          }
+          .nav-google-divider {
+            width: 1px;
+            height: 13px;
+            background: rgba(74, 56, 112, 0.2);
+          }
+          .nav-google-score {
+            font-family: 'Inter Tight', sans-serif;
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #2a1e42;
+            font-variant-numeric: tabular-nums;
+            line-height: 1;
+          }
+          .nav-google-label {
+            font-family: 'Inter', 'Inter Tight', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            color: #4a3870;
+            line-height: 1;
+          }
         }
       
         .nav-logo {
@@ -295,9 +329,22 @@ export default function NavigationBar({ city }) {
             <img src="https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/65e2c8c7fdd2f9e01030c70f_Premium%20Chimneys%20(Dark).svg" alt="Premium Chimneys" />
           </div>
 
-          {/* Center: reviews widget (mobile only) */}
-          <div className="nav-center">
-            <div className="nav-reviews"><div className="elfsight-app-5b84b319-0dc0-446d-bab1-a30a175838f4" data-elfsight-app-lazy={true}></div></div>
+          {/* Google rated badge — mobile only, full-width row */}
+          <div className="nav-google" role="img" aria-label="Rated 4.9 out of 5 on Google">
+            <svg className="nav-google-g" viewBox="0 0 48 48" aria-hidden="true">
+              <path fill="#4285F4" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z" />
+              <path fill="#34A853" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z" />
+              <path fill="#FBBC05" d="M12.717 28.054C12.255 26.785 12 25.42 12 24s.255-2.785.717-4.054l-6.571-4.819C4.762 17.823 4 20.812 4 24s.762 6.177 2.146 8.873l6.571-4.819z" />
+              <path fill="#EA4335" d="M24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.227 4 9.505 8.444 6.146 15.127l6.571 4.819C14.381 15.317 18.798 12 24 12z" />
+            </svg>
+            <span className="nav-google-stars" aria-hidden="true">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <svg key={i} viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 5.88 6.49.94-4.7 4.58 1.11 6.46L12 17.8l-5.8 3.05 1.11-6.46-4.7-4.58 6.49-.94L12 2.5z" /></svg>
+              ))}
+            </span>
+            <span className="nav-google-divider" aria-hidden="true"></span>
+            <span className="nav-google-score">4.9</span>
+            <span className="nav-google-label">Google rated</span>
           </div>
 
           {/* CTAs */}

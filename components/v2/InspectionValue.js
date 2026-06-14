@@ -93,7 +93,13 @@ export default function InspectionValue({ city, landing }) {
   // ── Before/after slider ──
   const sliderRef = useRef(null);
   const [pos, setPos] = useState(50);
+  const [baReveal, setBaReveal] = useState(false); // mobile: CSS transition active
   const draggingRef = useRef(false);
+
+  const isMobileBA = () =>
+    typeof window !== 'undefined' &&
+    window.matchMedia &&
+    window.matchMedia('(max-width: 960px)').matches;
 
   const setFromClientX = (clientX) => {
     const el = sliderRef.current;
@@ -104,6 +110,7 @@ export default function InspectionValue({ city, landing }) {
   };
 
   const onPointerDown = (e) => {
+    if (isMobileBA()) return; // mobile auto-reveals on scroll; no manual drag
     draggingRef.current = true;
     e.currentTarget.setPointerCapture?.(e.pointerId);
     setFromClientX(e.clientX);
@@ -113,6 +120,29 @@ export default function InspectionValue({ city, landing }) {
     setFromClientX(e.clientX);
   };
   const onPointerUp = () => { draggingRef.current = false; };
+
+  // ── Mobile: auto-reveal the "after" image once the slider scrolls into view ──
+  useEffect(() => {
+    const el = sliderRef.current;
+    if (!el || !isMobileBA()) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (typeof IntersectionObserver === 'undefined') { setPos(12); return; }
+
+    setPos(92); // start showing mostly the dirty "before"
+    const obs = new IntersectionObserver(
+      (entries) => entries.forEach((en) => {
+        if (en.isIntersecting) {
+          setBaReveal(true); // arm the CSS transition
+          // wait for the transition style to commit, then sweep to reveal "after"
+          requestAnimationFrame(() => requestAnimationFrame(() => setPos(12)));
+          obs.disconnect();
+        }
+      }),
+      { threshold: 0.35 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
 
   // ── Check-draw on scroll into view ──
   const checkRef = useRef(null);
@@ -237,7 +267,7 @@ export default function InspectionValue({ city, landing }) {
           {/* ── Before / After slider (under the two rectangles) ── */}
           {/* TODO: replace with real before/after job photos */}
           <div
-            className="ps-ba"
+            className={`ps-ba${baReveal ? ' ps-ba--reveal' : ''}`}
             ref={sliderRef}
             onPointerDown={onPointerDown}
             onPointerMove={onPointerMove}
@@ -329,7 +359,7 @@ export default function InspectionValue({ city, landing }) {
                 <span className="ps-cta-dot" aria-hidden="true" />
                 Let's get started
               </span>
-              <h3 className="ps-cta-heading">Not sure what you need? Just ask!</h3>
+              <h3 className="ps-cta-heading">Not sure what you need?<br className="ps-cta-br" /> Just ask!</h3>
               <p className="ps-cta-desc">You don't have to figure this out alone. We make it simple from the first call.</p>
             </div>
             <div className="ps-cta-actions">
@@ -646,6 +676,7 @@ const css = `
     font-weight: 800; line-height: 1.1;
     letter-spacing: -.03em; color: #ffffff;
   }
+  .ps-cta-br { display: none; }
   .ps-cta-desc {
     margin: 12px 0 0;
     font-size: 15.5px; line-height: 1.5;
@@ -656,19 +687,28 @@ const css = `
 
   /* ── Responsive ── */
   @media (max-width: 960px) {
-    .ps-inner { padding: 56px 20px; }
+    .ps-inner { padding: 24px 20px; }
     .ps-frame-title { font-size: 36px; }
-    .ps-frame-head { margin-bottom: 40px; }
-    .ps-duo { grid-template-columns: 1fr; gap: 16px; margin-bottom: 56px; }
-    .ps-frame { padding: 24px; margin-top: 56px; }
+    .ps-frame-head { margin-bottom: 24px; text-align: left; }
+    .ps-duo { grid-template-columns: 1fr; gap: 24px; margin-bottom: 24px; }
+    .ps-frame { padding: 24px; margin-top: 24px; }
     .ps-carousel { margin-left: -24px; margin-right: -24px; }
     .ps-benefit { flex: 0 0 240px; width: 240px; margin-right: 16px; }
-    .ps-ba { aspect-ratio: 16 / 9; }
+    .ps-ba { aspect-ratio: 16 / 9; cursor: default; }
+    /* Mobile auto-reveal: smooth one-shot sweep instead of manual drag.
+       Grip (ellipse + chevrons) hidden so it doesn't read as draggable. */
+    .ps-ba-grip { display: none; }
+    .ps-ba--reveal .ps-ba-before { transition: clip-path 5s cubic-bezier(0.45, 0, 0.2, 1); }
+    .ps-ba--reveal .ps-ba-handle { transition: left 5s cubic-bezier(0.45, 0, 0.2, 1); }
+    .ps-ba-cap { display: none; }
+    .ps-cta { margin-top: 24px; padding: 24px; }
+    .ps-cta-br { display: inline; }
+    /* Benefit images: white card bg (not light gray), desktop 16px radius kept */
+    .ps-card { background: #ffffff; }
   }
   @media (max-width: 480px) {
-    .ps-inner { padding: 48px 16px; }
-    .ps-frame { padding: 16px; }
+    .ps-inner { padding: 24px 16px; }
+    .ps-frame { padding: 24px 16px; }
     .ps-carousel { margin-left: -16px; margin-right: -16px; }
-    .ps-card { padding: 22px; }
   }
 `;

@@ -636,17 +636,30 @@ const css = `
   }
 
   @media (max-width: 960px) {
-    .pf-inner { padding: 96px 20px 0; }
+    .pf-inner { padding: 24px 20px; }
     .gal-title { font-size: 36px; }
+    /* Reviews smart card: match the other cards' 24px padding; h2 left-aligned */
+    .bf-frame { margin-bottom: 24px; padding: 24px; }
+    .bf-title { margin-bottom: 24px; text-align: left; }
+    .ro-strip { padding: 20px; gap: 20px; }
+    .pc-head { margin-bottom: 24px; }
   }
   @media (max-width: 720px) {
     /* Switch to a 1-card view; JS reads this same breakpoint via matchMedia. */
     .pf-section { --card-width: calc(min(100vw, 1200px) - 48px); }
   }
   @media (max-width: 560px) {
-    .pc-head { margin-bottom: 32px; }
+    .pc-head { margin-bottom: 24px; }
     .pc-tile { border-radius: 20px; }
     .pc-arrow { width: 36px; height: 36px; }
+    /* Reviews smart card → stack the overview cleanly, fit cards to phone width */
+    .bf-frame { padding: 24px 16px; }
+    .ro-strip { flex-direction: column; align-items: stretch; gap: 16px; padding: 18px; }
+    .ro-sep { display: none; }
+    .ro-score { align-items: flex-start; }
+    .ro-score-num { font-size: 36px; }
+    .ro-bars { min-width: 0; max-width: none; }
+    .rv-card { flex: 0 0 280px; width: 280px; }
   }
   @media (prefers-reduced-motion: reduce) {
     .bf-track { animation: none; }
