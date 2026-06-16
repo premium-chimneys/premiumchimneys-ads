@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { supabase } from '@/lib/supabase'
 
 const PASSWORD = 'rocket99'
@@ -12,8 +12,8 @@ const ASSESSMENT_FLOOR = 69
 // Display label -> income_report column. Order defines column order.
 const INCOME_FIELDS = [
   { label: 'Date', key: 'report_date' },
-  { label: 'technician', key: 'technician_name' },
   { label: 'customer', key: 'customer_name' },
+  { label: 'technician', key: 'technician_name' },
   { label: 'Invoice Number', key: 'jobber_id' },
   { label: 'amount', key: 'sale_amount' },
   { label: 'parts', key: 'parts' },
@@ -22,6 +22,10 @@ const INCOME_FIELDS = [
 ]
 
 const INCOME_COLUMNS = INCOME_FIELDS.map((f) => f.label)
+
+// Columns the user can edit inline by clicking the cell. gross_profit is a
+// generated column (sale_amount - parts) so it's never directly editable.
+const EDITABLE_KEYS = new Set(['technician_name', 'sale_amount', 'parts'])
 
 // Columns rendered as currency / right-friendly numbers.
 const MONEY_KEYS = new Set(['sale_amount', 'parts', 'gross_profit'])
@@ -159,10 +163,24 @@ export default function AdminPage() {
   const [tab, setTab] = useState('income')
   const [start, setStart] = useState('')
   const [end, setEnd] = useState('')
+  // Invoice filter: 'invoiced' (default — rows with an invoice applied, i.e.
+  // jobber_id is non-null) or 'all'. Request-only rows leave jobber_id null.
+  const [invoiceFilter, setInvoiceFilter] = useState('invoiced')
 
   const [rows, setRows] = useState([])
   const [loading, setLoading] = useState(false)
   const [loadError, setLoadError] = useState('')
+
+  // Inline cell editing: which cell is open ({ id, key }), its draft value,
+  // and a per-cell save error. Only EDITABLE_KEYS columns are clickable.
+  const [editing, setEditing] = useState(null)
+  const [editValue, setEditValue] = useState('')
+  const [savingCell, setSavingCell] = useState(false)
+  const [cellError, setCellError] = useState('')
+  // Set synchronously on Escape so the input's blur handler skips the save.
+  const escapingRef = useRef(false)
+  // id of the row currently being deleted (disables its button).
+  const [deletingId, setDeletingId] = useState(null)
 
   const activeTab = TABS.find((t) => t.id === tab) || TABS[0]
   const columns = activeTab.columns
@@ -184,6 +202,8 @@ export default function AdminPage() {
 
     if (start) query = query.gte('report_date', start)
     if (end) query = query.lte('report_date', end)
+    // "Invoiced only": jobber_id (Invoice Number) is set only on invoiced rows.
+    if (invoiceFilter === 'invoiced') query = query.not('jobber_id', 'is', null)
 
     query.then(({ data, error }) => {
       if (cancelled) return
@@ -197,8 +217,104 @@ export default function AdminPage() {
     })
 
     return () => { cancelled = true }
-  }, [authed, tab, start, end])
+  }, [authed, tab, start, end, invoiceFilter])
   /* eslint-enable react-hooks/set-state-in-effect */
+
+  // Open an editable cell, seeding the draft with its current value.
+  function startEdit(row, key) {
+    if (savingCell) return
+    setEditing({ id: row.id, key })
+    const raw = row[key]
+    setEditValue(raw === null || raw === undefined ? '' : String(raw))
+    setCellError('')
+  }
+
+  function cancelEdit() {
+    setEditing(null)
+    setEditValue('')
+    setCellError('')
+  }
+
+  // Persist the open cell. Money fields parse to a number (blank -> null);
+  // technician parses to trimmed text (blank -> null). The update returns the
+  // row so the DB-computed gross_profit replaces the local copy.
+  async function commitEdit(row, key) {
+    const isMoney = MONEY_KEYS.has(key)
+    const trimmed = editValue.trim()
+
+    let newVal
+    if (isMoney) {
+      if (trimmed === '') {
+        newVal = null
+      } else {
+        const n = Number(trimmed)
+        if (!Number.isFinite(n)) { setCellError('Enter a number'); return }
+        newVal = n
+      }
+    } else {
+      newVal = trimmed === '' ? null : trimmed
+    }
+
+    // Skip the write when nothing changed.
+    const current = row[key] ?? null
+    const same = isMoney
+      ? (current === null ? newVal === null : Number(current) === newVal)
+      : (current === null ? newVal === null : String(current) === newVal)
+    if (same) { cancelEdit(); return }
+
+    setSavingCell(true)
+    setCellError('')
+    let res, json
+    try {
+      res = await fetch('/api/income/mutate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'update',
+          id: row.id,
+          password: PASSWORD,
+          patch: { [key]: newVal },
+        }),
+      })
+      json = await res.json()
+    } catch (e) {
+      setSavingCell(false)
+      setCellError(e.message)
+      return
+    }
+    setSavingCell(false)
+    if (!res.ok || !json?.ok) { setCellError(json?.error || `error ${res.status}`); return }
+    setRows((prev) => prev.map((r) => (r.id === row.id ? json.row : r)))
+    setEditing(null)
+    setEditValue('')
+  }
+
+  // Delete a row after a confirm. Removes it from the local list on success;
+  // surfaces a blocking alert on failure (e.g. RLS) so the table stays intact.
+  async function deleteRow(row) {
+    const label = row.customer_name || row.jobber_id || 'this row'
+    if (!window.confirm(`Delete ${label}? This can't be undone.`)) return
+    setDeletingId(row.id)
+    let res, json
+    try {
+      res = await fetch('/api/income/mutate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'delete', id: row.id, password: PASSWORD }),
+      })
+      json = await res.json()
+    } catch (e) {
+      setDeletingId(null)
+      window.alert(`Couldn't delete: ${e.message}`)
+      return
+    }
+    setDeletingId(null)
+    if (!res.ok || !json?.ok) {
+      window.alert(`Couldn't delete: ${json?.error || `error ${res.status}`}`)
+      return
+    }
+    setRows((prev) => prev.filter((r) => r.id !== row.id))
+  }
 
   // Restore session so a refresh doesn't kick you back to the login screen.
   // sessionStorage is client-only, so this must run after mount — rendering
@@ -499,6 +615,58 @@ export default function AdminPage() {
         .adm-table tbody tr:last-child td { border-bottom: none; }
         .adm-table tbody tr:hover td { background: #fafbfc; }
         .adm-num { font-variant-numeric: tabular-nums; }
+        /* Inline-editable cells: subtle affordance + hover. */
+        .adm-editable { cursor: text; }
+        .adm-editable:hover { background: #f0f6ff; box-shadow: inset 0 0 0 1px #d6e4ff; }
+        .adm-editing { padding: 6px 12px !important; overflow: visible; }
+        .adm-cell-input {
+          width: 100%;
+          box-sizing: border-box;
+          height: 34px;
+          padding: 0 10px;
+          font-size: 14px;
+          font-family: inherit;
+          color: #11141a;
+          background: #fff;
+          border: 1px solid #5b8def;
+          border-radius: 8px;
+          outline: none;
+          box-shadow: 0 0 0 3px rgba(91, 141, 239, 0.12);
+        }
+        .adm-cell-input:disabled { opacity: 0.6; }
+        .adm-cell-err {
+          margin-top: 4px;
+          font-size: 11.5px;
+          color: #b42318;
+          white-space: normal;
+        }
+        /* Per-row delete: revealed at the right edge of the last cell on hover. */
+        .adm-cell-last { position: relative; }
+        .adm-del {
+          position: absolute;
+          top: 50%;
+          right: 12px;
+          transform: translateY(-50%);
+          width: 28px;
+          height: 28px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0;
+          color: #b42318;
+          background: #fff;
+          border: 1px solid #f1d4d4;
+          border-radius: 7px;
+          cursor: pointer;
+          opacity: 0;
+          pointer-events: none;
+          box-shadow: 0 1px 3px rgba(17, 20, 26, 0.08);
+          transition: opacity .12s ease, background .12s ease, border-color .12s ease;
+        }
+        .adm-row:hover .adm-del,
+        .adm-del:focus-visible { opacity: 1; pointer-events: auto; }
+        .adm-del:hover { background: #fee4e2; border-color: #f1aeae; }
+        .adm-del:disabled { opacity: .5; cursor: default; pointer-events: none; }
         .adm-table tfoot td {
           font-size: 14px;
           font-weight: 700;
@@ -521,6 +689,17 @@ export default function AdminPage() {
           font-size: 13px;
           color: #aab0b8;
           margin-top: 6px;
+        }
+
+        /* Desktop only: keep the tab sidebar fixed while the table scrolls. */
+        @media (min-width: 861px) {
+          .adm-sidebar {
+            position: sticky;
+            top: 0;
+            align-self: flex-start;
+            height: 100vh;
+            overflow-y: auto;
+          }
         }
 
         @media (max-width: 860px) {
@@ -616,6 +795,18 @@ export default function AdminPage() {
                         onChange={(e) => setEnd(e.target.value)}
                       />
                     </div>
+                    <div className="adm-date-group">
+                      <label htmlFor="adm-invoice">Show</label>
+                      <select
+                        id="adm-invoice"
+                        className="adm-date"
+                        value={invoiceFilter}
+                        onChange={(e) => setInvoiceFilter(e.target.value)}
+                      >
+                        <option value="all">All</option>
+                        <option value="invoiced">Invoiced only</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
 
@@ -662,15 +853,97 @@ export default function AdminPage() {
                             </tr>
                           ) : (
                             rows.map((row, i) => (
-                              <tr key={row.id ?? i}>
-                                {INCOME_FIELDS.map((f) => (
-                                  <td
-                                    key={f.key}
-                                    className={MONEY_KEYS.has(f.key) ? 'adm-num' : undefined}
-                                  >
-                                    {renderIncomeCell(f.key, row)}
-                                  </td>
-                                ))}
+                              <tr key={row.id ?? i} className="adm-row">
+                                {INCOME_FIELDS.map((f, idx) => {
+                                  const isMoney = MONEY_KEYS.has(f.key)
+                                  const editable = EDITABLE_KEYS.has(f.key)
+                                  const isLast = idx === INCOME_FIELDS.length - 1
+                                  const isOpen =
+                                    editing && editing.id === row.id && editing.key === f.key
+                                  const cls = [
+                                    isMoney ? 'adm-num' : null,
+                                    editable ? 'adm-editable' : null,
+                                    isOpen ? 'adm-editing' : null,
+                                    isLast ? 'adm-cell-last' : null,
+                                  ].filter(Boolean).join(' ') || undefined
+                                  return (
+                                    <td
+                                      key={f.key}
+                                      className={cls}
+                                      title={editable && !isOpen ? 'Click to edit' : undefined}
+                                      onClick={
+                                        editable && !isOpen
+                                          ? () => startEdit(row, f.key)
+                                          : undefined
+                                      }
+                                    >
+                                      {isOpen ? (
+                                        <>
+                                          <input
+                                            autoFocus
+                                            className="adm-cell-input"
+                                            type={isMoney ? 'number' : 'text'}
+                                            step={isMoney ? '0.01' : undefined}
+                                            value={editValue}
+                                            disabled={savingCell}
+                                            onChange={(e) => setEditValue(e.target.value)}
+                                            onBlur={() => {
+                                              if (escapingRef.current) {
+                                                escapingRef.current = false
+                                                return
+                                              }
+                                              commitEdit(row, f.key)
+                                            }}
+                                            onKeyDown={(e) => {
+                                              if (e.key === 'Enter') {
+                                                e.preventDefault()
+                                                commitEdit(row, f.key)
+                                              } else if (e.key === 'Escape') {
+                                                e.preventDefault()
+                                                escapingRef.current = true
+                                                cancelEdit()
+                                              }
+                                            }}
+                                          />
+                                          {cellError ? (
+                                            <div className="adm-cell-err">{cellError}</div>
+                                          ) : null}
+                                        </>
+                                      ) : (
+                                        renderIncomeCell(f.key, row)
+                                      )}
+                                      {isLast && (
+                                        <button
+                                          type="button"
+                                          className="adm-del"
+                                          title="Delete row"
+                                          aria-label="Delete row"
+                                          disabled={deletingId === row.id}
+                                          onClick={(e) => {
+                                            e.stopPropagation()
+                                            deleteRow(row)
+                                          }}
+                                        >
+                                          <svg
+                                            width="14"
+                                            height="14"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            aria-hidden="true"
+                                          >
+                                            <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+                                            <line x1="10" y1="11" x2="10" y2="17" />
+                                            <line x1="14" y1="11" x2="14" y2="17" />
+                                          </svg>
+                                        </button>
+                                      )}
+                                    </td>
+                                  )
+                                })}
                               </tr>
                             ))
                           )
