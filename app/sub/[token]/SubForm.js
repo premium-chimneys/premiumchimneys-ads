@@ -90,7 +90,11 @@ export default function SubForm({ token, subName, leads }) {
     setDone(true)
   }
 
-  const header = <h1 style={{ fontSize: '20px', fontWeight: 700, margin: '0 0 4px' }}>{subName}</h1>
+  const header = (
+    <h1 className="sub-heading" style={{ fontSize: '20px', fontWeight: 700, margin: '0 0 4px' }}>
+      {subName}
+    </h1>
+  )
 
   if (available.length === 0) {
     return (

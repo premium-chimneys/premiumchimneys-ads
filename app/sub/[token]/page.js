@@ -10,14 +10,19 @@ export const metadata = { title: 'Submit Job', robots: { index: false, follow: f
 // can't carry one). Desktop keeps the white card; on mobile the content sits
 // flush on the page background.
 const STYLES = `
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@600;700&display=swap');
   .sub-wrap {
     min-height: 100vh;
     background: #f4f5f7;
     display: flex;
     justify-content: center;
     padding: 24px 16px;
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     color: #11141a;
+  }
+  .sub-heading {
+    font-family: 'Inter Tight', 'Inter', system-ui, sans-serif;
+    letter-spacing: -0.02em;
   }
   .sub-card {
     width: 100%;
