@@ -26,13 +26,17 @@ const innerControl = {
   outline: 'none',
   background: 'transparent',
   padding: 0,
-  height: '24px',
   fontSize: '14px',
   lineHeight: '14px',
   fontFamily: 'inherit',
   color: '#000',
 }
-const innerControlReadOnly = { ...innerControl, cursor: 'not-allowed' }
+const innerControlReadOnly = {
+  ...innerControl,
+  cursor: 'not-allowed',
+  WebkitTextFillColor: '#000', // Safari/Chrome grey disabled text otherwise
+  opacity: 1, // Firefox dims disabled inputs otherwise
+}
 // Native selects carry a small built-in left inset; appearance:none drops it so
 // the text aligns flush with the label. A real chevron element (below) keeps the
 // dropdown cue and can rotate on open.
@@ -128,6 +132,14 @@ export default function SubForm({ token, subName, leads }) {
 
   return (
     <form onSubmit={submit}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/images/premium-chimneys-submark-logo.png"
+        alt="Premium Chimneys"
+        width={52}
+        height={52}
+        style={{ display: 'block', width: '52px', height: '52px', marginBottom: '14px' }}
+      />
       <h1 className="sub-heading" style={{ fontSize: '20px', fontWeight: 700, margin: '0 0 4px' }}>
         Job Submission
       </h1>
