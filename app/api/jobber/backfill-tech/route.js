@@ -2,8 +2,8 @@ import { backfillTechnicians } from '@/lib/jobber-backfill-tech'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
-// Walking every invoice can be long; give it headroom. Vercel clamps to the
-// plan max. Use ?pages / ?after to run it in resumable chunks if needed.
+// Early-exit keeps this short, but give headroom for throttle backoff. Use
+// ?pages / ?after to run in resumable chunks if ever needed.
 export const maxDuration = 300
 
 // One-off backfill of technician_name on invoiced income_report rows that are
