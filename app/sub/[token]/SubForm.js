@@ -91,9 +91,12 @@ export default function SubForm({ token, subName, leads }) {
   }
 
   const header = (
-    <h1 className="sub-heading" style={{ fontSize: '20px', fontWeight: 700, margin: '0 0 4px' }}>
-      {subName}
-    </h1>
+    <>
+      <h1 className="sub-heading" style={{ fontSize: '20px', fontWeight: 700, margin: '0 0 4px' }}>
+        Job Submission
+      </h1>
+      <p style={{ color: '#6b7280', fontSize: '14px', margin: '0 0 20px' }}>{subName}</p>
+    </>
   )
 
   if (available.length === 0) {
@@ -109,9 +112,6 @@ export default function SubForm({ token, subName, leads }) {
   return (
     <form onSubmit={submit}>
       {header}
-      <p style={{ color: '#6b7280', fontSize: '14px', margin: '0 0 20px' }}>
-        Submit your job total and parts cost.
-      </p>
 
       {done ? <div style={{ ...banner, ...bannerOk }}>Submitted — thanks!</div> : null}
       {error ? <div style={{ ...banner, ...bannerErr }}>{error}</div> : null}
