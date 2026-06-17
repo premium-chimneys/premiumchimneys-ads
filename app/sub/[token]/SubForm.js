@@ -32,7 +32,7 @@ function fmtLead(l) {
   return date ? `${name} — ${date}` : name
 }
 
-export default function SubForm({ token, subName, leads }) {
+export default function SubForm({ token, leads }) {
   const [available, setAvailable] = useState(leads)
   const [rowId, setRowId] = useState(leads[0]?.id != null ? String(leads[0].id) : '')
   const [total, setTotal] = useState('')
@@ -95,7 +95,9 @@ export default function SubForm({ token, subName, leads }) {
       <h1 className="sub-heading" style={{ fontSize: '20px', fontWeight: 700, margin: '0 0 4px' }}>
         Job Submission
       </h1>
-      <p style={{ color: '#6b7280', fontSize: '14px', margin: '0 0 20px' }}>{subName}</p>
+      <p style={{ color: '#11141a', fontSize: '14px', margin: '0 0 20px' }}>
+        Select a job below and input the following information.
+      </p>
     </>
   )
 

@@ -64,7 +64,7 @@ export default async function SubPage({ params }) {
 
   const { data: sub } = await db
     .from('subs')
-    .select('name, jobber_user_id')
+    .select('jobber_user_id')
     .eq('token', token)
     .maybeSingle()
 
@@ -88,7 +88,7 @@ export default async function SubPage({ params }) {
 
   return (
     <Shell>
-      <SubForm token={token} subName={sub.name || 'Subcontractor'} leads={leads || []} />
+      <SubForm token={token} leads={leads || []} />
     </Shell>
   )
 }
