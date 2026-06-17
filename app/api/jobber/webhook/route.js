@@ -4,9 +4,9 @@ export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 // Jobber webhook receiver -> income_report. Verifies the X-Jobber-Hmac-SHA256
-// signature against the raw body, then processes REQUEST_CREATE / INVOICE_CREATE
-// / INVOICE_UPDATE. Returns 200 on success; 401 on bad signature; 500 on a
-// processing error so Jobber retries.
+// signature against the raw body, then processes REQUEST_CREATE / REQUEST_UPDATE
+// / INVOICE_CREATE / INVOICE_UPDATE. Returns 200 on success; 401 on bad
+// signature; 500 on a processing error so Jobber retries.
 export async function POST(request) {
   // Read the RAW body — HMAC must be computed over the exact bytes Jobber sent,
   // not a re-serialized JSON object.
