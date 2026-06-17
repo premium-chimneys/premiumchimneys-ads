@@ -78,12 +78,13 @@ export default async function SubPage({ params }) {
   }
 
   // This sub's open leads: assigned to them, still upcoming, not yet priced.
+  // Unpriced = sale_amount NULL (legacy) or 0 (current insert default).
   const { data: leads } = await db
     .from('income_report')
     .select('id, customer_name, report_date')
     .contains('assigned_user_ids', [sub.jobber_user_id])
     .eq('status', 'upcoming')
-    .is('sale_amount', null)
+    .or('sale_amount.is.null,sale_amount.eq.0')
     .order('report_date', { ascending: false })
 
   return (

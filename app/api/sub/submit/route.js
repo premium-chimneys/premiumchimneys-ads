@@ -48,13 +48,16 @@ export async function POST(request) {
   }
 
   // Guarded update — 0 rows means: tampered id, a lead not assigned to this sub,
-  // or already submitted (sale_amount no longer null).
+  // or already submitted. "Still open" = status 'upcoming' AND unpriced
+  // (sale_amount NULL or 0). After submit, status flips to 'unpaid', so a second
+  // submit is rejected by the status guard even if the entered total was 0.
   const { data: updated, error } = await db
     .from('income_report')
     .update({ sale_amount: totalNum, parts: partsNum, status: 'unpaid' })
     .eq('id', rowId)
     .contains('assigned_user_ids', [sub.jobber_user_id])
-    .is('sale_amount', null)
+    .eq('status', 'upcoming')
+    .or('sale_amount.is.null,sale_amount.eq.0')
     .select('id')
   if (error) return Response.json({ ok: false, error: 'update_failed' }, { status: 500 })
   if (!updated?.length) {
