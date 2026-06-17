@@ -1,3 +1,5 @@
+import HideChatling from '@/components/HideChatling'
+
 export const metadata = {
   title: 'Admin',
   robots: {
@@ -12,5 +14,10 @@ export const metadata = {
 }
 
 export default function AdminLayout({ children }) {
-  return children
+  return (
+    <>
+      <HideChatling />
+      {children}
+    </>
+  )
 }
