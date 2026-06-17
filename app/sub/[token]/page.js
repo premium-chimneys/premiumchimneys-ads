@@ -13,7 +13,7 @@ const STYLES = `
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@600;700&display=swap');
   .sub-wrap {
     min-height: 100vh;
-    background: #f4f5f7;
+    background: #fff;
     display: flex;
     justify-content: center;
     padding: 24px 16px;
@@ -64,7 +64,7 @@ export default async function SubPage({ params }) {
 
   const { data: sub } = await db
     .from('subs')
-    .select('jobber_user_id')
+    .select('name, jobber_user_id')
     .eq('token', token)
     .maybeSingle()
 
@@ -88,7 +88,7 @@ export default async function SubPage({ params }) {
 
   return (
     <Shell>
-      <SubForm token={token} leads={leads || []} />
+      <SubForm token={token} subName={sub.name || ''} leads={leads || []} />
     </Shell>
   )
 }
