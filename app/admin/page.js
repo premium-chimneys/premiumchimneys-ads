@@ -5,10 +5,6 @@ import { supabase } from '@/lib/supabase'
 
 const PASSWORD = 'rocket99'
 
-// A closed job that sold above this amount but has no parts cost likely needs
-// its cost verified (jobs at/below this are assessment-only, no parts expected).
-const ASSESSMENT_FLOOR = 69
-
 // Display label -> income_report column. Order defines column order.
 const INCOME_FIELDS = [
   { label: 'Date', key: 'report_date' },
@@ -68,56 +64,11 @@ function isMoneyNA(val, status) {
   return empty && String(status || '').toLowerCase() !== 'closed'
 }
 
-// A closed or unpaid row that sold above the assessment floor but carries no
-// parts cost — its cost probably hasn't been entered in Jobber yet.
-function needsCost(row) {
-  const status = String(row.status || '').toLowerCase()
-  const flaggable = status === 'closed' || status === 'unpaid'
-  const partsEmpty = row.parts == null || Number(row.parts) === 0
-  const amount = Number(row.sale_amount)
-  return flaggable && partsEmpty && Number.isFinite(amount) && amount > ASSESSMENT_FLOOR
-}
-
-// Subtle amber tag shown in the Parts cell for flagged rows.
-function VerifyCostTag() {
-  return (
-    <span
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: '5px',
-        padding: '2px 9px',
-        borderRadius: '999px',
-        fontSize: '11.5px',
-        fontWeight: 500,
-        lineHeight: 1.6,
-        backgroundColor: '#fff7ed',
-        color: '#9a3412',
-        border: '1px solid #fed7aa',
-      }}
-    >
-      <span
-        style={{
-          width: '5px',
-          height: '5px',
-          borderRadius: '50%',
-          backgroundColor: '#f97316',
-          flexShrink: 0,
-        }}
-      />
-      verify cost
-    </span>
-  )
-}
-
 // Renders one income cell (returns JSX, not just a string).
 function renderIncomeCell(key, row) {
   const val = row[key]
 
   if (key === 'status') return <StatusBadge status={val} />
-
-  // Parts on a flagged row shows the "verify cost" tag instead of $0.00 / dash.
-  if (key === 'parts' && needsCost(row)) return <VerifyCostTag />
 
   if (MONEY_KEYS.has(key)) {
     // Empty/zero on a non-closed row reads as the same dash as Technician/Jobber ID.
