@@ -6,24 +6,51 @@ export const dynamic = 'force-dynamic'
 // Private per-sub links — keep them out of search results.
 export const metadata = { title: 'Submit Job', robots: { index: false, follow: false } }
 
-const wrap = {
-  minHeight: '100vh',
-  background: '#f4f5f7',
-  display: 'flex',
-  justifyContent: 'center',
-  padding: '24px 16px',
-  fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
-  color: '#11141a',
-}
-const card = {
-  width: '100%',
-  maxWidth: '440px',
-  background: '#fff',
-  borderRadius: '16px',
-  border: '1px solid #e4e7eb',
-  padding: '24px',
-  boxShadow: '0 1px 3px rgba(17,20,26,0.06)',
-  alignSelf: 'flex-start',
+// Class-based so a media query can strip the card on phones (inline styles
+// can't carry one). Desktop keeps the white card; on mobile the content sits
+// flush on the page background.
+const STYLES = `
+  .sub-wrap {
+    min-height: 100vh;
+    background: #f4f5f7;
+    display: flex;
+    justify-content: center;
+    padding: 24px 16px;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color: #11141a;
+  }
+  .sub-card {
+    width: 100%;
+    max-width: 440px;
+    align-self: flex-start;
+    background: #fff;
+    border: 1px solid #e4e7eb;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(17, 20, 26, 0.06);
+  }
+  @media (max-width: 640px) {
+    .sub-card {
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      padding: 0;
+    }
+  }
+`
+
+function Shell({ children, center }) {
+  return (
+    <>
+      <style dangerouslySetInnerHTML={{ __html: STYLES }} />
+      <div className="sub-wrap">
+        <div className="sub-card" style={center ? { textAlign: 'center' } : undefined}>
+          {children}
+        </div>
+      </div>
+    </>
+  )
 }
 
 export default async function SubPage({ params }) {
@@ -39,11 +66,9 @@ export default async function SubPage({ params }) {
   // No match → just the invalid-link message, nothing else.
   if (!sub?.jobber_user_id) {
     return (
-      <div style={wrap}>
-        <div style={{ ...card, textAlign: 'center' }}>
-          <div style={{ fontSize: '17px', fontWeight: 600 }}>Invalid link</div>
-        </div>
-      </div>
+      <Shell center>
+        <div style={{ fontSize: '17px', fontWeight: 600 }}>Invalid link</div>
+      </Shell>
     )
   }
 
@@ -57,10 +82,8 @@ export default async function SubPage({ params }) {
     .order('report_date', { ascending: false })
 
   return (
-    <div style={wrap}>
-      <div style={card}>
-        <SubForm token={token} subName={sub.name || 'Subcontractor'} leads={leads || []} />
-      </div>
-    </div>
+    <Shell>
+      <SubForm token={token} subName={sub.name || 'Subcontractor'} leads={leads || []} />
+    </Shell>
   )
 }
