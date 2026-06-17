@@ -149,8 +149,12 @@ const AD_COLUMNS = [
   'Cost / Conv.',
 ]
 
+// IIR / EIR are the same income table filtered by report_type. `reportType`
+// marks an income-type tab and drives the Supabase filter; IIR also surfaces
+// still-unclassified (null) rows as the no-assignee fallback bucket.
 const TABS = [
-  { id: 'income', label: 'Income Report', columns: INCOME_COLUMNS },
+  { id: 'iir', label: 'IIR · Internal', columns: INCOME_COLUMNS, reportType: 'internal' },
+  { id: 'eir', label: 'EIR · External', columns: INCOME_COLUMNS, reportType: 'external' },
   { id: 'ads', label: 'Ad Performance', columns: AD_COLUMNS },
 ]
 
@@ -160,7 +164,7 @@ export default function AdminPage() {
   const [value, setValue] = useState('')
   const [error, setError] = useState(false)
 
-  const [tab, setTab] = useState('income')
+  const [tab, setTab] = useState('iir')
   const [start, setStart] = useState('')
   const [end, setEnd] = useState('')
   // Invoice filter: 'invoiced' (default — rows with an invoice applied, i.e.
@@ -184,12 +188,15 @@ export default function AdminPage() {
 
   const activeTab = TABS.find((t) => t.id === tab) || TABS[0]
   const columns = activeTab.columns
+  // Income-type tabs (IIR/EIR) share the income table + fetch.
+  const isIncomeTab = Boolean(activeTab.reportType)
 
   // Fetch income_report rows (ordered by report_date desc), filtered by the
   // From/To date range. Only runs for the Income Report tab while logged in.
   /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
-    if (!authed || tab !== 'income') return
+    const reportType = TABS.find((t) => t.id === tab)?.reportType
+    if (!authed || !reportType) return
 
     let cancelled = false
     setLoading(true)
@@ -204,6 +211,10 @@ export default function AdminPage() {
     if (end) query = query.lte('report_date', end)
     // "Invoiced only": jobber_id (Invoice Number) is set only on invoiced rows.
     if (invoiceFilter === 'invoiced') query = query.not('jobber_id', 'is', null)
+    // IIR shows internal + still-unclassified (null) rows (the no-assignee
+    // fallback bucket); EIR shows external only.
+    if (reportType === 'internal') query = query.or('report_type.eq.internal,report_type.is.null')
+    else query = query.eq('report_type', reportType)
 
     query.then(({ data, error }) => {
       if (cancelled) return
@@ -826,7 +837,7 @@ export default function AdminPage() {
                         </tr>
                       </thead>
                       <tbody>
-                        {tab === 'income' ? (
+                        {isIncomeTab ? (
                           loading ? (
                             <tr>
                               <td className="adm-empty" colSpan={columns.length}>
@@ -958,7 +969,7 @@ export default function AdminPage() {
                           </tr>
                         )}
                       </tbody>
-                      {tab === 'income' && rows.length > 0 && (
+                      {isIncomeTab && rows.length > 0 && (
                         <tfoot>
                           <tr>
                             {INCOME_FIELDS.map((f, idx) => {
