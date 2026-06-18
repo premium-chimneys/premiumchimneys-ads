@@ -58,9 +58,9 @@ const submitBtn = (submitting, succeeded) => ({
   transition: 'background 0.3s ease',
 })
 
-function SubmitButton({ label, submitting, succeeded }) {
+function SubmitButton({ label, submitting, succeeded, onClick }) {
   return (
-    <button type="submit" disabled={submitting || succeeded} style={submitBtn(submitting, succeeded)}>
+    <button type="button" onClick={onClick} disabled={submitting || succeeded} style={submitBtn(submitting, succeeded)}>
       {succeeded ? (
         <svg
           className="sub-check"
@@ -312,15 +312,15 @@ export default function SubForm({ token, leads }) {
 
         {selected.job_stage === 'open_job' ? (
           // Open job → only Parts + Notes
-          <form onSubmit={submitOpenClose}>
+          <div>
             <Field id="parts" label="Parts Total ($)">
               <MoneyInput id="parts" value={parts} onChange={setParts} />
             </Field>
             <Field id="notes" label="Notes (optional)">
               <textarea id="notes" style={innerTextarea} value={notes} onChange={(e) => setNotes(e.target.value)} />
             </Field>
-            <SubmitButton label="Close Job" submitting={submitting} succeeded={succeeded} />
-          </form>
+            <SubmitButton label="Close Job" submitting={submitting} succeeded={succeeded} onClick={submitOpenClose} />
+          </div>
         ) : closeType === null ? (
           // Upcoming → choose close type
           <div>
@@ -336,7 +336,7 @@ export default function SubForm({ token, leads }) {
             />
           </div>
         ) : closeType === 'same_day' ? (
-          <form onSubmit={submitSameDay}>
+          <div>
             <Field id="total" label="Amount ($)">
               <MoneyInput id="total" value={total} onChange={setTotal} />
             </Field>
@@ -346,10 +346,10 @@ export default function SubForm({ token, leads }) {
             <Field id="notes" label="Notes (optional)">
               <textarea id="notes" style={innerTextarea} value={notes} onChange={(e) => setNotes(e.target.value)} />
             </Field>
-            <SubmitButton label="Submit" submitting={submitting} succeeded={succeeded} />
-          </form>
+            <SubmitButton label="Submit" submitting={submitting} succeeded={succeeded} onClick={submitSameDay} />
+          </div>
         ) : (
-          <form onSubmit={submitOpenCreate}>
+          <div>
             <Field id="total" label="Amount ($)">
               <MoneyInput id="total" value={total} onChange={setTotal} />
             </Field>
@@ -359,8 +359,8 @@ export default function SubForm({ token, leads }) {
             <Field id="notes" label="Notes (optional)">
               <textarea id="notes" style={innerTextarea} value={notes} onChange={(e) => setNotes(e.target.value)} />
             </Field>
-            <SubmitButton label="Submit" submitting={submitting} succeeded={succeeded} />
-          </form>
+            <SubmitButton label="Submit" submitting={submitting} succeeded={succeeded} onClick={submitOpenCreate} />
+          </div>
         )}
       </>
     )
