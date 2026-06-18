@@ -409,7 +409,9 @@ function ChoiceButton({ title, desc, onClick }) {
       onClick={onClick}
       style={{
         width: '100%',
-        display: 'block',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
         textAlign: 'left',
         padding: '14px',
         marginBottom: '12px',
@@ -420,10 +422,26 @@ function ChoiceButton({ title, desc, onClick }) {
         fontFamily: 'inherit',
       }}
     >
-      <span style={{ display: 'block', fontSize: '15px', fontWeight: 600, color: '#11141a', marginBottom: '2px' }}>
-        {title}
+      <span style={{ flex: 1, minWidth: 0 }}>
+        <span style={{ display: 'block', fontSize: '15px', fontWeight: 600, color: '#11141a', marginBottom: '2px' }}>
+          {title}
+        </span>
+        <span style={{ display: 'block', fontSize: '13px', lineHeight: '17px', color: '#6b7280' }}>{desc}</span>
       </span>
-      <span style={{ display: 'block', fontSize: '13px', lineHeight: '17px', color: '#6b7280' }}>{desc}</span>
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#9ca3af"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        style={{ flexShrink: 0 }}
+        aria-hidden="true"
+      >
+        <polyline points="9 6 15 12 9 18" />
+      </svg>
     </button>
   )
 }
