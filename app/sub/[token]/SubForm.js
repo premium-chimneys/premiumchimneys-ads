@@ -296,6 +296,7 @@ export default function SubForm({ token, leads }) {
                   fontWeight: 600,
                   backgroundColor: tag.bg,
                   color: tag.color,
+                  border: `1px solid ${tag.color}`,
                 }}
               >
                 {tag.label}
@@ -411,6 +412,7 @@ export default function SubForm({ token, leads }) {
                     fontWeight: 600,
                     backgroundColor: tag.bg,
                     color: tag.color,
+                    border: `1px solid ${tag.color}`,
                   }}
                 >
                   {tag.label}
