@@ -56,6 +56,13 @@ const STYLES = `
     -webkit-appearance: none;
     margin: 0;
   }
+  /* No tap-highlight / mouse-focus ring flash on tap; keep keyboard focus rings. */
+  .sub-wrap button {
+    -webkit-tap-highlight-color: transparent;
+  }
+  .sub-wrap button:focus:not(:focus-visible) {
+    outline: none;
+  }
 `
 
 function Shell({ children, center }) {
