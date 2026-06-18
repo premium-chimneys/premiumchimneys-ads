@@ -332,7 +332,7 @@ export default function SubForm({ token, leads }) {
             />
             <ChoiceButton
               title="Open Job"
-              desc="Closed on a price and took a deposit; work not finished yet."
+              desc="Deposit placed but work not completed yet."
               onClick={() => { setCloseType('open_job'); setError('') }}
             />
           </div>
