@@ -41,21 +41,22 @@ const currencyFmt = new Intl.NumberFormat('en-US', { style: 'currency', currency
 
 const pill = {
   display: 'inline-block',
-  padding: '3px 10px',
-  borderRadius: '999px',
-  fontSize: '12px',
+  padding: '3px 6px',
+  borderRadius: '4px',
+  fontSize: '11.5px',
   fontWeight: 600,
   lineHeight: 1.5,
 }
-// Job stage (sub-driven) and payment (Idan-driven) badge palettes.
+// Job stage + payment badge palettes — matched to the sub token tag style
+// (full-color text on a ~10% tint). Paid = green, Unpaid = gray.
 const JOB_STAGE_BADGES = {
-  upcoming: { bg: '#fef3c7', color: '#92400e', label: 'Upcoming' },
-  open_job: { bg: '#e0e7ff', color: '#3730a3', label: 'Open Job' },
-  closed: { bg: '#e5e7eb', color: '#374151', label: 'Closed' },
+  upcoming: { bg: 'oklch(0.525 0.223 3.958 / 0.1)', color: 'oklch(0.525 0.223 3.958)', label: 'Upcoming' },
+  open_job: { bg: 'oklch(0.488 0.243 264.376 / 0.1)', color: 'oklch(0.437 0.078 188.216)', label: 'Open Job' },
+  closed: { bg: 'rgba(107, 114, 128, 0.12)', color: '#374151', label: 'Closed' },
 }
 const PAYMENT_BADGES = {
-  unpaid: { bg: '#dbeafe', color: '#1e40af', label: 'Unpaid' },
-  paid: { bg: '#d1fae5', color: '#065f46', label: 'Paid' },
+  unpaid: { bg: 'rgba(107, 114, 128, 0.12)', color: '#6b7280', label: 'Unpaid' },
+  paid: { bg: 'oklch(0.627 0.194 149.214 / 0.1)', color: 'oklch(0.627 0.194 149.214)', label: 'Paid' },
 }
 
 function Badge({ cfg, fallback }) {
@@ -67,11 +68,11 @@ function Badge({ cfg, fallback }) {
 // (upcoming -> Scheduled, else paid -> Paid / unpaid -> Unpaid).
 function legacyStatusCfg(row) {
   if (String(row.job_stage || '').toLowerCase() === 'upcoming') {
-    return { bg: '#fef3c7', color: '#92400e', label: 'Scheduled' }
+    return { bg: 'oklch(0.525 0.223 3.958 / 0.1)', color: 'oklch(0.525 0.223 3.958)', label: 'Scheduled' }
   }
   return String(row.payment || '').toLowerCase() === 'paid'
-    ? { bg: '#d1fae5', color: '#065f46', label: 'Paid' }
-    : { bg: '#dbeafe', color: '#1e40af', label: 'Unpaid' }
+    ? { bg: 'oklch(0.627 0.194 149.214 / 0.1)', color: 'oklch(0.627 0.194 149.214)', label: 'Paid' }
+    : { bg: 'rgba(107, 114, 128, 0.12)', color: '#6b7280', label: 'Unpaid' }
 }
 
 // True when a money value should read "N/A" instead of $0.00: empty/zero on a
