@@ -43,6 +43,16 @@ const STYLES = `
       padding: 0;
     }
   }
+  /* No spinner arrows on the numeric inputs. */
+  .sub-wrap input[type='number'] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+  .sub-wrap input[type='number']::-webkit-outer-spin-button,
+  .sub-wrap input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 `
 
 function Shell({ children, center }) {
