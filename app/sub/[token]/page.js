@@ -72,6 +72,14 @@ const STYLES = `
   .sub-wrap button:focus:not(:focus-visible) {
     outline: none;
   }
+  /* Ease the success checkmark in (button background eases via inline style). */
+  .sub-wrap .sub-check {
+    animation: sub-check-in 0.3s ease both;
+  }
+  @keyframes sub-check-in {
+    from { opacity: 0; transform: scale(0.6); }
+    to { opacity: 1; transform: scale(1); }
+  }
 `
 
 function Shell({ children, center }) {

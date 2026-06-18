@@ -47,7 +47,7 @@ const submitBtn = (submitting, succeeded) => ({
   fontSize: '14px',
   fontWeight: 500,
   color: '#fff',
-  background: succeeded ? 'oklch(0.627 0.194 149.214)' : submitting ? '#6b7280' : '#11141a',
+  background: succeeded ? 'oklch(0.627 0.194 149.214)' : '#11141a',
   border: 'none',
   borderRadius: '10px',
   cursor: submitting || succeeded ? 'default' : 'pointer',
@@ -55,6 +55,7 @@ const submitBtn = (submitting, succeeded) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  transition: 'background 0.3s ease',
 })
 
 function SubmitButton({ label, submitting, succeeded }) {
@@ -62,6 +63,7 @@ function SubmitButton({ label, submitting, succeeded }) {
     <button type="submit" disabled={submitting || succeeded} style={submitBtn(submitting, succeeded)}>
       {succeeded ? (
         <svg
+          className="sub-check"
           width="24"
           height="24"
           viewBox="0 0 24 24"
@@ -75,8 +77,6 @@ function SubmitButton({ label, submitting, succeeded }) {
           <circle cx="12" cy="12" r="10" />
           <polyline points="8 12.5 11 15.5 16 9" />
         </svg>
-      ) : submitting ? (
-        'Submitting…'
       ) : (
         label
       )}
