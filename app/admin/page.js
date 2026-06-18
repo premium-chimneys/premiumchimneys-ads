@@ -24,7 +24,6 @@ const EIR_FIELDS = [
   { label: 'customer', key: 'customer_name' },
   { label: 'technician', key: 'technician_name' },
   { label: 'amount', key: 'sale_amount' },
-  { label: 'deposit', key: 'deposit' },
   { label: 'parts', key: 'parts' },
   { label: 'gross', key: 'gross_profit' },
   { label: 'Status', key: 'job_stage' },
@@ -83,8 +82,33 @@ function isMoneyNA(val, jobStage) {
 }
 
 // Renders one income cell (returns JSX, not just a string).
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+function ordinal(d) {
+  const k = d % 100
+  if (k >= 11 && k <= 13) return `${d}th`
+  switch (d % 10) {
+    case 1:
+      return `${d}st`
+    case 2:
+      return `${d}nd`
+    case 3:
+      return `${d}rd`
+    default:
+      return `${d}th`
+  }
+}
+// "2026-03-03" -> "Mar 3rd" (parsed from the string to avoid timezone shifts).
+function fmtDate(val) {
+  const m = String(val ?? '').match(/^(\d{4})-(\d{2})-(\d{2})/)
+  if (!m) return val == null || val === '' ? '—' : String(val)
+  const month = MONTHS[Number(m[2]) - 1]
+  return month ? `${month} ${ordinal(Number(m[3]))}` : String(val)
+}
+
 function renderIncomeCell(key, row) {
   const val = row[key]
+
+  if (key === 'report_date') return fmtDate(val)
 
   if (key === 'job_stage') {
     return <Badge cfg={JOB_STAGE_BADGES[String(val || '').toLowerCase()]} fallback={val || '—'} />
@@ -116,6 +140,104 @@ function renderIncomeCell(key, row) {
 // (empty/zero) as 0.
 function moneyTotal(rows, key) {
   return rows.reduce((sum, r) => sum + (Number(r[key]) || 0), 0)
+}
+
+const money = (n) => currencyFmt.format(Number(n) || 0)
+
+// ---------------------------------------------------------------------------
+// Insights bar — computed over REVENUE rows only (real sale_amount > 0).
+// Zero-dollar upcoming rows are excluded from every metric, incl. lead count.
+// `rows` is already date-range filtered by the Supabase query.
+// ---------------------------------------------------------------------------
+function computeInsights(rows) {
+  const revenue = rows.filter((r) => Number(r.sale_amount) > 0)
+  const leadCount = revenue.length
+  const sum = (key) => revenue.reduce((s, r) => s + (Number(r[key]) || 0), 0)
+  const totalRevenue = sum('sale_amount')
+  const pct = (part) => (totalRevenue ? Math.round((part / totalRevenue) * 100) : null)
+
+  // Top tech by summed gross. Multi-name rows are attributed whole (not split).
+  const techs = new Map()
+  for (const r of revenue) {
+    const name = r.technician_name
+    if (!name) continue
+    const t = techs.get(name) || { gross: 0, revenue: 0, jobs: 0 }
+    t.gross += Number(r.gross_profit) || 0
+    t.revenue += Number(r.sale_amount) || 0
+    t.jobs += 1
+    techs.set(name, t)
+  }
+  let topTech = null
+  for (const [name, t] of techs) {
+    if (!topTech || t.gross > topTech.gross) topTech = { name, ...t }
+  }
+
+  const unpaid = revenue.filter((r) => String(r.payment || '').toLowerCase() === 'unpaid')
+
+  const totalGross = sum('gross_profit')
+  const totalParts = sum('parts')
+  return {
+    leadCount,
+    totalRevenue,
+    totalGross,
+    totalParts,
+    grossPct: pct(totalGross),
+    partsPct: pct(totalParts),
+    avgTicket: leadCount ? totalRevenue / leadCount : null,
+    topTechName: topTech ? topTech.name : null,
+    topTechAvg: topTech && topTech.jobs ? topTech.revenue / topTech.jobs : null,
+    unpaidCount: unpaid.length,
+    unpaidOwed: unpaid.reduce((s, r) => s + (Number(r.sale_amount) || 0), 0),
+  }
+}
+
+const insBar = { display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '16px' }
+const insTile = {
+  flex: '1 1 120px',
+  minWidth: '120px',
+  background: '#fff',
+  border: '1px solid #e4e7eb',
+  borderRadius: '10px',
+  padding: '8px 12px',
+}
+const insLabel = {
+  fontSize: '11px',
+  fontWeight: 500,
+  color: '#8b909a',
+  marginBottom: '3px',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+}
+const insValueStyle = {
+  fontSize: '15px',
+  fontWeight: 700,
+  color: '#11141a',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+}
+const insNote = { fontSize: '12px', fontWeight: 500, color: '#6b7280' }
+const insSub = {
+  fontSize: '11px',
+  color: '#6b7280',
+  marginTop: '2px',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+}
+
+function InsightTile({ label, value, note, sub, title }) {
+  return (
+    <div style={insTile}>
+      <div style={insLabel}>{label}</div>
+      <div style={insValueStyle} title={title}>
+        {value}
+        {note ? <span style={insNote}> ({note})</span> : null}
+      </div>
+      {sub ? <div style={insSub}>{sub}</div> : null}
+    </div>
+  )
 }
 
 // Placeholder column headings — rename these to your real ad metrics.
@@ -185,6 +307,9 @@ export default function AdminPage() {
         )
       )
     : rows
+
+  // Insights bar metrics — over the date-filtered rows (not the text search).
+  const insights = isIncomeTab ? computeInsights(rows) : null
 
   // Fetch income_report rows (ordered by report_date desc), filtered by the
   // From/To date range. Only runs for the Income Report tab while logged in.
@@ -873,6 +998,38 @@ export default function AdminPage() {
                     </div>
                   </div>
                 </div>
+
+                {isIncomeTab && !loading && !loadError && insights && (
+                  <div style={insBar}>
+                    <InsightTile label="Lead Count" value={insights.leadCount} />
+                    <InsightTile label="Total Revenue" value={money(insights.totalRevenue)} />
+                    <InsightTile
+                      label="Total Gross"
+                      value={money(insights.totalGross)}
+                      note={insights.grossPct == null ? '—' : `${insights.grossPct}%`}
+                    />
+                    <InsightTile
+                      label="Total Parts"
+                      value={money(insights.totalParts)}
+                      note={insights.partsPct == null ? '—' : `${insights.partsPct}%`}
+                    />
+                    <InsightTile
+                      label="Avg Ticket"
+                      value={insights.avgTicket == null ? '—' : money(insights.avgTicket)}
+                    />
+                    <InsightTile
+                      label="Top Tech"
+                      value={insights.topTechName || '—'}
+                      title={insights.topTechName || undefined}
+                      sub={insights.topTechAvg == null ? null : `${money(insights.topTechAvg)} avg`}
+                    />
+                    <InsightTile
+                      label="Unpaid Invoices"
+                      value={insights.unpaidCount}
+                      sub={`${money(insights.unpaidOwed)} owed`}
+                    />
+                  </div>
+                )}
 
                 <div className="adm-card">
                   <div className="adm-scroll">
