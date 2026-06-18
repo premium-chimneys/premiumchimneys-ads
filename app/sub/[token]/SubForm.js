@@ -376,7 +376,10 @@ export default function SubForm({ token, leads }) {
 
       {done ? <div style={{ ...banner, ...bannerOk }}>Submitted — thanks!</div> : null}
 
-      <div>
+      {available.length === 0 ? (
+        <p style={{ color: '#6b7280', fontSize: '14px', margin: '4px 0 0' }}>No records at this time.</p>
+      ) : (
+        <div>
         {available.map((l) => {
           const tag = TAGS[l.job_stage] || null
           return (
@@ -419,7 +422,8 @@ export default function SubForm({ token, leads }) {
             </button>
           )
         })}
-      </div>
+        </div>
+      )}
     </>
   )
 }
