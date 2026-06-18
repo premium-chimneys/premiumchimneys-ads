@@ -196,11 +196,15 @@ export default function SubForm({ token, leads }) {
     const tag = TAGS[selected.job_stage] || null
     return (
       <>
+        <div style={{ position: 'relative' }}>
         <button
           type="button"
           onClick={back}
           aria-label="Back to jobs"
           style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -212,7 +216,6 @@ export default function SubForm({ token, leads }) {
             background: '#fff',
             color: '#11141a',
             cursor: 'pointer',
-            marginBottom: '20px',
           }}
         >
           <svg
@@ -278,6 +281,7 @@ export default function SubForm({ token, leads }) {
           <h1 className="sub-heading" style={{ fontSize: '20px', fontWeight: 700, margin: '8px 0 0' }}>
             {selected.customer_name || 'Customer'}
           </h1>
+        </div>
         </div>
 
         {error ? <div style={{ ...banner, ...bannerErr }}>{error}</div> : null}
