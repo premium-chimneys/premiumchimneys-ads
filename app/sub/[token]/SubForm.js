@@ -37,7 +37,7 @@ const bannerOk = { background: '#d1fae5', color: '#065f46' }
 const bannerErr = { background: '#fee2e2', color: '#991b1b' }
 
 const TAGS = {
-  upcoming: { bg: '#fef3c7', color: '#92400e', label: 'Upcoming' },
+  upcoming: { bg: 'oklch(0.525 0.223 3.958 / 0.25)', color: 'oklch(0.525 0.223 3.958)', label: 'Upcoming' },
   open_job: { bg: '#e0e7ff', color: '#3730a3', label: 'Open Job' },
 }
 
