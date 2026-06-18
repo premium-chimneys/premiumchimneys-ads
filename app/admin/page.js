@@ -151,6 +151,8 @@ export default function AdminPage() {
   // Invoice filter: 'invoiced' (default — rows with an invoice applied, i.e.
   // jobber_id is non-null) or 'all'. Request-only rows leave jobber_id null.
   const [invoiceFilter, setInvoiceFilter] = useState('invoiced')
+  // Free-text search over the loaded rows (customer / technician / invoice #).
+  const [search, setSearch] = useState('')
 
   const [rows, setRows] = useState([])
   const [loading, setLoading] = useState(false)
@@ -173,6 +175,16 @@ export default function AdminPage() {
   const columns = activeTab.columns
   // Income-type tabs (IIR/EIR) share the income table + fetch.
   const isIncomeTab = Boolean(activeTab.reportType)
+
+  // Client-side search over already-loaded rows.
+  const q = search.trim().toLowerCase()
+  const visibleRows = q
+    ? rows.filter((r) =>
+        [r.customer_name, r.technician_name, r.jobber_id, r.notes].some((v) =>
+          String(v ?? '').toLowerCase().includes(q)
+        )
+      )
+    : rows
 
   // Fetch income_report rows (ordered by report_date desc), filtered by the
   // From/To date range. Only runs for the Income Report tab while logged in.
@@ -813,6 +825,18 @@ export default function AdminPage() {
 
                   <div className="adm-filter">
                     <div className="adm-date-group">
+                      <label htmlFor="adm-search">Search</label>
+                      <input
+                        id="adm-search"
+                        type="search"
+                        className="adm-date"
+                        style={{ minWidth: '200px' }}
+                        placeholder="Customer, technician, invoice…"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                      />
+                    </div>
+                    <div className="adm-date-group">
                       <label htmlFor="adm-start">From</label>
                       <input
                         id="adm-start"
@@ -880,19 +904,21 @@ export default function AdminPage() {
                                 <div className="adm-empty-sub">{loadError}</div>
                               </td>
                             </tr>
-                          ) : rows.length === 0 ? (
+                          ) : visibleRows.length === 0 ? (
                             <tr>
                               <td className="adm-empty" colSpan={columns.length}>
                                 <div className="adm-empty-title">No data yet</div>
                                 <div className="adm-empty-sub">
-                                  {start && end
-                                    ? `No results for ${start} → ${end}.`
-                                    : 'No income records found.'}
+                                  {q
+                                    ? `No matches for “${search.trim()}”.`
+                                    : start && end
+                                      ? `No results for ${start} → ${end}.`
+                                      : 'No income records found.'}
                                 </div>
                               </td>
                             </tr>
                           ) : (
-                            rows.map((row, i) => (
+                            visibleRows.map((row, i) => (
                               <tr key={row.id ?? i} className="adm-row">
                                 {activeTab.fields.map((f, idx) => {
                                   const isMoney = MONEY_KEYS.has(f.key)
@@ -1008,14 +1034,14 @@ export default function AdminPage() {
                           </tr>
                         )}
                       </tbody>
-                      {isIncomeTab && rows.length > 0 && (
+                      {isIncomeTab && visibleRows.length > 0 && (
                         <tfoot>
                           <tr>
                             {activeTab.fields.map((f, idx) => {
                               if (MONEY_KEYS.has(f.key)) {
                                 return (
                                   <td key={f.key} className="adm-num">
-                                    {currencyFmt.format(moneyTotal(rows, f.key))}
+                                    {currencyFmt.format(moneyTotal(visibleRows, f.key))}
                                   </td>
                                 )
                               }
