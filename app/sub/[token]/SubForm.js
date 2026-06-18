@@ -295,7 +295,7 @@ export default function SubForm({ token, leads }) {
     <>
       {Header}
       <p style={{ color: '#11141a', fontSize: '14px', lineHeight: '20px', margin: '0 0 20px' }}>
-        Select a job below and input the following information to complete your submission.
+        Select a customer below and input the following information to complete your submission.
       </p>
 
       {done ? <div style={{ ...banner, ...bannerOk }}>Submitted — thanks!</div> : null}
