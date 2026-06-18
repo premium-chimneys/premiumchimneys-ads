@@ -38,7 +38,7 @@ const bannerErr = { background: '#fee2e2', color: '#991b1b' }
 
 const TAGS = {
   upcoming: { bg: 'oklch(0.525 0.223 3.958 / 0.25)', color: 'oklch(0.525 0.223 3.958)', label: 'Upcoming' },
-  open_job: { bg: '#e0e7ff', color: '#3730a3', label: 'Open Job' },
+  open_job: { bg: 'oklch(0.437 0.078 188.216 / 0.25)', color: 'oklch(0.437 0.078 188.216)', label: 'Open Job' },
 }
 
 const submitBtn = (submitting, succeeded) => ({
