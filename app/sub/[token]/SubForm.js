@@ -236,8 +236,8 @@ export default function SubForm({ token, leads }) {
         <div style={{ textAlign: 'center', marginBottom: '24px' }}>
           <div
             style={{
-              width: '72px',
-              height: '72px',
+              width: '56px',
+              height: '56px',
               borderRadius: '50%',
               background: 'rgba(96, 83, 246, 0.25)',
               color: '#6053F6',
@@ -246,7 +246,7 @@ export default function SubForm({ token, leads }) {
               justifyContent: 'center',
             }}
           >
-            <svg width="34" height="34" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
             </svg>
           </div>
