@@ -255,7 +255,7 @@ export default function SubForm({ token, leads }) {
               <span
                 style={{
                   display: 'inline-block',
-                  padding: '3px 10px',
+                  padding: '3px 6px',
                   borderRadius: '4px',
                   fontSize: '11.5px',
                   fontWeight: 600,
@@ -376,7 +376,7 @@ export default function SubForm({ token, leads }) {
                 <span
                   style={{
                     flexShrink: 0,
-                    padding: '3px 10px',
+                    padding: '3px 6px',
                     borderRadius: '4px',
                     fontSize: '11.5px',
                     fontWeight: 600,
