@@ -3,17 +3,23 @@ import { serviceSupabase } from '@/lib/jobber'
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
-// Public submission endpoint for the per-sub job page (/sub/[token]). The page
-// is public, so the write runs here with the SERVICE-ROLE key — never the anon
-// client in the browser. Two guards block tampering:
-//   1. the sub's jobber_user_id is re-derived from the token server-side (the
-//      client is never trusted to supply it);
-//   2. the update only lands on a row that actually contains this sub's
-//      jobber_user_id and is still open (sale_amount IS NULL).
+// Public submission endpoint for the per-sub job page (/sub/[token]). Service-
+// role only; the sub's jobber_user_id is re-derived from the token (never
+// trusted from the client). Each action is a guarded stage transition — the
+// update lands only when the row belongs to this sub AND is in the expected
+// source job_stage, which blocks tampering and double-submit.
 function nonNegNumber(v) {
   const n = Number(v)
   return Number.isFinite(n) && n >= 0 ? n : null
 }
+
+function cleanNotes(v) {
+  if (v == null) return null
+  const s = String(v).trim()
+  return s === '' ? null : s
+}
+
+const ACTIONS = new Set(['same_day_close', 'open_job_create', 'open_job_close'])
 
 export async function POST(request) {
   let body
@@ -23,20 +29,48 @@ export async function POST(request) {
     return Response.json({ ok: false, error: 'bad_request' }, { status: 400 })
   }
 
-  const { token, rowId, total, parts } = body || {}
+  const { token, rowId, action } = body || {}
   if (!token || rowId === undefined || rowId === null || rowId === '') {
     return Response.json({ ok: false, error: 'missing_fields' }, { status: 400 })
   }
+  if (!ACTIONS.has(action)) {
+    return Response.json({ ok: false, error: 'invalid_action' }, { status: 400 })
+  }
 
-  const totalNum = nonNegNumber(total)
-  const partsNum = nonNegNumber(parts)
-  if (totalNum === null || partsNum === null) {
-    return Response.json({ ok: false, error: 'invalid_amounts' }, { status: 400 })
+  const notes = cleanNotes(body.notes)
+
+  // Validate per-action amounts and assemble the patch + required source stage.
+  let patch
+  let fromStage
+  if (action === 'same_day_close') {
+    const total = nonNegNumber(body.total)
+    const parts = nonNegNumber(body.parts)
+    if (total === null || parts === null) {
+      return Response.json({ ok: false, error: 'invalid_amounts' }, { status: 400 })
+    }
+    fromStage = 'upcoming'
+    patch = { sale_amount: total, parts, notes, job_stage: 'closed', payment: 'unpaid' }
+  } else if (action === 'open_job_create') {
+    const total = nonNegNumber(body.total)
+    const deposit = nonNegNumber(body.deposit)
+    if (total === null || deposit === null) {
+      return Response.json({ ok: false, error: 'invalid_amounts' }, { status: 400 })
+    }
+    fromStage = 'upcoming'
+    patch = { sale_amount: total, deposit, notes, job_stage: 'open_job', payment: 'unpaid' }
+  } else {
+    // open_job_close — only parts (amount/deposit already set at create time).
+    const parts = nonNegNumber(body.parts)
+    if (parts === null) {
+      return Response.json({ ok: false, error: 'invalid_amounts' }, { status: 400 })
+    }
+    fromStage = 'open_job'
+    patch = { parts, job_stage: 'closed' } // notes appended below
   }
 
   const db = serviceSupabase()
 
-  // Resolve the sub from the token → trusted jobber_user_id.
+  // Re-derive the sub from the token → trusted jobber_user_id.
   const { data: sub, error: subError } = await db
     .from('subs')
     .select('jobber_user_id')
@@ -47,21 +81,36 @@ export async function POST(request) {
     return Response.json({ ok: false, error: 'invalid_token' }, { status: 403 })
   }
 
-  // Guarded update — 0 rows means: tampered id, a lead not assigned to this sub,
-  // or already submitted. "Still open" = status 'upcoming' AND unpriced
-  // (sale_amount NULL or 0). After submit, status flips to 'unpaid', so a second
-  // submit is rejected by the status guard even if the entered total was 0.
+  // Open-job close appends to the existing note (preserve the create-stage note).
+  // The UPDATE's stage guard below still makes the transition atomic.
+  if (action === 'open_job_close') {
+    const { data: cur, error: curErr } = await db
+      .from('income_report')
+      .select('notes')
+      .eq('id', rowId)
+      .contains('assigned_user_ids', [sub.jobber_user_id])
+      .eq('job_stage', 'open_job')
+      .maybeSingle()
+    if (curErr) return Response.json({ ok: false, error: 'lookup_failed' }, { status: 500 })
+    if (!cur) {
+      return Response.json({ ok: false, error: 'stage_mismatch' }, { status: 409 })
+    }
+    const prev = cleanNotes(cur.notes)
+    patch.notes = prev ? (notes ? `${prev}\n${notes}` : prev) : notes
+  }
+
+  // Guarded transition: id + assigned to this sub + expected source stage.
+  // 0 rows = tampered id, not this sub's lead, or wrong/already-advanced stage.
   const { data: updated, error } = await db
     .from('income_report')
-    .update({ sale_amount: totalNum, parts: partsNum, status: 'unpaid' })
+    .update(patch)
     .eq('id', rowId)
     .contains('assigned_user_ids', [sub.jobber_user_id])
-    .eq('status', 'upcoming')
-    .or('sale_amount.is.null,sale_amount.eq.0')
+    .eq('job_stage', fromStage)
     .select('id')
   if (error) return Response.json({ ok: false, error: 'update_failed' }, { status: 500 })
   if (!updated?.length) {
-    return Response.json({ ok: false, error: 'not_allowed_or_already_submitted' }, { status: 409 })
+    return Response.json({ ok: false, error: 'stage_mismatch' }, { status: 409 })
   }
 
   return Response.json({ ok: true })

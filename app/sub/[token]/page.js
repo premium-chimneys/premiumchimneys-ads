@@ -64,7 +64,7 @@ export default async function SubPage({ params }) {
 
   const { data: sub } = await db
     .from('subs')
-    .select('name, jobber_user_id')
+    .select('jobber_user_id')
     .eq('token', token)
     .maybeSingle()
 
@@ -77,19 +77,18 @@ export default async function SubPage({ params }) {
     )
   }
 
-  // This sub's open leads: assigned to them, still upcoming, not yet priced.
-  // Unpriced = sale_amount NULL (legacy) or 0 (current insert default).
+  // This sub's open leads: assigned to them and still in an open stage
+  // (upcoming or open_job). Closed jobs never appear.
   const { data: leads } = await db
     .from('income_report')
-    .select('id, customer_name, report_date')
+    .select('id, customer_name, report_date, job_stage')
     .contains('assigned_user_ids', [sub.jobber_user_id])
-    .eq('status', 'upcoming')
-    .or('sale_amount.is.null,sale_amount.eq.0')
+    .in('job_stage', ['upcoming', 'open_job'])
     .order('report_date', { ascending: false })
 
   return (
     <Shell>
-      <SubForm token={token} subName={sub.name || ''} leads={leads || []} />
+      <SubForm token={token} leads={leads || []} />
     </Shell>
   )
 }

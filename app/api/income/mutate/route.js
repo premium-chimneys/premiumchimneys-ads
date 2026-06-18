@@ -13,8 +13,9 @@ export const dynamic = 'force-dynamic'
 // match) if this ever needs real protection.
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'rocket99'
 
-// Columns the client may change. gross_profit is a generated column.
-const UPDATABLE = new Set(['technician_name', 'sale_amount', 'parts'])
+// Columns the client may change. gross_profit is a generated column. `payment`
+// is toggled (unpaid/paid) from the EIR table.
+const UPDATABLE = new Set(['technician_name', 'sale_amount', 'parts', 'payment'])
 
 export async function POST(request) {
   let body

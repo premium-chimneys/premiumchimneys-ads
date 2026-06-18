@@ -5,8 +5,9 @@ import { supabase } from '@/lib/supabase'
 
 const PASSWORD = 'rocket99'
 
-// Display label -> income_report column. Order defines column order.
-const INCOME_FIELDS = [
+// Per-view column sets (label -> income_report key; order = column order).
+// IIR keeps Invoice Number + a single derived status badge (legacy display).
+const IIR_FIELDS = [
   { label: 'Date', key: 'report_date' },
   { label: 'customer', key: 'customer_name' },
   { label: 'technician', key: 'technician_name' },
@@ -14,70 +15,98 @@ const INCOME_FIELDS = [
   { label: 'amount', key: 'sale_amount' },
   { label: 'parts', key: 'parts' },
   { label: 'gross', key: 'gross_profit' },
-  { label: 'status', key: 'status' },
+  { label: 'status', key: 'legacy_status' },
 ]
-
-const INCOME_COLUMNS = INCOME_FIELDS.map((f) => f.label)
+// EIR drops Invoice Number; splits status into Status (job_stage) + Payment,
+// and adds Deposit.
+const EIR_FIELDS = [
+  { label: 'Date', key: 'report_date' },
+  { label: 'customer', key: 'customer_name' },
+  { label: 'technician', key: 'technician_name' },
+  { label: 'amount', key: 'sale_amount' },
+  { label: 'deposit', key: 'deposit' },
+  { label: 'parts', key: 'parts' },
+  { label: 'gross', key: 'gross_profit' },
+  { label: 'Status', key: 'job_stage' },
+  { label: 'Payment', key: 'payment' },
+]
 
 // Columns the user can edit inline by clicking the cell. gross_profit is a
 // generated column (sale_amount - parts) so it's never directly editable.
 const EDITABLE_KEYS = new Set(['technician_name', 'sale_amount', 'parts'])
 
 // Columns rendered as currency / right-friendly numbers.
-const MONEY_KEYS = new Set(['sale_amount', 'parts', 'gross_profit'])
+const MONEY_KEYS = new Set(['sale_amount', 'parts', 'gross_profit', 'deposit'])
 const currencyFmt = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
 
-// Display-only status pills. The DB value is unchanged ('upcoming' stays
-// 'upcoming'); this only maps it to a label + colors.
-const STATUS_BADGES = {
-  closed: { bg: '#d1fae5', color: '#065f46', label: 'Paid' },
-  upcoming: { bg: '#fef3c7', color: '#92400e', label: 'Scheduled' },
+const pill = {
+  display: 'inline-block',
+  padding: '3px 10px',
+  borderRadius: '999px',
+  fontSize: '12px',
+  fontWeight: 600,
+  lineHeight: 1.5,
+}
+// Job stage (sub-driven) and payment (Idan-driven) badge palettes.
+const JOB_STAGE_BADGES = {
+  upcoming: { bg: '#fef3c7', color: '#92400e', label: 'Upcoming' },
+  open_job: { bg: '#e0e7ff', color: '#3730a3', label: 'Open Job' },
+  closed: { bg: '#e5e7eb', color: '#374151', label: 'Closed' },
+}
+const PAYMENT_BADGES = {
   unpaid: { bg: '#dbeafe', color: '#1e40af', label: 'Unpaid' },
-  lost: { bg: '#e5e7eb', color: '#374151', label: 'Lost' },
+  paid: { bg: '#d1fae5', color: '#065f46', label: 'Paid' },
 }
 
-function StatusBadge({ status }) {
-  const cfg = STATUS_BADGES[String(status || '').toLowerCase()]
-  if (!cfg) return status ? String(status) : '—'
-  return (
-    <span
-      style={{
-        display: 'inline-block',
-        padding: '3px 10px',
-        borderRadius: '999px',
-        fontSize: '12px',
-        fontWeight: 600,
-        lineHeight: 1.5,
-        backgroundColor: cfg.bg,
-        color: cfg.color,
-      }}
-    >
-      {cfg.label}
-    </span>
-  )
+function Badge({ cfg, fallback }) {
+  if (!cfg) return fallback ?? '—'
+  return <span style={{ ...pill, backgroundColor: cfg.bg, color: cfg.color }}>{cfg.label}</span>
+}
+
+// IIR keeps one badge: derive the legacy label from the two new columns
+// (upcoming -> Scheduled, else paid -> Paid / unpaid -> Unpaid).
+function legacyStatusCfg(row) {
+  if (String(row.job_stage || '').toLowerCase() === 'upcoming') {
+    return { bg: '#fef3c7', color: '#92400e', label: 'Scheduled' }
+  }
+  return String(row.payment || '').toLowerCase() === 'paid'
+    ? { bg: '#d1fae5', color: '#065f46', label: 'Paid' }
+    : { bg: '#dbeafe', color: '#1e40af', label: 'Unpaid' }
 }
 
 // True when a money value should read "N/A" instead of $0.00: empty/zero on a
-// row that isn't closed.
-function isMoneyNA(val, status) {
+// job that isn't closed yet.
+function isMoneyNA(val, jobStage) {
   const empty = val === null || val === undefined || val === '' || Number(val) === 0
-  return empty && String(status || '').toLowerCase() !== 'closed'
+  return empty && String(jobStage || '').toLowerCase() !== 'closed'
 }
 
 // Renders one income cell (returns JSX, not just a string).
 function renderIncomeCell(key, row) {
   const val = row[key]
 
-  if (key === 'status') return <StatusBadge status={val} />
+  if (key === 'job_stage') {
+    return <Badge cfg={JOB_STAGE_BADGES[String(val || '').toLowerCase()]} fallback={val || '—'} />
+  }
+  if (key === 'payment') {
+    return <Badge cfg={PAYMENT_BADGES[String(val || '').toLowerCase()]} fallback={val || '—'} />
+  }
+  if (key === 'legacy_status') return <Badge cfg={legacyStatusCfg(row)} />
+
+  // Deposit: reference-only; empty/zero reads as a dash (never $0.00).
+  if (key === 'deposit') {
+    const n = Number(val)
+    return val == null || n === 0 ? '—' : currencyFmt.format(n)
+  }
 
   if (MONEY_KEYS.has(key)) {
-    // Empty/zero on a non-closed row reads as the same dash as Technician/Jobber ID.
-    if (isMoneyNA(val, row.status)) return '—'
+    // Empty/zero on a not-yet-closed job reads as the same dash as Technician/Invoice.
+    if (isMoneyNA(val, row.job_stage)) return '—'
     const n = Number(val)
     return Number.isNaN(n) ? String(val) : currencyFmt.format(n)
   }
 
-  // Technician, Jobber ID, Customer, Date: keep the dash when empty.
+  // Technician, Invoice, Customer, Date: keep the dash when empty.
   if (val === null || val === undefined || val === '') return '—'
   return String(val)
 }
@@ -104,8 +133,8 @@ const AD_COLUMNS = [
 // marks an income-type tab and drives the Supabase filter; IIR also surfaces
 // still-unclassified (null) rows as the no-assignee fallback bucket.
 const TABS = [
-  { id: 'iir', label: 'IIR · Internal', columns: INCOME_COLUMNS, reportType: 'internal' },
-  { id: 'eir', label: 'EIR · External', columns: INCOME_COLUMNS, reportType: 'external' },
+  { id: 'iir', label: 'IIR · Internal', fields: IIR_FIELDS, columns: IIR_FIELDS.map((f) => f.label), reportType: 'internal' },
+  { id: 'eir', label: 'EIR · External', fields: EIR_FIELDS, columns: EIR_FIELDS.map((f) => f.label), reportType: 'external' },
   { id: 'ads', label: 'Ad Performance', columns: AD_COLUMNS },
 ]
 
@@ -136,6 +165,8 @@ export default function AdminPage() {
   const escapingRef = useRef(false)
   // id of the row currently being deleted (disables its button).
   const [deletingId, setDeletingId] = useState(null)
+  // id of the row whose payment is currently being toggled (EIR).
+  const [togglingId, setTogglingId] = useState(null)
 
   const activeTab = TABS.find((t) => t.id === tab) || TABS[0]
   const columns = activeTab.columns
@@ -276,6 +307,32 @@ export default function AdminPage() {
       return
     }
     setRows((prev) => prev.filter((r) => r.id !== row.id))
+  }
+
+  // EIR-only: flip payment unpaid <-> paid via the service-role mutate route.
+  async function togglePayment(row) {
+    if (togglingId) return
+    const next = String(row.payment || '').toLowerCase() === 'paid' ? 'unpaid' : 'paid'
+    setTogglingId(row.id)
+    let res, json
+    try {
+      res = await fetch('/api/income/mutate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'update', id: row.id, password: PASSWORD, patch: { payment: next } }),
+      })
+      json = await res.json()
+    } catch (e) {
+      setTogglingId(null)
+      window.alert(`Couldn't update payment: ${e.message}`)
+      return
+    }
+    setTogglingId(null)
+    if (!res.ok || !json?.ok) {
+      window.alert(`Couldn't update payment: ${json?.error || `error ${res.status}`}`)
+      return
+    }
+    setRows((prev) => prev.map((r) => (r.id === row.id ? json.row : r)))
   }
 
   // Restore session so a refresh doesn't kick you back to the login screen.
@@ -816,10 +873,11 @@ export default function AdminPage() {
                           ) : (
                             rows.map((row, i) => (
                               <tr key={row.id ?? i} className="adm-row">
-                                {INCOME_FIELDS.map((f, idx) => {
+                                {activeTab.fields.map((f, idx) => {
                                   const isMoney = MONEY_KEYS.has(f.key)
                                   const editable = EDITABLE_KEYS.has(f.key)
-                                  const isLast = idx === INCOME_FIELDS.length - 1
+                                  const isPayment = f.key === 'payment'
+                                  const isLast = idx === activeTab.fields.length - 1
                                   const isOpen =
                                     editing && editing.id === row.id && editing.key === f.key
                                   const cls = [
@@ -832,11 +890,20 @@ export default function AdminPage() {
                                     <td
                                       key={f.key}
                                       className={cls}
-                                      title={editable && !isOpen ? 'Click to edit' : undefined}
+                                      style={isPayment ? { cursor: 'pointer' } : undefined}
+                                      title={
+                                        editable && !isOpen
+                                          ? 'Click to edit'
+                                          : isPayment
+                                            ? 'Click to toggle paid / unpaid'
+                                            : undefined
+                                      }
                                       onClick={
                                         editable && !isOpen
                                           ? () => startEdit(row, f.key)
-                                          : undefined
+                                          : isPayment
+                                            ? () => togglePayment(row)
+                                            : undefined
                                       }
                                     >
                                       {isOpen ? (
@@ -923,7 +990,7 @@ export default function AdminPage() {
                       {isIncomeTab && rows.length > 0 && (
                         <tfoot>
                           <tr>
-                            {INCOME_FIELDS.map((f, idx) => {
+                            {activeTab.fields.map((f, idx) => {
                               if (MONEY_KEYS.has(f.key)) {
                                 return (
                                   <td key={f.key} className="adm-num">
