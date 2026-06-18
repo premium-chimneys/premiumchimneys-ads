@@ -44,8 +44,8 @@ const TAGS = {
 const submitBtn = (submitting, succeeded) => ({
   width: '100%',
   height: '50px',
-  fontSize: '16px',
-  fontWeight: 600,
+  fontSize: '14px',
+  fontWeight: 500,
   color: '#fff',
   background: succeeded ? 'oklch(0.627 0.194 149.214)' : submitting ? '#6b7280' : '#11141a',
   border: 'none',
