@@ -347,7 +347,7 @@ export default function SubForm({ token, leads }) {
             <Field id="notes" label="Notes (optional)">
               <textarea id="notes" style={innerTextarea} value={notes} onChange={(e) => setNotes(e.target.value)} />
             </Field>
-            <SubmitButton label="Submit Same-Day Close" submitting={submitting} succeeded={succeeded} />
+            <SubmitButton label="Submit" submitting={submitting} succeeded={succeeded} />
           </form>
         ) : (
           <form onSubmit={submitOpenCreate}>
@@ -360,7 +360,7 @@ export default function SubForm({ token, leads }) {
             <Field id="notes" label="Notes (optional)">
               <textarea id="notes" style={innerTextarea} value={notes} onChange={(e) => setNotes(e.target.value)} />
             </Field>
-            <SubmitButton label="Submit Open Job" submitting={submitting} succeeded={succeeded} />
+            <SubmitButton label="Submit" submitting={submitting} succeeded={succeeded} />
           </form>
         )}
       </>
