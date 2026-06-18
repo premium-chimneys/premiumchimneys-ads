@@ -4,7 +4,10 @@ import SubForm from './SubForm'
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 // Private per-sub links — keep them out of search results.
-export const metadata = { title: 'Submit Job', robots: { index: false, follow: false } }
+export const metadata = {
+  title: 'Subcontractor Job Submission | Premium Chimneys',
+  robots: { index: false, follow: false },
+}
 
 // Class-based so a media query can strip the card on phones (inline styles
 // can't carry one). Desktop keeps the white card; on mobile the content sits
