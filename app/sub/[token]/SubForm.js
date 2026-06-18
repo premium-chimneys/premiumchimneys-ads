@@ -54,12 +54,6 @@ const submitBtn = (busy) => ({
   fontFamily: 'inherit',
 })
 
-function fmtLead(l) {
-  const name = l.customer_name || 'Job'
-  const date = l.report_date ? String(l.report_date).slice(0, 10) : ''
-  return date ? `${name} — ${date}` : name
-}
-
 function Field({ id, label, children }) {
   return (
     <div style={field}>
@@ -199,31 +193,91 @@ export default function SubForm({ token, leads }) {
 
   // ----- SCREEN 2: a selected lead -----
   if (selected) {
+    const tag = TAGS[selected.job_stage] || null
     return (
       <>
-        {Header}
         <button
           type="button"
           onClick={back}
+          aria-label="Back to jobs"
           style={{
             display: 'inline-flex',
             alignItems: 'center',
-            gap: '4px',
-            margin: '8px 0 14px',
+            justifyContent: 'center',
+            width: '36px',
+            height: '36px',
             padding: 0,
-            border: 'none',
-            background: 'none',
-            color: '#6b7280',
-            fontSize: '13px',
-            fontFamily: 'inherit',
+            border: '1px solid #e4e7eb',
+            borderRadius: '10px',
+            background: '#fff',
+            color: '#11141a',
             cursor: 'pointer',
+            marginBottom: '20px',
           }}
         >
-          ‹ Back to jobs
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
         </button>
 
-        <div style={{ fontSize: '15px', fontWeight: 600, color: '#11141a', marginBottom: '16px' }}>
-          {fmtLead(selected)}
+        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+          <div
+            style={{
+              width: '72px',
+              height: '72px',
+              borderRadius: '50%',
+              background: '#eef2ff',
+              color: '#4f46e5',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          </div>
+          {tag ? (
+            <div style={{ marginTop: '14px' }}>
+              <span
+                style={{
+                  display: 'inline-block',
+                  padding: '3px 10px',
+                  borderRadius: '999px',
+                  fontSize: '11.5px',
+                  fontWeight: 600,
+                  backgroundColor: tag.bg,
+                  color: tag.color,
+                }}
+              >
+                {tag.label}
+              </span>
+            </div>
+          ) : null}
+          <h1 className="sub-heading" style={{ fontSize: '20px', fontWeight: 700, margin: '8px 0 0' }}>
+            {selected.customer_name || 'Customer'}
+          </h1>
         </div>
 
         {error ? <div style={{ ...banner, ...bannerErr }}>{error}</div> : null}
