@@ -335,17 +335,37 @@ export default function AdminPage() {
     setRows((prev) => prev.map((r) => (r.id === row.id ? json.row : r)))
   }
 
-  // Restore session so a refresh doesn't kick you back to the login screen.
-  // sessionStorage is client-only, so this must run after mount — rendering
-  // null until then keeps server and client markup in sync (no hydration flash).
+  // Restore session + remembered tab/filters so a refresh stays put. Client-only,
+  // so this runs after mount — rendering null until then keeps server and client
+  // markup in sync (no hydration flash).
   /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
-    if (typeof window !== 'undefined' && sessionStorage.getItem('pc_admin') === '1') {
-      setAuthed(true)
+    if (typeof window !== 'undefined') {
+      if (sessionStorage.getItem('pc_admin') === '1') setAuthed(true)
+      try {
+        const saved = JSON.parse(localStorage.getItem('pc_admin_prefs') || '{}')
+        if (saved.tab) setTab(saved.tab)
+        if (typeof saved.start === 'string') setStart(saved.start)
+        if (typeof saved.end === 'string') setEnd(saved.end)
+        if (saved.invoiceFilter) setInvoiceFilter(saved.invoiceFilter)
+      } catch {
+        // ignore malformed prefs
+      }
     }
     setReady(true)
   }, [])
   /* eslint-enable react-hooks/set-state-in-effect */
+
+  // Persist tab + filters (only after the initial restore, so we don't clobber
+  // saved values with the defaults on first paint).
+  useEffect(() => {
+    if (!ready || typeof window === 'undefined') return
+    try {
+      localStorage.setItem('pc_admin_prefs', JSON.stringify({ tab, start, end, invoiceFilter }))
+    } catch {
+      // storage full / unavailable — non-fatal
+    }
+  }, [ready, tab, start, end, invoiceFilter])
 
   function handleLogin(e) {
     e.preventDefault()
