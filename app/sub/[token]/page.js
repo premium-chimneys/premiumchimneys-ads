@@ -9,6 +9,15 @@ export const metadata = {
   robots: { index: false, follow: false },
 }
 
+// Lock the viewport scale so iOS doesn't auto-zoom when a (14px) field is
+// focused — only the keyboard should appear, the view shouldn't change.
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+}
+
 // Class-based so a media query can strip the card on phones (inline styles
 // can't carry one). Desktop keeps the white card; on mobile the content sits
 // flush on the page background.
