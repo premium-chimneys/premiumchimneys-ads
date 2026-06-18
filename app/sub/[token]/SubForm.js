@@ -324,7 +324,7 @@ export default function SubForm({ token, leads }) {
                 fontFamily: 'inherit',
               }}
             >
-              <span style={{ fontSize: '15px', color: '#11141a' }}>{fmtLead(l)}</span>
+              <span style={{ fontSize: '15px', color: '#11141a' }}>{l.customer_name || 'Job'}</span>
               {tag ? (
                 <span
                   style={{
