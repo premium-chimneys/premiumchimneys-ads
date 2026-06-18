@@ -264,7 +264,7 @@ export default function SubForm({ token, leads }) {
                 style={{
                   display: 'inline-block',
                   padding: '3px 10px',
-                  borderRadius: '999px',
+                  borderRadius: '4px',
                   fontSize: '11.5px',
                   fontWeight: 600,
                   backgroundColor: tag.bg,
@@ -384,7 +384,7 @@ export default function SubForm({ token, leads }) {
                   style={{
                     flexShrink: 0,
                     padding: '3px 10px',
-                    borderRadius: '999px',
+                    borderRadius: '4px',
                     fontSize: '11.5px',
                     fontWeight: 600,
                     backgroundColor: tag.bg,
