@@ -41,18 +41,48 @@ const TAGS = {
   open_job: { bg: '#e0e7ff', color: '#3730a3', label: 'Open Job' },
 }
 
-const submitBtn = (busy) => ({
+const submitBtn = (submitting, succeeded) => ({
   width: '100%',
   height: '50px',
   fontSize: '16px',
   fontWeight: 600,
   color: '#fff',
-  background: busy ? '#6b7280' : '#11141a',
+  background: succeeded ? 'oklch(0.627 0.194 149.214)' : submitting ? '#6b7280' : '#11141a',
   border: 'none',
   borderRadius: '10px',
-  cursor: busy ? 'default' : 'pointer',
+  cursor: submitting || succeeded ? 'default' : 'pointer',
   fontFamily: 'inherit',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
 })
+
+function SubmitButton({ label, submitting, succeeded }) {
+  return (
+    <button type="submit" disabled={submitting || succeeded} style={submitBtn(submitting, succeeded)}>
+      {succeeded ? (
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#fff"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <polyline points="8 12.5 11 15.5 16 9" />
+        </svg>
+      ) : submitting ? (
+        'Submitting…'
+      ) : (
+        label
+      )}
+    </button>
+  )
+}
 
 function Field({ id, label, children }) {
   return (
@@ -88,6 +118,7 @@ export default function SubForm({ token, leads }) {
   const [deposit, setDeposit] = useState('')
   const [notes, setNotes] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  const [succeeded, setSucceeded] = useState(false)
   const [error, setError] = useState('')
   const [done, setDone] = useState(false)
 
@@ -100,6 +131,7 @@ export default function SubForm({ token, leads }) {
     setDeposit('')
     setNotes('')
     setError('')
+    setSucceeded(false)
   }
 
   function openLead(lead) {
@@ -139,18 +171,21 @@ export default function SubForm({ token, leads }) {
       return
     }
 
-    // Apply the stage transition to the local list, then return to it.
-    if (action === 'open_job_create') {
-      setAvailable((prev) =>
-        prev.map((l) => (String(l.id) === String(selectedId) ? { ...l, job_stage: 'open_job' } : l))
-      )
-    } else {
-      // closed → drops off the list entirely
-      setAvailable((prev) => prev.filter((l) => String(l.id) !== String(selectedId)))
-    }
-    setSelectedId(null)
-    resetForm()
-    setDone(true)
+    // Flash the green check on the button, then apply the transition + go back.
+    setSucceeded(true)
+    setTimeout(() => {
+      if (action === 'open_job_create') {
+        setAvailable((prev) =>
+          prev.map((l) => (String(l.id) === String(selectedId) ? { ...l, job_stage: 'open_job' } : l))
+        )
+      } else {
+        // closed → drops off the list entirely
+        setAvailable((prev) => prev.filter((l) => String(l.id) !== String(selectedId)))
+      }
+      setSelectedId(null)
+      resetForm()
+      setDone(true)
+    }, 1200)
   }
 
   // amount helpers — return a number or null
@@ -284,9 +319,7 @@ export default function SubForm({ token, leads }) {
             <Field id="notes" label="Notes (optional)">
               <textarea id="notes" style={innerTextarea} value={notes} onChange={(e) => setNotes(e.target.value)} />
             </Field>
-            <button type="submit" disabled={submitting} style={submitBtn(submitting)}>
-              {submitting ? 'Submitting…' : 'Close Job'}
-            </button>
+            <SubmitButton label="Close Job" submitting={submitting} succeeded={succeeded} />
           </form>
         ) : closeType === null ? (
           // Upcoming → choose close type
@@ -313,9 +346,7 @@ export default function SubForm({ token, leads }) {
             <Field id="notes" label="Notes (optional)">
               <textarea id="notes" style={innerTextarea} value={notes} onChange={(e) => setNotes(e.target.value)} />
             </Field>
-            <button type="submit" disabled={submitting} style={submitBtn(submitting)}>
-              {submitting ? 'Submitting…' : 'Submit Same-Day Close'}
-            </button>
+            <SubmitButton label="Submit Same-Day Close" submitting={submitting} succeeded={succeeded} />
           </form>
         ) : (
           <form onSubmit={submitOpenCreate}>
@@ -328,9 +359,7 @@ export default function SubForm({ token, leads }) {
             <Field id="notes" label="Notes (optional)">
               <textarea id="notes" style={innerTextarea} value={notes} onChange={(e) => setNotes(e.target.value)} />
             </Field>
-            <button type="submit" disabled={submitting} style={submitBtn(submitting)}>
-              {submitting ? 'Submitting…' : 'Submit Open Job'}
-            </button>
+            <SubmitButton label="Submit Open Job" submitting={submitting} succeeded={succeeded} />
           </form>
         )}
       </>
