@@ -710,5 +710,9 @@ const css = `
     .ps-inner { padding: 24px 16px; }
     .ps-frame { padding: 24px 16px; }
     .ps-carousel { margin-left: -16px; margin-right: -16px; }
+    /* Full-width CTA button in the "Not sure what you need?" banner (scoped so it doesn't touch the hero CTA) */
+    .ps-cta-actions { width: 100%; align-self: stretch; }
+    .ps-cta-actions .hero-cta-wrap { display: block; width: 100%; }
+    .ps-cta-actions .hero-cta-primary { width: 100%; }
   }
 `;

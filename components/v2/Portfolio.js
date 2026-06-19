@@ -110,6 +110,10 @@ export default function Portfolio({ city, landing }) {
   }, []);
 
   const maxIndex = Math.max(0, tiles.length - cardsPerView);
+  // On mobile we hand scrolling to native scroll-snap (smoother), so the JS
+  // pointer-drag handlers are disabled there to avoid fighting native scroll.
+  const isMobile = cardsPerView === 1;
+  const dragEnabled = !isMobile && maxIndex > 0;
 
   // Clamp current index if viewport change reduces the available range.
   useEffect(() => {
@@ -336,12 +340,12 @@ export default function Portfolio({ city, landing }) {
               style={{ '--index': index }}
               role="region"
               aria-label="Recent work"
-              onPointerDown={maxIndex > 0 ? onPointerDown : undefined}
-              onPointerMove={maxIndex > 0 ? onPointerMove : undefined}
-              onPointerUp={maxIndex > 0 ? endDrag : undefined}
-              onPointerCancel={maxIndex > 0 ? endDrag : undefined}
-              onLostPointerCapture={maxIndex > 0 ? endDrag : undefined}
-              onClickCapture={maxIndex > 0 ? onClickCapture : undefined}
+              onPointerDown={dragEnabled ? onPointerDown : undefined}
+              onPointerMove={dragEnabled ? onPointerMove : undefined}
+              onPointerUp={dragEnabled ? endDrag : undefined}
+              onPointerCancel={dragEnabled ? endDrag : undefined}
+              onLostPointerCapture={dragEnabled ? endDrag : undefined}
+              onClickCapture={dragEnabled ? onClickCapture : undefined}
             >
               {galleryTiles.map((t, i) => (
                 <div className="pc-card" key={i}>
@@ -645,8 +649,27 @@ const css = `
     .pc-head { margin-bottom: 24px; }
   }
   @media (max-width: 720px) {
-    /* Switch to a 1-card view; JS reads this same breakpoint via matchMedia. */
-    .pf-section { --card-width: calc(min(100vw, 1200px) - 48px); }
+    /* Mobile: ~60%-width photos in a native, fluid scroll-snap strip.
+       JS reads this same breakpoint via matchMedia and disables pointer-drag. */
+    .pf-section { --card-width: 60vw; --card-gap: 16px; }
+    /* Photos only — hide the prev/next arrows on mobile. */
+    .pc-controls { display: none; }
+    /* Hand scrolling to the browser for smooth momentum + snapping. */
+    .pc-track {
+      transform: none !important;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
+      scroll-padding: 0 20px;
+      touch-action: pan-x pan-y;
+      scrollbar-width: none;
+      /* Bleed past the container's left/right padding so photos overflow to both screen edges. */
+      margin-left: -20px;
+      margin-right: -20px;
+    }
+    .pc-track::-webkit-scrollbar { display: none; }
+    .pc-card { scroll-snap-align: center; }
   }
   @media (max-width: 560px) {
     .pc-head { margin-bottom: 24px; }

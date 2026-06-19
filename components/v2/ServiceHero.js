@@ -402,7 +402,8 @@ export default function ServiceHero({ city, heading, serviceData, landing }) {
           font-weight: 800;
           letter-spacing: 0.1em;
           text-transform: uppercase;
-          padding: 5px 9px;
+          /* trim right padding to offset the trailing letter-spacing so the text reads centered */
+          padding: 5px 8px 5px 9px;
           border-radius: 6px;
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
           white-space: nowrap;
@@ -583,7 +584,7 @@ export default function ServiceHero({ city, heading, serviceData, landing }) {
             color: #ffffff;
           }
           /* Center the pink tag on the button, keeping it floated on the top edge */
-          .hero-cta-badge { left: 50%; right: auto; transform: translate(-50%, -50%); }
+          .hero-cta-badge { left: auto; right: 4%; transform: translate(0, -50%); padding: 5px 9px; }
         }
 
         @media (max-width: 480px) {

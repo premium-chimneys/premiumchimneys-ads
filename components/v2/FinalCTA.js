@@ -34,10 +34,11 @@ export default function FinalCTA({ landing } = {}) {
       <style dangerouslySetInnerHTML={{ __html: css }} />
 
       <section className="r-fundamentalsSection r-ctaSection" style={{ background: '#F5F5F7', position: 'relative' }}>
-        <div style={{ width: '100%', maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
+        <div style={{ boxSizing: 'border-box', width: '100%', maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
           <div
             className="r-fundamentalsCard"
             style={{
+              boxSizing: 'border-box',
               position: 'relative',
               overflow: 'hidden',
               display: 'flex',
@@ -95,7 +96,7 @@ export default function FinalCTA({ landing } = {}) {
             />
 
             {/* Content */}
-            <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <div style={{ position: 'relative', zIndex: 1, width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <span
                 style={{
                   display: 'inline-flex',
@@ -122,7 +123,9 @@ export default function FinalCTA({ landing } = {}) {
                 className="r-fundamentalsH2"
                 style={{
                   margin: '0 auto',
+                  width: '100%',
                   maxWidth: 760,
+                  overflowWrap: 'break-word',
                   fontFamily: "'Inter Tight', 'Inter', sans-serif",
                   fontWeight: 700,
                   letterSpacing: '-0.024em',
@@ -137,7 +140,9 @@ export default function FinalCTA({ landing } = {}) {
                 className="r-fundamentalsSubtext"
                 style={{
                   margin: '24px auto 0',
+                  width: '100%',
                   maxWidth: 580,
+                  overflowWrap: 'break-word',
                   fontFamily: "'Inter Tight', 'Inter', sans-serif",
                   fontWeight: 500,
                   lineHeight: 1.55,
@@ -178,7 +183,8 @@ const css = `
   .r-ctaSection { padding-bottom: 128px; }
   @media (max-width: 720px) {
     .r-fundamentalsSection { padding: 32px 0; }
-    .r-ctaSection { padding-bottom: 64px; }
+    /* No bottom padding on mobile so the full-bleed dark card meets the footer with no light strip */
+    .r-ctaSection { padding-bottom: 0; }
   }
 
   /* ── Dark card ── */
@@ -257,11 +263,16 @@ const css = `
     font-weight: 800;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    padding: 5px 9px;
+    /* trim right padding to offset the trailing letter-spacing so the text reads centered */
+    padding: 5px 8px 5px 9px;
     border-radius: 6px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
     white-space: nowrap;
     pointer-events: none;
   }
   .hero-cta-badge svg { width: 11px; height: 11px; flex-shrink: 0; }
+  /* Mobile: center the tag on the button and shrink to content (matches ServiceHero) */
+  @media (max-width: 960px) {
+    .hero-cta-badge { left: auto; right: 4%; transform: translate(0, -50%); padding: 5px 9px; }
+  }
 `;
