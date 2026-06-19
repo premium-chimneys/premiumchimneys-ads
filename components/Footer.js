@@ -69,7 +69,15 @@ export default function Footer({ city }) {
         padding-right: 24px;
         box-sizing: border-box;
       }
-      
+
+      /* V2 desktop only: align the footer to the same 1200px content width as the
+         other V2 section containers (.pf-inner). Scoped to [data-variant="v2"] so
+         the shared V1 footer is left untouched. */
+      @media (min-width: 769px) {
+        [data-variant="v2"] .footer-wrap { padding-left: 0; padding-right: 0; }
+        [data-variant="v2"] .footer-inner { box-sizing: content-box; }
+      }
+
       /* === outer flame (soft glow layer) === */
       .flame-outer {
         position: absolute;
