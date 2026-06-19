@@ -664,9 +664,12 @@ const css = `
       scroll-padding: 0 20px;
       touch-action: pan-x pan-y;
       scrollbar-width: none;
-      /* Bleed past the container's left/right padding so photos overflow to both screen edges. */
+      /* Bleed past the container's left/right padding so photos overflow to both screen edges.
+         The inner padding-left keeps the FIRST photo aligned with the content at rest;
+         it scrolls away once the user swipes, letting the photos bypass the padding. */
       margin-left: -20px;
       margin-right: -20px;
+      padding-left: 20px;
     }
     .pc-track::-webkit-scrollbar { display: none; }
     .pc-card { scroll-snap-align: center; }
