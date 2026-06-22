@@ -439,25 +439,10 @@ export default function Form({ heading }) {
       btn.disabled = true
       btn.innerHTML = submitSVG + ' Sending to dispatch...'
 
-      const nameInput = form.querySelector('input[name="name"]')
-      const emailInput = form.querySelector('input[name="email"]')
-      const messageInput = form.querySelector('textarea[name="message"]')
-
-      const payload = {
-        full_name: nameInput?.value || '',
-        phone: '+1' + digits,
-        email: emailInput?.value || '',
-        message: messageInput?.value || '',
-        source_url: window.location.href,
-      }
-
-      // Fire-and-forget — the success state no longer depends on the request result
-      fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      }).catch((err) => console.error('submit error:', err))
-
+      // Lead delivery is handled by Gateway's capture.js, which listens for
+      // this form's native 'submit' event (document-level, capture phase) and
+      // reads the named inputs. Don't add a fetch here — keep the native
+      // submit event firing. We only drive the success-state UI.
       card.classList.add('submitted')
     }
 

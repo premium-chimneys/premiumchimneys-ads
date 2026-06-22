@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <script async src="https://cdn.serviceroot.io/capture.js" data-tenant="premium-chimneys"></script>
+        <script defer src="https://cdn.serviceroot.io/capture.js" data-tenant="premium-chimneys"></script>
         <script async src="https://gateway.serviceroot.io/booking.js" data-tenant="premium-chimneys" data-mode="popup"></script>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
