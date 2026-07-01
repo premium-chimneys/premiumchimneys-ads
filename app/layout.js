@@ -63,10 +63,6 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
           src="https://s.ksrndkehqnwntyxlhgto.com/137765.js"
           strategy="afterInteractive"
         />
-
-        <Script id="chatling-config" strategy="afterInteractive">
-          {`window.chtlConfig = { chatbotId: "7441393689", customAttributes: { page_url: window.location.href } };`}
-        </Script>
       </head>
       <body>
         <noscript>
@@ -82,10 +78,10 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
         {children}
 
         <Script
-          id="chatling-embed-script"
-          src="https://chatling.ai/js/embed.js"
+          id="serviceroot-chat"
+          src="https://gateway.serviceroot.io/chat.js"
           strategy="afterInteractive"
-          data-id="7441393689"
+          data-tenant="premium-chimneys"
         />
       </body>
     </html>

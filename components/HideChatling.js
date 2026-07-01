@@ -1,15 +1,14 @@
 'use client'
 import { useEffect } from 'react'
 
-// The Chatling chatbot is injected globally from app/layout.js (shared with the
-// public marketing pages, which keep it). It doesn't belong on internal/utility
-// pages, so this strips the widget client-side wherever it's rendered — both via
-// CSS and by removing the nodes as the async embed injects them.
+// The gateway chat widget is injected globally from app/layout.js (shared with
+// the public marketing pages, which keep it). It doesn't belong on internal/
+// utility pages, so this strips the widget client-side wherever it's rendered —
+// both via CSS and by removing the nodes as the async embed injects them.
 export default function HideChatling() {
   useEffect(() => {
-    // Chatling prefixes its injected elements with "chtl-" (launcher, iframe,
-    // hovering message); the chat iframe loads from *.chatling.ai.
-    const SELECTOR = '[id^="chtl-"], [class*="chtl-"], iframe[src*="chatling" i]'
+    // The gateway widget mounts a fixed launcher and panel with stable ids.
+    const SELECTOR = '#sr-chat-launcher, #sr-chat-panel'
 
     const remove = () => {
       document.querySelectorAll(SELECTOR).forEach((el) => el.remove())
@@ -27,9 +26,8 @@ export default function HideChatling() {
 
   return (
     <style dangerouslySetInnerHTML={{ __html: `
-      [id^="chtl-"],
-      [class*="chtl-"],
-      iframe[src*="chatling" i] { display: none !important; }
+      #sr-chat-launcher,
+      #sr-chat-panel { display: none !important; }
     `}} />
   )
 }

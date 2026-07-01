@@ -1,15 +1,13 @@
 'use client';
 import { useEffect } from 'react';
 
-// V2-only: the Chatling chatbot is injected globally from app/layout.js, which
-// is shared with V1 and the rest of the site. We can't remove it at the source
-// without affecting V1, so this component strips the widget on V2 pages only.
+// V3-only: the gateway chat widget is injected globally from app/layout.js,
+// which is shared with V1 and the rest of the site. We can't remove it at the
+// source without affecting V1, so this component strips the widget on V3 pages.
 export default function HideChatling() {
   useEffect(() => {
-    // Chatling prefixes its injected elements with "chtl-" (launcher, iframe,
-    // hovering message) and the chat iframe loads from *.chatling.ai.
-    const SELECTOR =
-      '[id^="chtl-"], [class*="chtl-"], iframe[src*="chatling" i]';
+    // The gateway widget mounts a fixed launcher and panel with stable ids.
+    const SELECTOR = '#sr-chat-launcher, #sr-chat-panel';
 
     const remove = () => {
       document.querySelectorAll(SELECTOR).forEach((el) => el.remove());
@@ -27,9 +25,8 @@ export default function HideChatling() {
 
   return (
     <style dangerouslySetInnerHTML={{ __html: `
-      [id^="chtl-"],
-      [class*="chtl-"],
-      iframe[src*="chatling" i] { display: none !important; }
+      #sr-chat-launcher,
+      #sr-chat-panel { display: none !important; }
     `}} />
   );
 }
