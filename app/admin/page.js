@@ -144,17 +144,29 @@ function moneyTotal(rows, key) {
 
 const money = (n) => currencyFmt.format(Number(n) || 0)
 
+// Percent of revenue for the Gross/Parts insight notes. Guards the misleading
+// extremes: a real but tiny share (e.g. $50 of parts against $37k revenue)
+// rounds to 0% / 100%, which reads as "no parts" / "pure profit". Show <1% /
+// >99% there so the note matches the non-zero dollar figure beside it.
+function fmtPct(part, total) {
+  if (!total) return null
+  const p = (part / total) * 100
+  if (p > 0 && p < 0.5) return '<1%'
+  if (p >= 99.5 && p < 100) return '>99%'
+  return `${Math.round(p)}%`
+}
+
 // ---------------------------------------------------------------------------
 // Insights bar — computed over REVENUE rows only (real sale_amount > 0).
 // Zero-dollar upcoming rows are excluded from every metric, incl. lead count.
-// `rows` is already date-range filtered by the Supabase query.
+// Callers pass the fully-filtered set (date + report_type + Show + search) so
+// the tiles always match the table and footer below them.
 // ---------------------------------------------------------------------------
 function computeInsights(rows) {
   const revenue = rows.filter((r) => Number(r.sale_amount) > 0)
   const leadCount = revenue.length
   const sum = (key) => revenue.reduce((s, r) => s + (Number(r[key]) || 0), 0)
   const totalRevenue = sum('sale_amount')
-  const pct = (part) => (totalRevenue ? Math.round((part / totalRevenue) * 100) : null)
 
   // Top tech by summed gross. Multi-name rows are attributed whole (not split).
   const techs = new Map()
@@ -181,8 +193,6 @@ function computeInsights(rows) {
     totalRevenue,
     totalGross,
     totalParts,
-    grossPct: pct(totalGross),
-    partsPct: pct(totalParts),
     avgTicket: leadCount ? totalRevenue / leadCount : null,
     topTechName: topTech ? topTech.name : null,
     topTechAvg: topTech && topTech.jobs ? topTech.revenue / topTech.jobs : null,
@@ -261,6 +271,13 @@ const TABS = [
   { id: 'ads', label: 'Ad Performance', columns: AD_COLUMNS },
 ]
 
+// Per-tab "Show" filter defaults. IIR opens on 'invoiced' — Scheduled rows
+// (job_stage='upcoming') hidden, so it shows the Unpaid/Paid invoiced rows and
+// the scheduled/invoiced duplicates collapse to one. EIR opens on 'all' so subs
+// / external work (incl. scheduled jobs) stays visible. Each tab remembers its
+// own choice (persisted below); a legacy scalar pref is ignored on load.
+const DEFAULT_FILTERS = { iir: 'invoiced', eir: 'all' }
+
 export default function AdminPage() {
   const [authed, setAuthed] = useState(false)
   const [ready, setReady] = useState(false)
@@ -270,9 +287,10 @@ export default function AdminPage() {
   const [tab, setTab] = useState('iir')
   const [start, setStart] = useState('')
   const [end, setEnd] = useState('')
-  // Invoice filter: 'invoiced' (default — rows with an invoice applied, i.e.
-  // jobber_id is non-null) or 'all'. Request-only rows leave jobber_id null.
-  const [invoiceFilter, setInvoiceFilter] = useState('invoiced')
+  // "Show" filter, kept per-tab (IIR/EIR have different defaults — see
+  // DEFAULT_FILTERS). 'invoiced' hides Scheduled (upcoming) rows; 'all' shows
+  // everything. The active value is derived from the current tab below.
+  const [filterByTab, setFilterByTab] = useState(DEFAULT_FILTERS)
   // Free-text search over the loaded rows (customer / technician / invoice #).
   const [search, setSearch] = useState('')
 
@@ -297,6 +315,8 @@ export default function AdminPage() {
   const columns = activeTab.columns
   // Income-type tabs (IIR/EIR) share the income table + fetch.
   const isIncomeTab = Boolean(activeTab.reportType)
+  // Active "Show" value for the current tab (per-tab, see DEFAULT_FILTERS).
+  const invoiceFilter = filterByTab[tab] ?? DEFAULT_FILTERS[tab] ?? 'all'
 
   // Client-side search over already-loaded rows.
   const q = search.trim().toLowerCase()
@@ -308,8 +328,10 @@ export default function AdminPage() {
       )
     : rows
 
-  // Insights bar metrics — over the date-filtered rows (not the text search).
-  const insights = isIncomeTab ? computeInsights(rows) : null
+  // Insights bar metrics — over the SAME filtered set the table shows
+  // (date + report_type + Show filter from the query, plus the text search),
+  // so the tiles, rows, and footer totals always agree.
+  const insights = isIncomeTab ? computeInsights(visibleRows) : null
 
   // Fetch income_report rows (ordered by report_date desc), filtered by the
   // From/To date range. Only runs for the Income Report tab while logged in.
@@ -329,8 +351,13 @@ export default function AdminPage() {
 
     if (start) query = query.gte('report_date', start)
     if (end) query = query.lte('report_date', end)
-    // "Invoiced only": jobber_id (Invoice Number) is set only on invoiced rows.
-    if (invoiceFilter === 'invoiced') query = query.not('jobber_id', 'is', null)
+    // "Invoiced only" hides Scheduled rows (job_stage='upcoming'). Closed and
+    // open_job rows stay visible even if not yet invoiced. NULL-safe: a negative
+    // filter alone (.neq) would silently drop a stageless row because NULL≠X is
+    // NULL, not TRUE — the is.null branch keeps it.
+    if (invoiceFilter === 'invoiced') {
+      query = query.or('job_stage.neq.upcoming,job_stage.is.null')
+    }
     // IIR shows internal + still-unclassified (null) rows (the no-assignee
     // fallback bucket); EIR shows external only.
     if (reportType === 'internal') query = query.or('report_type.eq.internal,report_type.is.null')
@@ -485,7 +512,12 @@ export default function AdminPage() {
         if (saved.tab) setTab(saved.tab)
         if (typeof saved.start === 'string') setStart(saved.start)
         if (typeof saved.end === 'string') setEnd(saved.end)
-        if (saved.invoiceFilter) setInvoiceFilter(saved.invoiceFilter)
+        // Restore per-tab Show filters over the defaults. A legacy scalar
+        // `invoiceFilter` pref is intentionally NOT read — a one-time reset so a
+        // stale 'all' can't keep forcing IIR open on every (Scheduled) row.
+        if (saved.filterByTab && typeof saved.filterByTab === 'object') {
+          setFilterByTab({ ...DEFAULT_FILTERS, ...saved.filterByTab })
+        }
       } catch {
         // ignore malformed prefs
       }
@@ -499,11 +531,11 @@ export default function AdminPage() {
   useEffect(() => {
     if (!ready || typeof window === 'undefined') return
     try {
-      localStorage.setItem('pc_admin_prefs', JSON.stringify({ tab, start, end, invoiceFilter }))
+      localStorage.setItem('pc_admin_prefs', JSON.stringify({ tab, start, end, filterByTab }))
     } catch {
       // storage full / unavailable — non-fatal
     }
-  }, [ready, tab, start, end, invoiceFilter])
+  }, [ready, tab, start, end, filterByTab])
 
   function handleLogin(e) {
     e.preventDefault()
@@ -990,7 +1022,9 @@ export default function AdminPage() {
                         id="adm-invoice"
                         className="adm-date"
                         value={invoiceFilter}
-                        onChange={(e) => setInvoiceFilter(e.target.value)}
+                        onChange={(e) =>
+                          setFilterByTab((prev) => ({ ...prev, [tab]: e.target.value }))
+                        }
                       >
                         <option value="all">All</option>
                         <option value="invoiced">Invoiced only</option>
@@ -1006,12 +1040,12 @@ export default function AdminPage() {
                     <InsightTile
                       label="Total Gross"
                       value={money(insights.totalGross)}
-                      note={insights.grossPct == null ? '—' : `${insights.grossPct}%`}
+                      note={fmtPct(insights.totalGross, insights.totalRevenue) ?? '—'}
                     />
                     <InsightTile
                       label="Total Parts"
                       value={money(insights.totalParts)}
-                      note={insights.partsPct == null ? '—' : `${insights.partsPct}%`}
+                      note={fmtPct(insights.totalParts, insights.totalRevenue) ?? '—'}
                     />
                     <InsightTile
                       label="Avg Ticket"
