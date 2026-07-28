@@ -265,7 +265,14 @@ function AnnouncementBarMembership({ city }) {
           .announcement-content { gap: 10px; }
         }
       `}} />
-      <a href="https://buy.stripe.com/8x2dRb0LI6pF11k8a1c7u00" target="_blank" rel="noopener noreferrer" className="announcement-bar" style={{ textDecoration: 'none', color: 'inherit' }}>
+      {/* client_reference_id tags WHICH landing page sold the membership. Stripe
+          puts it on the Checkout Session, where the agents repo's
+          checkout.session.completed webhook reads it: a website signup has never
+          been visited and gets a "book your first assessment" welcome email, a
+          tech-sold one (tagged `tech`) is being assessed as they sign up. Only
+          DFW pages ever render this bar (offersMembership), so every ads- tag is
+          a metroplex city by construction. */}
+      <a href={`https://buy.stripe.com/8x2dRb0LI6pF11k8a1c7u00?client_reference_id=ads-${city.slug}`} target="_blank" rel="noopener noreferrer" className="announcement-bar" style={{ textDecoration: 'none', color: 'inherit' }}>
         <canvas className="announcement-canvas"></canvas>
       
         <div className="announcement-content">

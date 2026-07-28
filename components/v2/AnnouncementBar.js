@@ -265,7 +265,8 @@ function AnnouncementBarMembership({ city }) {
           .announcement-content { gap: 10px; }
         }
       `}} />
-      <a href="https://buy.stripe.com/8x2dRb0LI6pF11k8a1c7u00" target="_blank" rel="noopener noreferrer" data-gateway-book className="announcement-bar" style={{ textDecoration: 'none', color: 'inherit' }}>
+      {/* client_reference_id tags which landing page sold it — see the v1 bar. */}
+      <a href={`https://buy.stripe.com/8x2dRb0LI6pF11k8a1c7u00?client_reference_id=ads-${city.slug}`} target="_blank" rel="noopener noreferrer" data-gateway-book className="announcement-bar" style={{ textDecoration: 'none', color: 'inherit' }}>
         <canvas className="announcement-canvas"></canvas>
       
         <div className="announcement-content">
