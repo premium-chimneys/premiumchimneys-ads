@@ -77,9 +77,15 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
         <TrackingCapture />
         {children}
 
+        {/* The chat widget, now served by Agent HQ rather than by Gateway — the
+            same swap the marketing site made, so a visitor who lands here from
+            an ad is answered by the same agent, and the conversation, the
+            transcript and the lead live with it. The widget is origin-agnostic;
+            this host is on its CORS allowlist. Gateway still receives the lead,
+            posted server-side. */}
         <Script
-          id="serviceroot-chat"
-          src="https://gateway.serviceroot.io/chat.js"
+          id="agent-hq-chat"
+          src="https://agents.premiumchimneys.com/chat.js"
           strategy="afterInteractive"
           data-tenant="premium-chimneys"
         />
