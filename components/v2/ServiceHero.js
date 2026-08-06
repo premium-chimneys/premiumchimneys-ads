@@ -49,7 +49,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
           max-width: 1200px;
           width: 100%;
           margin: 0 auto;
-          padding: 237px 24px 128px;
+          padding: 200px 24px 128px;
           display: grid;
           grid-template-columns: 1fr 420px;
           gap: 60px;
@@ -70,7 +70,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
         }
 
         .hero-badge-img {
-          height: 72px;
+          height: 56px;
           width: auto;
           display: block;
           border-radius: 6px;
@@ -78,11 +78,13 @@ export default function ServiceHero({ city, heading, serviceData }) {
 
         .hero-reviews {
           max-width: 280px;
+          transform: scale(0.8);
+          transform-origin: left center;
         }
 
         .hero-h1 {
           font-family: 'Inter Tight', sans-serif;
-          font-size: 48px;
+          font-size: 64px;
           font-weight: 700;
           line-height: 1.1;
           letter-spacing: -0.03em;
@@ -105,19 +107,56 @@ export default function ServiceHero({ city, heading, serviceData }) {
         .hero-location {
           display: inline-flex;
           align-items: center;
-          gap: 8px;
+          gap: 12px;
           font-family: 'Inter Tight', sans-serif;
-          font-size: 14px;
-          font-weight: 700;
-          color: #ffffff;
-          background: linear-gradient(135deg, rgba(167, 139, 250, 0.30), rgba(124, 58, 237, 0.30));
-          border: 1px solid rgba(167, 139, 250, 0.65);
-          border-radius: 100px;
-          padding: 9px 18px 9px 14px;
+          background: #ffffff;
+          border: 1px solid rgba(124, 58, 237, 0.22);
+          border-radius: 12px;
+          padding: 10px 18px 10px 10px;
           width: fit-content;
+          box-shadow: 0 8px 24px rgba(124, 58, 237, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        }
+
+        .hero-location-icon {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 40px;
+          height: 40px;
+          flex-shrink: 0;
+          border-radius: 10px;
+          color: #ffffff;
+          background: linear-gradient(160deg, #9b5de5 0%, #7c3aed 50%, #5b21b6 100%);
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.30), 0 3px 10px rgba(91, 33, 182, 0.38);
+        }
+
+        .hero-location-divider {
+          width: 1px;
+          align-self: stretch;
+          background: linear-gradient(to bottom, transparent, rgba(124, 58, 237, 0.20), transparent);
+        }
+
+        .hero-location-text {
+          display: flex;
+          flex-direction: column;
+          gap: 3px;
+        }
+
+        .hero-location-eyebrow {
+          font-size: 11.5px;
+          font-weight: 700;
           text-transform: uppercase;
-          letter-spacing: 0.06em;
-          box-shadow: 0 4px 18px rgba(124, 58, 237, 0.40), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+          letter-spacing: 0.08em;
+          line-height: 1.1;
+          color: #7c3aed;
+        }
+
+        .hero-location-address {
+          font-size: 14px;
+          font-weight: 600;
+          line-height: 1.25;
+          color: #2a1e42;
+          max-width: 300px;
         }
 
         .hero-ctas {
@@ -141,7 +180,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
           align-items: center;
           gap: 8px;
           font-family: 'Inter Tight', sans-serif;
-          font-size: 15px;
+          font-size: 16px;
           font-weight: 600;
           color: #f0e0fd;
           text-decoration: none;
@@ -182,7 +221,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
           align-items: center;
           gap: 8px;
           font-family: 'Inter Tight', sans-serif;
-          font-size: 15px;
+          font-size: 16px;
           font-weight: 500;
           color: rgba(255,255,255,0.8);
           text-decoration: none;
@@ -220,6 +259,8 @@ export default function ServiceHero({ city, heading, serviceData }) {
           .hero-inner { grid-template-columns: 1fr; gap: 40px; padding: 189px 24px 80px; }
           .hero-h1 { font-size: 38px; max-width: 100%; }
           .hero-form-card { max-width: 480px; }
+          .hero-badge-img { height: 72px; }
+          .hero-reviews { transform: none; }
         }
 
         @media (max-width: 480px) {
@@ -237,8 +278,14 @@ export default function ServiceHero({ city, heading, serviceData }) {
         <div className="hero-inner">
           <div className="hero-left">
             <div className="hero-location">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ flexShrink: '0' }}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /><circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="1.8" /></svg>
-              {`SERVING ${cityName} & NEARBY COMMUNITIES`}
+              <span className="hero-location-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style={{ flexShrink: '0' }}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /><circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="1.8" /></svg>
+              </span>
+              <span className="hero-location-divider" aria-hidden="true"></span>
+              <span className="hero-location-text">
+                <span className="hero-location-eyebrow">{`SERVING ${cityName} & NEARBY COMMUNITIES`}</span>
+                <span className="hero-location-address">{city.service_area}</span>
+              </span>
             </div>
 
             <div className="hero-badges">
@@ -256,7 +303,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
             <div className="hero-ctas">
               <button type="button" className="hero-cta-primary">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ flexShrink: '0' }}><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.8" /><line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /><line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /><line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" strokeWidth="1.8" /></svg>
-                Book Appointment
+                Schedule Online
               </button>
               <a href={`tel:${city.phone}`} className="hero-cta-secondary">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{ flexShrink: '0' }}><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>{`

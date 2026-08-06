@@ -493,7 +493,7 @@ export default function Footer({ city }) {
       
             <div className="footer-right">
               <button className="footer-btn-book">
-                Book Appointment
+                Schedule Online
               </button>
               <a href={`tel:${city.phone}`} className="footer-btn-phone">{`
                 ${city.phone_text}
