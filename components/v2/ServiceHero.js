@@ -1,6 +1,7 @@
 
 'use client';
 import Form from './Form';
+import GoogleReviewsPill from './GoogleReviewsPill';
 
 export default function ServiceHero({ city, heading, serviceData }) {
   const heroImage = serviceData?.hero_image_url || 'https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/694441da86840f464e36c79b_chimney-inspection-roofline-flue-evaluation.webp';
@@ -21,6 +22,9 @@ export default function ServiceHero({ city, heading, serviceData }) {
           align-items: center;
           justify-content: center;
           overflow: hidden;
+          /* Start below the fixed announcement bar (44px) + nav (~84px) so the
+             hero never sits underneath them. */
+          margin-top: 128px;
         }
 
         .hero-video {
@@ -39,7 +43,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
           left: 0;
           width: 100%;
           height: 100%;
-          background: rgba(0, 0, 0, 0.8);
+          background: rgba(0, 0, 0, 0.4);
           z-index: 1;
         }
 
@@ -49,7 +53,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
           max-width: 1200px;
           width: 100%;
           margin: 0 auto;
-          padding: 200px 24px 128px;
+          padding: 72px 24px 128px;
           display: grid;
           grid-template-columns: 1fr 420px;
           gap: 60px;
@@ -62,25 +66,13 @@ export default function ServiceHero({ city, heading, serviceData }) {
           gap: 28px;
         }
 
-        .hero-badges {
+        .hero-location-row {
           display: flex;
           align-items: center;
-          gap: 12px;
+          gap: 20px;
           flex-wrap: wrap;
         }
 
-        .hero-badge-img {
-          height: 56px;
-          width: auto;
-          display: block;
-          border-radius: 6px;
-        }
-
-        .hero-reviews {
-          max-width: 280px;
-          transform: scale(0.8);
-          transform-origin: left center;
-        }
 
         .hero-h1 {
           font-family: 'Inter Tight', sans-serif;
@@ -156,7 +148,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
           font-weight: 600;
           line-height: 1.25;
           color: #2a1e42;
-          max-width: 300px;
+          white-space: nowrap;
         }
 
         .hero-ctas {
@@ -239,10 +231,6 @@ export default function ServiceHero({ city, heading, serviceData }) {
           color: #ffffff;
         }
 
-        .hero-reviews [class*="elfsight-app-"],
-        .hero-reviews [class*="elfsight-app-"] * {
-          font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
-        }
 
         @keyframes heroShimmerText { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
         .hero-city-accent {
@@ -256,11 +244,11 @@ export default function ServiceHero({ city, heading, serviceData }) {
 
         /* ─── RESPONSIVE ─────────────────────────────────────── */
         @media (max-width: 960px) {
+          .hero { margin-top: 0; }
           .hero-inner { grid-template-columns: 1fr; gap: 40px; padding: 189px 24px 80px; }
           .hero-h1 { font-size: 38px; max-width: 100%; }
           .hero-form-card { max-width: 480px; }
-          .hero-badge-img { height: 72px; }
-          .hero-reviews { transform: none; }
+          .hero-location-address { white-space: normal; max-width: 300px; }
         }
 
         @media (max-width: 480px) {
@@ -277,23 +265,18 @@ export default function ServiceHero({ city, heading, serviceData }) {
 
         <div className="hero-inner">
           <div className="hero-left">
-            <div className="hero-location">
-              <span className="hero-location-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style={{ flexShrink: '0' }}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /><circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="1.8" /></svg>
-              </span>
-              <span className="hero-location-divider" aria-hidden="true"></span>
-              <span className="hero-location-text">
-                <span className="hero-location-eyebrow">{`SERVING ${cityName} & NEARBY COMMUNITIES`}</span>
-                <span className="hero-location-address">{city.service_area}</span>
-              </span>
-            </div>
-
-            <div className="hero-badges">
-              <img className="hero-badge-img" src="https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/69498dcf9a206ed260446ac6_bbb-accredited-business-logo.webp" alt="BBB Accredited Business" />
-              <img className="hero-badge-img" src="https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/65ea3566667e1e282004fb81_Home%20Advisor%20Badge.svg" alt="HomeAdvisor" />
-              <div className="hero-reviews">
-                <div className="elfsight-app-78d5d8f1-b6c0-487e-bc47-52b7a1546592" data-elfsight-app-lazy={true}></div>
+            <div className="hero-location-row">
+              <div className="hero-location">
+                <span className="hero-location-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style={{ flexShrink: '0' }}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /><circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="1.8" /></svg>
+                </span>
+                <span className="hero-location-divider" aria-hidden="true"></span>
+                <span className="hero-location-text">
+                  <span className="hero-location-eyebrow">{`SERVING ${cityName} & NEARBY COMMUNITIES`}</span>
+                  <span className="hero-location-address">{city.service_area}</span>
+                </span>
               </div>
+              <GoogleReviewsPill />
             </div>
 
             <h1 className="hero-h1"><span style={{ display: 'block' }}>{`${cityName}'s Trusted Local`}</span><span style={{ display: 'block' }}>{serviceName}</span></h1>

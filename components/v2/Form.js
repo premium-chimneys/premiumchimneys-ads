@@ -225,13 +225,20 @@ const formCss = `
 .hero-form-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 .hero-form-submit svg { position: relative; z-index: 1; }
 
-.hero-form-disclaimer {
-  font-family: 'Inter Tight', sans-serif;
-  font-size: 11px;
-  color: #a099b2;
-  margin-top: 14px;
-  line-height: 1.5;
-  text-align: center;
+.hero-form-badges {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.hero-form-badge {
+  height: 36px;
+  width: auto;
+  display: block;
+  object-fit: contain;
 }
 
 .hero-form-trust {
@@ -446,7 +453,15 @@ export default function Form() {
               </svg>
               Submit Request
             </button>
-            <p className="hero-form-disclaimer">By submitting, you agree to be contacted by one of our agents. Your information is confidential and won't be shared or sold.</p>
+            <div className="hero-form-badges">
+              <img className="hero-form-badge" src="https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/69498dcf9a206ed260446ac6_bbb-accredited-business-logo.webp" alt="BBB Accredited Business" />
+              <img className="hero-form-badge" src="https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/65ea3566667e1e282004fb81_Home%20Advisor%20Badge.svg" alt="HomeAdvisor" />
+              <img className="hero-form-badge" src="/images/angi_logo.png" alt="Angi" />
+              <img className="hero-form-badge" src="/images/yelp_logo.png" alt="Yelp" />
+              <img className="hero-form-badge" src="/images/houzz_logo.png" alt="Houzz" />
+              <img className="hero-form-badge" src="/images/thumbtack_logo.png" alt="Thumbtack" />
+              <img className="hero-form-badge" src="/images/nextdoor_logo.png" alt="Nextdoor" />
+            </div>
             <div className="hero-form-trust">
               <span className="hero-form-trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg> No spam</span>
               <span className="hero-form-trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg> No obligation</span>
