@@ -34,6 +34,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
           width: 100%;
           height: 100%;
           object-fit: cover;
+          object-position: center 20%;
           z-index: 0;
         }
 
@@ -43,7 +44,12 @@ export default function ServiceHero({ city, heading, serviceData }) {
           left: 0;
           width: 100%;
           height: 100%;
-          background: rgba(0, 0, 0, 0.6);
+          /* Cinematic corner scrim: dark down the left and along the bottom,
+             fading to reveal the image toward the top-right. */
+          background:
+            linear-gradient(90deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.66) 36%, rgba(0, 0, 0, 0.25) 60%, rgba(0, 0, 0, 0.08) 78%, rgba(0, 0, 0, 0) 88%),
+            linear-gradient(0deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.32) 28%, rgba(0, 0, 0, 0) 57%),
+            rgba(0, 0, 0, 0.15);
           z-index: 1;
         }
 
@@ -245,6 +251,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
         /* ─── RESPONSIVE ─────────────────────────────────────── */
         @media (max-width: 960px) {
           .hero { margin-top: 0; }
+          .hero-overlay { background: rgba(0, 0, 0, 0.55); }
           .hero-inner { grid-template-columns: 1fr; gap: 40px; padding: 189px 24px 80px; }
           .hero-h1 { font-size: 38px; max-width: 100%; }
           .hero-form-card { max-width: 480px; }

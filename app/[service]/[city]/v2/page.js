@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { getCityData } from '@/lib/getCityData'
 import { getServiceData } from '@/lib/getServiceData'
 import { getLandingV2Data } from '@/lib/getLandingV2Data'
+import { getV2HeroImage } from '@/lib/getV2HeroImage'
 import ServicePageV2 from '@/components/variants/ServicePageV2'
 
 function serviceNameFromSlug(slug) {
@@ -32,6 +33,14 @@ export default async function Page({ params }) {
     getLandingV2Data(serviceSlug),
   ])
 
+  // V2-only: swap the hero image based on service group + metroplex. Falls back
+  // to the existing services.hero_image_url when there's no mapping, so V1 is
+  // untouched and V2 keeps the old image until the table is populated.
+  const v2HeroImage = await getV2HeroImage(serviceSlug, city.metroplex)
+  const serviceDataV2 = v2HeroImage
+    ? { ...serviceData, hero_image_url: v2HeroImage }
+    : serviceData
+
   const serviceName = serviceNameFromSlug(serviceSlug)
   const heading = `${serviceName} in ${city.name}`
   const offersMembership = city.metroplex === 'dfw'
@@ -40,7 +49,7 @@ export default async function Page({ params }) {
     <ServicePageV2
       city={city}
       service={serviceSlug}
-      serviceData={serviceData}
+      serviceData={serviceDataV2}
       heading={heading}
       offersMembership={offersMembership}
       landing={landing}

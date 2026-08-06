@@ -1,11 +1,10 @@
 'use client'
 
-import { useRef } from 'react'
-
 // The live Elfsight Google Reviews widget id (same one that used to render
-// inline in the hero). We keep it mounted but invisible + interactive right
-// under our custom face, then forward a click to it so Elfsight opens its own
-// native "all reviews" popup — Elfsight exposes no public API to open it.
+// inline in the hero). We keep it mounted on top of our custom face but fully
+// transparent, so the user's real click lands on the actual widget and its own
+// native popup opens — Elfsight exposes no public API to open it, and a real
+// (trusted) click is far more reliable than a synthesized one.
 const ELF_CLASS = 'elfsight-app-78d5d8f1-b6c0-487e-bc47-52b7a1546592'
 
 const css = `
@@ -15,27 +14,13 @@ const css = `
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
-.grp:focus-visible {
-  outline: 2px solid #7c3aed;
-  outline-offset: 3px;
-  border-radius: 12px;
-}
 
-/* Real widget: present + clickable so its popup can fire, but invisible and
-   sitting exactly beneath the custom face. */
-.grp-elf {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  overflow: hidden;
-  z-index: 0;
-}
-.grp-elf > div { width: 100%; height: 100%; }
-
-/* Custom face — matches the hero location pill. */
+/* Custom face — matches the hero location pill. Purely visual: clicks pass
+   through it to the real widget layered above. */
 .grp-face {
   position: relative;
   z-index: 1;
+  pointer-events: none;
   display: inline-flex;
   align-items: center;
   gap: 12px;
@@ -77,6 +62,18 @@ const css = `
 }
 .grp-stars { display: inline-flex; align-items: center; gap: 2px; }
 .grp-stars svg { width: 15px; height: 15px; display: block; }
+
+/* Real widget: on top of the face, invisible, but clickable so a real click
+   opens its native popup. Clipped to the pill's footprint. */
+.grp-elf {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  opacity: 0;
+  overflow: hidden;
+  cursor: pointer;
+}
+.grp-elf > div { width: 100%; height: 100%; }
 `
 
 function Star() {
@@ -97,63 +94,21 @@ const GoogleG = (
 )
 
 export default function GoogleReviewsPill() {
-  const elfRef = useRef(null)
-  const faceRef = useRef(null)
-
-  function openPopup() {
-    const elf = elfRef.current
-    const face = faceRef.current
-    if (!elf || typeof document === 'undefined') return
-    const rect = elf.getBoundingClientRect()
-    if (!rect.width || !rect.height) return
-    const cx = rect.left + rect.width / 2
-    const cy = rect.top + rect.height / 2
-    // Momentarily let clicks fall through the face so elementFromPoint returns
-    // the Elfsight node beneath, then forward a click to open its popup.
-    const prevPE = face ? face.style.pointerEvents : ''
-    if (face) face.style.pointerEvents = 'none'
-    let target = document.elementFromPoint(cx, cy)
-    if (face) face.style.pointerEvents = prevPE
-    // If the center didn't land inside the widget, fall back to its first
-    // interactive descendant.
-    if (!target || !elf.contains(target)) {
-      target = elf.querySelector('a[href], button, [role="button"]') || target
-    }
-    if (!target || !elf.contains(target)) return
-    // Prefer an enclosing interactive element, then dispatch a bubbling click
-    // so it reaches Elfsight's (often delegated) handler. Use dispatchEvent
-    // rather than .click() — the hit node may be an SVG element with no click().
-    const trigger = (target.closest && target.closest('a[href], button, [role="button"]')) || target
-    trigger.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }))
-  }
-
   return (
-    <div
-      className="grp"
-      role="button"
-      tabIndex={0}
-      aria-label="Read our Google reviews"
-      onClick={openPopup}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault()
-          openPopup()
-        }
-      }}
-    >
+    <div className="grp">
       <style dangerouslySetInnerHTML={{ __html: css }} />
-      <div className="grp-elf" ref={elfRef} aria-hidden="true">
-        <div className={ELF_CLASS} data-elfsight-app-lazy={true}></div>
-      </div>
-      <div className="grp-face" ref={faceRef}>
+      <div className="grp-face">
         <span className="grp-logo">{GoogleG}</span>
         <span className="grp-divider" aria-hidden="true"></span>
         <span className="grp-text">
-          <span className="grp-eyebrow">4.9 rated <span className="grp-count">(21,330 reviews)</span></span>
+          <span className="grp-eyebrow">4.9 rated <span className="grp-count">(247 reviews)</span></span>
           <span className="grp-stars">
             <Star /><Star /><Star /><Star /><Star />
           </span>
         </span>
+      </div>
+      <div className="grp-elf" aria-label="Read our Google reviews">
+        <div className={ELF_CLASS} data-elfsight-app-lazy={true}></div>
       </div>
     </div>
   )
