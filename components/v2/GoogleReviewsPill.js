@@ -11,6 +11,7 @@ const css = `
 .grp {
   position: relative;
   display: inline-flex;
+  flex-shrink: 0;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
@@ -23,20 +24,20 @@ const css = `
   pointer-events: none;
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   font-family: 'Inter Tight', sans-serif;
   background: #ffffff;
   border: 1px solid rgba(124, 58, 237, 0.22);
   border-radius: 12px;
-  padding: 10px 18px 10px 10px;
+  padding: 9px 14px 9px 9px;
   box-shadow: 0 8px 24px rgba(124, 58, 237, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 .grp-logo {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   flex-shrink: 0;
   border-radius: 10px;
   background: #ffffff;
@@ -101,7 +102,7 @@ export default function GoogleReviewsPill() {
         <span className="grp-logo">{GoogleG}</span>
         <span className="grp-divider" aria-hidden="true"></span>
         <span className="grp-text">
-          <span className="grp-eyebrow">4.9 rated <span className="grp-count">(247 reviews)</span></span>
+          <span className="grp-eyebrow">4.9 rated <span className="grp-count">(219 reviews)</span></span>
           <span className="grp-stars">
             <Star /><Star /><Star /><Star /><Star />
           </span>

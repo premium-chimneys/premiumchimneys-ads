@@ -62,7 +62,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
           padding: 72px 24px 128px;
           display: grid;
           grid-template-columns: 1fr 420px;
-          gap: 60px;
+          gap: 44px;
           align-items: center;
         }
 
@@ -75,8 +75,8 @@ export default function ServiceHero({ city, heading, serviceData }) {
         .hero-location-row {
           display: flex;
           align-items: center;
-          gap: 20px;
-          flex-wrap: wrap;
+          gap: 14px;
+          flex-wrap: nowrap;
         }
 
 
@@ -90,6 +90,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
           margin: 0;
           max-width: 100%;
           white-space: normal;
+          text-wrap: balance;
         }
 
         .hero-desc {
@@ -105,12 +106,13 @@ export default function ServiceHero({ city, heading, serviceData }) {
         .hero-location {
           display: inline-flex;
           align-items: center;
-          gap: 12px;
+          gap: 10px;
+          flex-shrink: 0;
           font-family: 'Inter Tight', sans-serif;
           background: #ffffff;
           border: 1px solid rgba(124, 58, 237, 0.22);
           border-radius: 12px;
-          padding: 10px 18px 10px 10px;
+          padding: 9px 14px 9px 9px;
           width: fit-content;
           box-shadow: 0 8px 24px rgba(124, 58, 237, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.6);
         }
@@ -119,8 +121,8 @@ export default function ServiceHero({ city, heading, serviceData }) {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          width: 40px;
-          height: 40px;
+          width: 36px;
+          height: 36px;
           flex-shrink: 0;
           border-radius: 10px;
           color: #ffffff;
@@ -252,6 +254,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
         @media (max-width: 960px) {
           .hero { margin-top: 0; }
           .hero-overlay { background: rgba(0, 0, 0, 0.55); }
+          .hero-location-row { flex-wrap: wrap; }
           .hero-inner { grid-template-columns: 1fr; gap: 40px; padding: 189px 24px 80px; }
           .hero-h1 { font-size: 38px; max-width: 100%; }
           .hero-form-card { max-width: 480px; }
