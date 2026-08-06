@@ -2,28 +2,16 @@
 
 import { useEffect, useRef } from 'react'
 
-const FORM_BADGES = [
-  { src: 'https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/69498dcf9a206ed260446ac6_bbb-accredited-business-logo.webp', alt: 'BBB Accredited Business' },
-  { src: 'https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/65ea3566667e1e282004fb81_Home%20Advisor%20Badge.svg', alt: 'HomeAdvisor' },
-  { src: '/images/angi_logo.png', alt: 'Angi' },
-  { src: '/images/thumbtack_logo.png', alt: 'Thumbtack' },
-  { src: '/images/yelp_logo.png', alt: 'Yelp' },
-  { src: '/images/facebook_logo.png', alt: 'Facebook' },
-  { src: '/images/instagram_logo.png', alt: 'Instagram' },
-  { src: '/images/houzz_logo.png', alt: 'Houzz' },
-  { src: '/images/nextdoor_logo.png', alt: 'Nextdoor' },
-]
-// One half of the seamless marquee — the full badge set repeated so each half overflows the carousel width.
-const FORM_BADGE_HALF = [...FORM_BADGES, ...FORM_BADGES]
-
 const formCss = `
 .hero-form-card {
   position: relative;
-  background: #F5F5F7;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border-radius: 20px;
-  border: 1px solid #d2d2d7;
+  border: 1px solid rgba(255, 255, 255, 0.6);
   overflow: hidden;
-  box-shadow: none;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.2), 0 0 80px rgba(124, 58, 237, 0.08);
   font-family: 'Inter Tight', sans-serif;
   box-sizing: border-box;
 }
@@ -31,7 +19,14 @@ const formCss = `
 .hero-form-card *, .hero-form-card *::before, .hero-form-card *::after { box-sizing: border-box; }
 
 .hero-form-card::before {
-  display: none;
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #7c3aed, #a78bfa, #c084fc, #e879f9, #c084fc, #a78bfa, #7c3aed);
+  background-size: 300% 100%;
+  animation: auroraSlide 4s ease-in-out infinite;
+  z-index: 5;
 }
 
 @keyframes auroraSlide {
@@ -46,7 +41,7 @@ const formCss = `
   top: 0; left: 15%; right: 15%;
   height: 1px;
   background: transparent;
-  box-shadow: none;
+  box-shadow: 0 0 30px 8px rgba(124, 58, 237, 0.08);
   pointer-events: none;
   z-index: 0;
   animation: glowPulse 4s ease-in-out infinite;
@@ -122,9 +117,6 @@ const formCss = `
 
 .hero-form-body { padding: 20px 28px 28px; }
 
-/* Wrapper is a layout no-op by default; the hero turns it into a card on desktop */
-.hero-form-fields { display: contents; }
-
 .hero-form-group { margin-bottom: 10px; position: relative; }
 
 .hero-form-input,
@@ -134,9 +126,9 @@ const formCss = `
   font-size: 14px;
   font-weight: 400;
   padding: 12px 16px;
-  border: 1px solid #d2d2d7;
-  border-radius: 8px;
-  background: #ffffff;
+  border: 1.5px solid rgba(124, 58, 237, 0.12);
+  border-radius: 12px;
+  background: #f8f6fd;
   color: #1a1225;
   outline: none;
   transition: all 0.25s ease;
@@ -144,13 +136,13 @@ const formCss = `
 }
 
 .hero-form-input::placeholder,
-.hero-form-textarea::placeholder { color: #b0b0b8; }
+.hero-form-textarea::placeholder { color: #b0a4c4; }
 
 .hero-form-input:focus,
 .hero-form-textarea:focus {
   border-color: #7c3aed;
   background: #ffffff;
-  box-shadow: none;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1), 0 0 20px rgba(124, 58, 237, 0.04);
 }
 
 .hero-form-textarea { resize: none; min-height: 80px; }
@@ -159,16 +151,16 @@ const formCss = `
 .hero-form-phone-wrap {
   display: flex;
   align-items: center;
-  border: 1px solid #d2d2d7;
-  border-radius: 8px;
-  background: #ffffff;
+  border: 1.5px solid rgba(124, 58, 237, 0.12);
+  border-radius: 12px;
+  background: #f8f6fd;
   overflow: hidden;
   transition: all 0.25s ease;
 }
 .hero-form-phone-wrap:focus-within {
   border-color: #7c3aed;
   background: #ffffff;
-  box-shadow: none;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1), 0 0 20px rgba(124, 58, 237, 0.04);
 }
 .hero-form-phone-input {
   flex: 1;
@@ -181,7 +173,7 @@ const formCss = `
   color: #1a1225;
   outline: none;
 }
-.hero-form-phone-input::placeholder { color: #b0b0b8; }
+.hero-form-phone-input::placeholder { color: #b0a4c4; }
 .hero-form-phone-error {
   font-size: 11px;
   color: #ef4444;
@@ -210,7 +202,7 @@ const formCss = `
   overflow: hidden;
   margin-top: 6px;
   letter-spacing: 0.01em;
-  box-shadow: none;
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
 }
 
 .hero-form-submit::before {
@@ -225,6 +217,7 @@ const formCss = `
 
 .hero-form-submit:hover {
   transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(124, 58, 237, 0.5);
 }
 
 .hero-form-submit:hover::before { left: 140%; }
@@ -259,52 +252,6 @@ const formCss = `
   font-size: 12px;
   font-weight: 500;
   color: #6b5c8a;
-}
-
-.hero-form-trust {
-  margin-top: 18px;
-}
-.hero-form-trust-label {
-  font-family: 'Inter Tight', sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(42, 30, 66, 0.5);
-  text-align: center;
-  margin-bottom: 10px;
-}
-.hero-form-badge-carousel {
-  width: 100%;
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
-  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
-}
-.hero-form-badge-track {
-  display: flex;
-  align-items: center;
-  gap: 36px;
-  width: max-content;
-  animation: heroFormBadgeScroll 40s linear infinite;
-}
-.hero-form-badge-track:hover {
-  animation-play-state: paused;
-}
-.hero-form-badge-img {
-  height: 30px;
-  width: auto;
-  display: block;
-  border-radius: 5px;
-}
-@keyframes heroFormBadgeScroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-/* Desktop: stack "Trusted by" above the logos, matching the mobile layout */
-@media (min-width: 961px) {
-  .hero-form-trust { flex-direction: column; align-items: stretch; gap: 16px; }
-  .hero-form-trust-label { margin-bottom: 0; }
 }
 
 .hero-form-success {
@@ -347,7 +294,7 @@ const formCss = `
   border: 1.5px solid rgba(34, 197, 94, 0.25);
   display: flex; align-items: center; justify-content: center;
   position: relative; z-index: 1;
-  box-shadow: none;
+  box-shadow: 0 0 32px rgba(34, 197, 94, 0.12);
 }
 
 .hero-form-success-circle svg { animation: heroFormCheckDraw 0.5s ease-out 0.3s both; }
@@ -394,7 +341,7 @@ function getDigits(value) {
   return value.replace(/\D/g, '')
 }
 
-export default function Form({ heading }) {
+export default function Form() {
   const cardRef = useRef(null)
   const formRef = useRef(null)
   const phoneRef = useRef(null)
@@ -468,27 +415,30 @@ export default function Form({ heading }) {
             </div>
           </div>
           <h3>Submission Received</h3>
-          <p>Our dispatch team will reach out in a few minutes. Please ensure you're available.</p>
+          <p>Our dispatch team will reach out shortly.</p>
         </div>
 
         <div className="hero-form-top">
-          <h2 className="hero-form-title">{heading || 'Request your free inspection'}</h2>
+          <h2 className="hero-form-title">Request Service</h2>
+          <p className="hero-form-subtitle">Fill out our quick form to schedule a service call with our team today!</p>
+          <div className="hero-form-dispatch">
+            <span className="hero-form-dispatch-dot"></span>
+            <span className="hero-form-dispatch-text">Live</span>
+          </div>
         </div>
 
         <div className="hero-form-body">
           <form ref={formRef} name="contact" data-form-type="contact">
             <input type="hidden" name="source_url" ref={urlRef} value="" />
-            <div className="hero-form-fields">
-              <div className="hero-form-group"><input className="hero-form-input" type="text" name="name" placeholder="Full Name" required /></div>
-              <div className="hero-form-group">
-                <div className="hero-form-phone-wrap">
-                  <input className="hero-form-phone-input" type="tel" name="phone" placeholder="Phone Number" required ref={phoneRef} />
-                </div>
-                <div className="hero-form-phone-error" ref={phoneErrorRef}>Please enter a valid 10-digit phone number</div>
+            <div className="hero-form-group"><input className="hero-form-input" type="text" name="name" placeholder="Full Name" required /></div>
+            <div className="hero-form-group">
+              <div className="hero-form-phone-wrap">
+                <input className="hero-form-phone-input" type="tel" name="phone" placeholder="Phone Number" required ref={phoneRef} />
               </div>
-              <div className="hero-form-group"><input className="hero-form-input" type="email" name="email" placeholder="Email Address" required /></div>
-              <div className="hero-form-group"><textarea className="hero-form-textarea" name="message" placeholder="How can we help?"></textarea></div>
+              <div className="hero-form-phone-error" ref={phoneErrorRef}>Please enter a valid 10-digit phone number</div>
             </div>
+            <div className="hero-form-group"><input className="hero-form-input" type="email" name="email" placeholder="Email Address" required /></div>
+            <div className="hero-form-group"><textarea className="hero-form-textarea" name="message" placeholder="How can we help?"></textarea></div>
             <button className="hero-form-submit" type="submit">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}>
                 <path d="M22 2L11 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -496,15 +446,11 @@ export default function Form({ heading }) {
               </svg>
               Submit Request
             </button>
+            <p className="hero-form-disclaimer">By submitting, you agree to be contacted by one of our agents. Your information is confidential and won't be shared or sold.</p>
             <div className="hero-form-trust">
-              <div className="hero-form-trust-label">Trusted by</div>
-              <div className="hero-form-badge-carousel">
-                <div className="hero-form-badge-track">
-                  {[...FORM_BADGE_HALF, ...FORM_BADGE_HALF].map((b, i) => (
-                    <img key={i} className="hero-form-badge-img" src={b.src} alt={b.alt} aria-hidden={i >= FORM_BADGE_HALF.length} />
-                  ))}
-                </div>
-              </div>
+              <span className="hero-form-trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg> No spam</span>
+              <span className="hero-form-trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg> No obligation</span>
+              <span className="hero-form-trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg> Call back in 1 hr</span>
             </div>
           </form>
         </div>

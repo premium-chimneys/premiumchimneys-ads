@@ -2,25 +2,11 @@
 'use client';
 import Form from './Form';
 
-const HERO_BADGES = [
-  { src: 'https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/69498dcf9a206ed260446ac6_bbb-accredited-business-logo.webp', alt: 'BBB Accredited Business' },
-  { src: 'https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/65ea3566667e1e282004fb81_Home%20Advisor%20Badge.svg', alt: 'HomeAdvisor' },
-  { src: '/images/angi_logo.png', alt: 'Angi' },
-  { src: '/images/thumbtack_logo.png', alt: 'Thumbtack' },
-  { src: '/images/yelp_logo.png', alt: 'Yelp' },
-  { src: '/images/facebook_logo.png', alt: 'Facebook' },
-  { src: '/images/instagram_logo.png', alt: 'Instagram' },
-  { src: '/images/houzz_logo.png', alt: 'Houzz' },
-  { src: '/images/nextdoor_logo.png', alt: 'Nextdoor' },
-];
-// One half of the seamless marquee — the full badge set repeated so each half overflows the carousel width.
-const HERO_BADGE_HALF = [...HERO_BADGES, ...HERO_BADGES];
-
-export default function ServiceHero({ city, heading, serviceData, landing }) {
+export default function ServiceHero({ city, heading, serviceData }) {
   const heroImage = serviceData?.hero_image_url || 'https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/694441da86840f464e36c79b_chimney-inspection-roofline-flue-evaluation.webp';
-  const heroDescription = landing?.hero_subtext || serviceData?.hero_description || 'Premium Chimneys provides professional fireplace and chimney services for your home. Our mission is to help you enjoy your fireplace safely and efficiently, with complete peace of mind.';
-  const heroHeading = (landing?.hero_h1 || serviceData?.h1 || heading || '').replace(/\{city\}/g, city.name);
-  const ctaLabel = landing?.cta || 'Book your free inspection';
+  const heroDescription = serviceData?.hero_description || 'Premium Chimneys provides professional fireplace and chimney services for your home. Our mission is to help you enjoy your fireplace safely and efficiently, with complete peace of mind.';
+  const cityName = city.name.split(',')[0].trim();
+  const serviceName = heading.replace(` in ${city.name}`, '');
   return (
     <>
 
@@ -28,7 +14,6 @@ export default function ServiceHero({ city, heading, serviceData, landing }) {
 
 
       <style dangerouslySetInnerHTML={{__html: `
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         .hero {
           position: relative;
           width: 100%;
@@ -36,7 +21,6 @@ export default function ServiceHero({ city, heading, serviceData, landing }) {
           align-items: center;
           justify-content: center;
           overflow: hidden;
-          background: #ffffff;
         }
 
         .hero-video {
@@ -65,165 +49,11 @@ export default function ServiceHero({ city, heading, serviceData, landing }) {
           max-width: 1200px;
           width: 100%;
           margin: 0 auto;
-          padding: 189px 24px 128px;
-          display: flex;
-          flex-direction: column;
-          gap: 64px;
-        }
-
-        .hero-row {
+          padding: 237px 24px 128px;
           display: grid;
-          grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
-          gap: 48px;
-          align-items: stretch;
-        }
-
-        .hero-media {
-          position: relative;
-          height: 100%;
-          min-width: 0;
-          padding: 8px;
-          background: #F5F5F7;
-          border: 1px solid #d2d2d7;
-          border-radius: 24px;
-          box-sizing: border-box;
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
-        }
-
-        .hero-side-video {
-          width: 100%;
-          min-width: 0;
-          flex: 1;
-          min-height: 420px;
-          object-fit: cover;
-          border-radius: 8px 8px 16px 16px;
-          border: 1px solid rgba(255, 255, 255, 0.12);
-          box-shadow: none;
-          display: block;
-        }
-
-        .hero-form-wrap {
-          width: 100%;
-          min-width: 0;
-          max-width: 420px;
-          margin: 0 auto;
-          display: flex;
-          flex-direction: column;
-          gap: 24px;
-        }
-
-        .hero-badge-carousel {
-          width: 100%;
-          overflow: hidden;
-          -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
-          mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
-        }
-
-        .hero-badge-track {
-          display: flex;
+          grid-template-columns: 1fr 420px;
+          gap: 60px;
           align-items: center;
-          gap: 56px;
-          width: max-content;
-          animation: heroBadgeScroll 40s linear infinite;
-        }
-
-        .hero-badge-track:hover {
-          animation-play-state: paused;
-        }
-
-        @keyframes heroBadgeScroll {
-          from { transform: translateX(0); }
-          to { transform: translateX(-50%); }
-        }
-
-        .hero-heading-group {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          text-align: center;
-          gap: 20px;
-        }
-
-        /* In-container hero content is desktop-only; hidden by default so mobile is untouched */
-        .hero-heading-inner {
-          display: none;
-        }
-
-        /* Reviews widget replaces the location header on desktop only; hidden by default */
-        .hero-media-reviews {
-          display: none;
-        }
-
-        /* Custom elegant rating block (lives inside .hero-media-reviews, desktop only) */
-        /* Compact reviews chip */
-        .hero-rating {
-          display: inline-flex;
-          align-items: center;
-          gap: 7px;
-          background: rgba(255, 255, 255, 0.1);
-          border: 1px solid rgba(255, 255, 255, 0.18);
-          border-radius: 10px;
-          padding: 8px 8px;
-          backdrop-filter: blur(8px);
-          -webkit-backdrop-filter: blur(8px);
-        }
-        .hero-rating-stars {
-          display: inline-flex;
-          align-items: center;
-          gap: 2px;
-          color: #FFB400;
-        }
-        .hero-rating-stars svg {
-          width: 15px;
-          height: 15px;
-          display: block;
-          stroke: currentColor;
-          stroke-width: 1.5px;
-          stroke-linejoin: round;
-          stroke-linecap: round;
-        }
-        .hero-rating-score {
-          font-family: 'Inter Tight', sans-serif;
-          font-size: 14px;
-          font-weight: 700;
-          color: #ffffff;
-          font-variant-numeric: tabular-nums;
-          line-height: 1;
-        }
-        .hero-rating-label {
-          font-family: 'Inter', 'Inter Tight', sans-serif;
-          font-size: 13px;
-          font-weight: 500;
-          color: #ffffff;
-          line-height: 1;
-        }
-
-        /* Service-in-city tag — exact same chip container as the reviews chip */
-        .hero-loc-tag {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          font-family: 'Inter Tight', sans-serif;
-          font-size: 13px;
-          font-weight: 500;
-          line-height: 1;
-          white-space: nowrap;
-          color: #ffffff;
-          letter-spacing: 0.01em;
-          background: rgba(255, 255, 255, 0.1);
-          border: 1px solid rgba(255, 255, 255, 0.18);
-          border-radius: 10px;
-          padding: 8px 8px;
-          backdrop-filter: blur(8px);
-          -webkit-backdrop-filter: blur(8px);
-        }
-        .hero-loc-tag svg {
-          width: 14px;
-          height: 14px;
-          flex-shrink: 0;
-          color: #ffffff;
         }
 
         .hero-left {
@@ -240,7 +70,7 @@ export default function ServiceHero({ city, heading, serviceData, landing }) {
         }
 
         .hero-badge-img {
-          height: 48px;
+          height: 72px;
           width: auto;
           display: block;
           border-radius: 6px;
@@ -248,22 +78,6 @@ export default function ServiceHero({ city, heading, serviceData, landing }) {
 
         .hero-reviews {
           max-width: 280px;
-          margin: 0 auto;
-        }
-
-        .hero-pill {
-          align-self: flex-start;
-          display: inline-flex;
-          align-items: center;
-          font-family: 'Inter Tight', sans-serif;
-          font-size: 14px;
-          font-weight: 600;
-          color: #7c3aed;
-          background: rgba(124, 58, 237, 0.1);
-          border: 1px solid #7c3aed;
-          border-radius: 10px;
-          padding: 8px;
-          width: fit-content;
         }
 
         .hero-h1 {
@@ -272,11 +86,10 @@ export default function ServiceHero({ city, heading, serviceData, landing }) {
           font-weight: 700;
           line-height: 1.1;
           letter-spacing: -0.03em;
-          color: #000000;
+          color: #ffffff;
           margin: 0;
-          width: 100%;
           max-width: 100%;
-          text-align: left;
+          white-space: normal;
         }
 
         .hero-desc {
@@ -284,51 +97,27 @@ export default function ServiceHero({ city, heading, serviceData, landing }) {
           font-size: 16px;
           font-weight: 400;
           line-height: 1.65;
-          color: #000000;
+          color: #ffffff;
           margin: 0;
-          width: 100%;
-          max-width: 100%;
-          text-align: left;
+          max-width: 440px;
         }
 
-        /* Location header sitting in the top of the media container */
         .hero-location {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          padding: 8px 6px;
-          font-family: 'Inter Tight', sans-serif;
-        }
-
-        .hero-location-text {
-          display: flex;
-          flex-direction: column;
-          gap: 2px;
-          line-height: 1.25;
-        }
-
-        .hero-location-title {
-          font-size: 14px;
-          font-weight: 600;
-          color: #000000;
-        }
-
-        .hero-location-area {
-          font-size: 12px;
-          font-weight: 500;
-          color: rgba(0, 0, 0, 0.5);
-        }
-
-        .hero-location-pin {
           display: inline-flex;
           align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-          width: 30px;
-          height: 30px;
-          border-radius: 9px;
-          background: rgba(124, 58, 237, 0.9);
+          gap: 8px;
+          font-family: 'Inter Tight', sans-serif;
+          font-size: 14px;
+          font-weight: 700;
           color: #ffffff;
+          background: linear-gradient(135deg, rgba(167, 139, 250, 0.30), rgba(124, 58, 237, 0.30));
+          border: 1px solid rgba(167, 139, 250, 0.65);
+          border-radius: 100px;
+          padding: 9px 18px 9px 14px;
+          width: fit-content;
+          text-transform: uppercase;
+          letter-spacing: 0.06em;
+          box-shadow: 0 4px 18px rgba(124, 58, 237, 0.40), inset 0 1px 0 rgba(255, 255, 255, 0.15);
         }
 
         .hero-ctas {
@@ -341,6 +130,7 @@ export default function ServiceHero({ city, heading, serviceData, landing }) {
         .hero-cta-primary,
         .hero-cta-secondary {
           width: 210px;
+          height: 46px;
           justify-content: center;
           text-align: center;
           box-sizing: border-box;
@@ -351,15 +141,15 @@ export default function ServiceHero({ city, heading, serviceData, landing }) {
           align-items: center;
           gap: 8px;
           font-family: 'Inter Tight', sans-serif;
-          font-size: 18px;
+          font-size: 15px;
           font-weight: 600;
           color: #f0e0fd;
           text-decoration: none;
-          padding: 20px 24px;
+          padding: 12px 24px;
           border: 1px solid #7c3aed;
           border-radius: 10px;
           background: linear-gradient(160deg, #9b5de5 0%, #7c3aed 25%, #5b21b6 50%, #6d28d9 72%, #8b5cf6 100%);
-          box-shadow: none;
+          box-shadow: inset 0 1px 0 rgba(196,155,240,0.55), inset 0 -1px 0 rgba(0,0,0,0.22), 0 4px 16px rgba(91,33,182,0.45);
           cursor: pointer;
           transition: all 0.22s ease;
           position: relative;
@@ -382,34 +172,10 @@ export default function ServiceHero({ city, heading, serviceData, landing }) {
 
         .hero-cta-primary:hover {
           transform: translateY(-2px);
+          box-shadow: inset 0 1px 0 rgba(196,155,240,0.55), inset 0 -1px 0 rgba(0,0,0,0.22), 0 8px 24px rgba(91,33,182,0.5);
         }
 
         .hero-cta-primary:hover::before { left: 130%; }
-
-        .hero-cta-wrap { position: relative; display: inline-block; }
-        .hero-cta-badge {
-          position: absolute;
-          top: 0;
-          right: 0;
-          transform: translate(30%, -50%);
-          display: inline-flex;
-          align-items: center;
-          gap: 4px;
-          background: #ec4899;
-          color: #ffffff;
-          font-family: 'Inter Tight', sans-serif;
-          font-size: 10px;
-          font-weight: 800;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-          /* trim right padding to offset the trailing letter-spacing so the text reads centered */
-          padding: 5px 8px 5px 9px;
-          border-radius: 6px;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
-          white-space: nowrap;
-          pointer-events: none;
-        }
-        .hero-cta-badge svg { width: 11px; height: 11px; flex-shrink: 0; }
 
         .hero-cta-secondary {
           display: inline-flex;
@@ -450,224 +216,56 @@ export default function ServiceHero({ city, heading, serviceData, landing }) {
         }
 
         /* ─── RESPONSIVE ─────────────────────────────────────── */
-        @media (min-width: 961px) {
-          .hero-h1, .hero-desc { width: 50%; align-self: center; text-align: center; color: #ffffff; }
-          .hero-h1 { width: 60%; }
-          /* Overlay so the video reads behind the frosted glass panels */
-          .hero-overlay { background: rgba(0, 0, 0, 0.65); }
-          .hero-pill {
-            align-self: center;
-            color: rgba(255, 255, 255, 0.6);
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-          }
-          .hero-ctas { align-self: center; }
-          /* Match the form's Submit Request button design */
-          .hero-cta-primary {
-            width: 340px;
-            background: linear-gradient(160deg, #9b5de5 0%, #7c3aed 40%, #6d28d9 100%);
-            border: none;
-            border-radius: 12px;
-            color: #ffffff;
-            font-size: 15px;
-            font-weight: 600;
-            padding: 14px 24px;
-          }
-
-          /* Desktop: move hero content into the container, drop the top copy + side video */
-          .hero-heading-top { display: none; }
-          .hero-side-video { display: none; }
-          .hero-heading-inner {
-            display: flex;
-            flex: none;
-            justify-content: center;
-            align-items: flex-start;
-            text-align: left;
-            gap: 20px;
-            padding: 0;
-          }
-          .hero-heading-inner .hero-h1 {
-            width: 85%;
-            align-self: flex-start;
-            text-align: left;
-            color: #ffffff;
-          }
-          .hero-heading-inner .hero-desc {
-            width: 85%;
-            align-self: flex-start;
-            text-align: left;
-            color: rgba(255, 255, 255, 0.72);
-          }
-          /* Pill tag removed on desktop */
-          .hero-heading-inner .hero-pill { display: none; }
-          .hero-heading-inner .hero-ctas { align-self: flex-start; }
-
-          /* Desktop: show the reviews row, hide the mobile location header */
-          .hero-media .hero-location { display: none; }
-          .hero-media-reviews {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-          }
-
-          /* ─── Left content sits directly on the background video (no card) ─── */
-          .hero-media {
-            background: transparent;
-            border: none;
-            border-radius: 0;
-            box-shadow: none;
-            padding: 0;
-            justify-content: center;
-            gap: 14px;
-          }
-
-          /* Frosted-glass form card floating over the hero video */
-          .hero .hero-form-card {
-            background: #ffffff;
-            border: none;
-            box-shadow:
-              0 30px 70px rgba(0, 0, 0, 0.45),
-              0 4px 14px rgba(0, 0, 0, 0.25);
-          }
-          /* Generous 40px padding on all four outer edges of the form card */
-          .hero .hero-form-top { padding: 40px 40px 0; }
-          .hero .hero-form-body { padding: 20px 40px 40px; }
-
-          /* Fields: white background, light-gray border, custom placeholder */
-          .hero .hero-form-fields .hero-form-input,
-          .hero .hero-form-fields .hero-form-textarea,
-          .hero .hero-form-fields .hero-form-phone-wrap {
-            background: #ffffff;
-            border-color: #E5E7EB;
-            border-radius: 12px;
-          }
-          .hero .hero-form-fields .hero-form-input::placeholder,
-          .hero .hero-form-fields .hero-form-textarea::placeholder,
-          .hero .hero-form-fields .hero-form-phone-input::placeholder {
-            color: #8F9092;
-          }
-        }
-
         @media (max-width: 960px) {
-          .hero-inner { gap: 24px; padding: 40px 24px 24px; }
-          /* Full-bleed background video with the same dark overlay as desktop */
-          .hero-video { display: block; }
-          .hero-overlay { display: block; background: rgba(0, 0, 0, 0.65); }
-          .hero-row { grid-template-columns: 1fr; gap: 24px; }
-          /* Empty media card removed (no side video / location header on mobile) */
-          .hero-media { display: none; }
-          .hero-h1 { font-size: 36px; max-width: 100%; }
+          .hero-inner { grid-template-columns: 1fr; gap: 40px; padding: 189px 24px 80px; }
+          .hero-h1 { font-size: 38px; max-width: 100%; }
           .hero-form-card { max-width: 480px; }
-          /* Hero copy now sits on the dark video — switch it to the desktop light treatment */
-          .hero-heading-top .hero-h1 { color: #ffffff; }
-          .hero-heading-top .hero-desc { color: rgba(255, 255, 255, 0.72); }
-          /* Match the desktop service-in-city tag (.hero-loc-tag) */
-          .hero-heading-top .hero-pill {
-            gap: 6px;
-            font-size: 13px;
-            font-weight: 500;
-            line-height: 1;
-            letter-spacing: 0.01em;
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-          }
-          .hero-heading-top .hero-pill svg {
-            width: 14px;
-            height: 14px;
-            flex-shrink: 0;
-            color: #ffffff;
-          }
-          /* Center the pink tag on the button, keeping it floated on the top edge */
-          .hero-cta-badge { left: auto; right: 4%; transform: translate(0, -50%); padding: 5px 9px; }
         }
 
         @media (max-width: 480px) {
-          .hero-inner { padding: 32px 24px 24px; }
-          .hero-h1 { font-size: 36px; width: 100%; }
-          .hero-desc { max-width: 100%; width: 100%; }
-          .hero-ctas { flex-direction: column; align-items: stretch; width: 100%; }
+          .hero-inner { padding: 189px 24px 80px; }
+          .hero-h1 { font-size: 30px; }
+          .hero-ctas { flex-direction: column; align-items: stretch; }
           .hero-cta-primary, .hero-cta-secondary { width: 100%; }
         }
       `}} />
 
       <section className="hero">
-        <video className="hero-video" autoPlay muted loop playsInline>
-          <source src="https://res.cloudinary.com/dnr8oynlg/video/upload/v1775893214/premium-chimneys-background-video_i1w9ta.mp4" type="video/mp4" />
-        </video>
+        <img className="hero-video" src={heroImage} alt="" />
         <div className="hero-overlay"></div>
+
         <div className="hero-inner">
-          <div className="hero-heading-group hero-heading-top">
-            <span className="hero-pill">
-              <svg viewBox="0 0 24 24" fill="none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /><circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="1.8" /></svg>
-              {heading}
-            </span>
-            <h1 className="hero-h1">{heroHeading}</h1>
+          <div className="hero-left">
+            <div className="hero-location">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ flexShrink: '0' }}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /><circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="1.8" /></svg>
+              {`SERVING ${cityName} & NEARBY COMMUNITIES`}
+            </div>
+
+            <div className="hero-badges">
+              <img className="hero-badge-img" src="https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/69498dcf9a206ed260446ac6_bbb-accredited-business-logo.webp" alt="BBB Accredited Business" />
+              <img className="hero-badge-img" src="https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/65ea3566667e1e282004fb81_Home%20Advisor%20Badge.svg" alt="HomeAdvisor" />
+              <div className="hero-reviews">
+                <div className="elfsight-app-78d5d8f1-b6c0-487e-bc47-52b7a1546592" data-elfsight-app-lazy={true}></div>
+              </div>
+            </div>
+
+            <h1 className="hero-h1"><span style={{ display: 'block' }}>{`${cityName}'s Trusted Local`}</span><span style={{ display: 'block' }}>{serviceName}</span></h1>
 
             <p className="hero-desc">{heroDescription}</p>
 
             <div className="hero-ctas">
-              <span className="hero-cta-wrap">
-                <button type="button" className="hero-cta-primary" data-gateway-book>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}>
-                    <path d="M22 2L11 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                  {ctaLabel}
-                </button>
-                <span className="hero-cta-badge">
-                  100% OFF
-                </span>
-              </span>
+              <button type="button" className="hero-cta-primary">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ flexShrink: '0' }}><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.8" /><line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /><line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /><line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" strokeWidth="1.8" /></svg>
+                Book Appointment
+              </button>
+              <a href={`tel:${city.phone}`} className="hero-cta-secondary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{ flexShrink: '0' }}><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>{`
+                ${city.phone_text}
+              `}</a>
             </div>
           </div>
 
-          <div className="hero-row">
-            <div className="hero-media">
-              <div className="hero-media-reviews">
-                <div className="hero-rating">
-                  <span className="hero-rating-stars" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 5.88 6.49.94-4.7 4.58 1.11 6.46L12 17.8l-5.8 3.05 1.11-6.46-4.7-4.58 6.49-.94L12 2.5z" /></svg>
-                  </span>
-                  <span className="hero-rating-score">4.9</span>
-                  <span className="hero-rating-label">Google rated</span>
-                </div>
-                <span className="hero-loc-tag">
-                  <svg viewBox="0 0 24 24" fill="none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /><circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="1.8" /></svg>
-                  {heading}
-                </span>
-              </div>
-              <div className="hero-heading-group hero-heading-inner">
-                <span className="hero-pill">{heading}</span>
-                <h1 className="hero-h1">{heroHeading}</h1>
-
-                <p className="hero-desc">{heroDescription}</p>
-
-                <div className="hero-ctas">
-                  <span className="hero-cta-wrap">
-                    <button type="button" className="hero-cta-primary" data-gateway-book>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}>
-                        <path d="M22 2L11 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                      {ctaLabel}
-                    </button>
-                    <span className="hero-cta-badge">
-                      100% OFF
-                    </span>
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div className="hero-form-wrap">
-              <Form heading={landing?.form_heading} />
-            </div>
-          </div>
+          <Form />
         </div>
       </section>
     </>

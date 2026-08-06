@@ -26,8 +26,8 @@ export default function Reviews({ city }) {
         .tm-section * { margin: 0; padding: 0; box-sizing: border-box; }
       
         .tm-section {
-          background: transparent;
-          padding: 100px 0 56px;
+          background: #faf9fe;
+          padding: 128px 0 72px;
           position: relative;
           overflow-x: clip;
           overflow-y: visible;
@@ -130,7 +130,7 @@ export default function Reviews({ city }) {
         .tm-h2 {
           font-size: 48px;
           font-weight: 700;
-          color: #ffffff;
+          color: #1a1225;
           letter-spacing: -0.04em;
           line-height: 1.08;
           margin-bottom: 0;
@@ -288,7 +288,7 @@ export default function Reviews({ city }) {
       </section>
       
       {/* Elfsight widget outside section */}
-      <div style={{ background: 'transparent' }}>
+      <div style={{ background: '#faf9fe' }}>
         <div className="tm-widget" style={{ boxSizing: 'border-box', maxWidth: '1200px', margin: '0 auto', padding: '0 24px 72px', marginTop: '0' }}>
           <div className="elfsight-app-1f973617-d463-40e7-916a-3a2dfadb8a9b" data-elfsight-app-lazy={true}></div>
         </div>
