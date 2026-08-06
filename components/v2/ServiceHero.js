@@ -253,17 +253,17 @@ export default function ServiceHero({ city, heading, serviceData }) {
         /* ─── RESPONSIVE ─────────────────────────────────────── */
         @media (max-width: 960px) {
           .hero { margin-top: 0; }
-          .hero-overlay { background: rgba(0, 0, 0, 0.55); }
+          .hero-overlay { background: rgba(0, 0, 0, 0.65); }
           .hero-location-row { flex-wrap: wrap; }
           .hero-inner { grid-template-columns: 1fr; gap: 40px; padding: 189px 24px 80px; }
-          .hero-h1 { font-size: 38px; max-width: 100%; }
+          .hero-h1 { font-size: 48px; max-width: 100%; }
           .hero-form-card { max-width: 480px; }
           .hero-location-address { white-space: normal; max-width: 300px; }
         }
 
         @media (max-width: 480px) {
           .hero-inner { padding: 189px 24px 80px; }
-          .hero-h1 { font-size: 30px; }
+          .hero-h1 { font-size: 48px; }
           .hero-ctas { flex-direction: column; align-items: stretch; }
           .hero-cta-primary, .hero-cta-secondary { width: 100%; }
         }
