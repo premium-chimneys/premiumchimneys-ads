@@ -10,19 +10,30 @@ export default function ServiceHero({ city, heading, serviceData }) {
   // Possessive: names ending in "s" take just an apostrophe (Dallas' not Dallas's).
   const cityPossessive = /s$/i.test(cityName) ? `${cityName}'` : `${cityName}'s`;
   const serviceName = heading.replace(` in ${city.name}`, '');
-  // The hero image is the LCP element and lives on a third-party CDN, so the
+  // The hero image is the LCP element and lives on another origin, so the
   // browser would otherwise pay a cold DNS+TCP+TLS handshake before its first
-  // byte — and only discover it at Low priority behind the render-blocking font
-  // stylesheet. Preconnect to its origin and preload it at high priority.
-  // React 19 hoists both <link>s into <head>, so they land ahead of the <img>.
+  // byte. React already emits the <link rel="preload"> for it (picking up the
+  // fetchPriority and srcSet from the <img> below), but it does not preconnect,
+  // so that hint is ours to add — hoisted into <head>, ahead of the <img>.
   // Derived from the URL rather than hardcoded: the image comes from the
   // v2_hero_images table, so the host can change without touching this file.
   let heroOrigin = null;
   try { heroOrigin = new URL(heroImage).origin; } catch { /* relative URL — same origin, no preconnect needed */ }
+
+  // A phone shows the hero about 390 CSS px wide, so the 1724px file is roughly
+  // double the pixels it can use. Every `-v2.webp` in the bucket has an 860px
+  // sibling uploaded alongside it; match on that suffix so a row pointing
+  // anywhere else simply gets no srcset and keeps the single full-size image
+  // rather than requesting a variant that was never uploaded.
+  const heroSmall = /-v2\.webp$/.test(heroImage)
+    ? heroImage.replace(/-v2\.webp$/, '-v2-860.webp')
+    : null;
+  const heroSrcSet = heroSmall ? `${heroSmall} 860w, ${heroImage} 1724w` : undefined;
+  // The hero is full-bleed at every breakpoint.
+  const heroSizes = heroSmall ? '100vw' : undefined;
   return (
     <>
       {heroOrigin && <link rel="preconnect" href={heroOrigin} crossOrigin="anonymous" />}
-      <link rel="preload" as="image" href={heroImage} fetchPriority="high" />
 
 
 
@@ -295,6 +306,8 @@ export default function ServiceHero({ city, heading, serviceData }) {
         <img
           className="hero-video"
           src={heroImage}
+          srcSet={heroSrcSet}
+          sizes={heroSizes}
           fetchPriority="high"
           loading="eager"
           decoding="async"
