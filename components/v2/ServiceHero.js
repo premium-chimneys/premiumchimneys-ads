@@ -258,7 +258,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
              over-zooms on a tall screen). Fades into the dark background; the
              base left+bottom gradient overlay carries over from desktop. */
           .hero-video {
-            top: 120px;
+            top: 100px;
             height: 58vh;
             bottom: auto;
             object-position: 40% 14%;
