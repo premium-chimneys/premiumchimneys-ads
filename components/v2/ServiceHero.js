@@ -288,7 +288,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
               <GoogleReviewsPill />
             </div>
 
-            <h1 className="hero-h1"><span style={{ display: 'block' }}>{`${cityName}'s Trusted Local`}</span><span style={{ display: 'block' }}>{serviceName}</span></h1>
+            <h1 className="hero-h1">{`${cityName}'s Trusted Local ${serviceName}`}</h1>
 
             <p className="hero-desc">{heroDescription}</p>
 
