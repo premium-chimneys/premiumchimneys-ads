@@ -253,8 +253,17 @@ export default function ServiceHero({ city, heading, serviceData }) {
 
         /* ─── RESPONSIVE ─────────────────────────────────────── */
         @media (max-width: 960px) {
-          .hero { margin-top: 0; }
-          .hero-overlay { background: rgba(0, 0, 0, 0.65); }
+          .hero { margin-top: 0; background: #14101e; }
+          /* Landscape band at the top instead of a full-height cover (which
+             over-zooms on a tall screen). Fades into the dark background; the
+             base left+bottom gradient overlay carries over from desktop. */
+          .hero-video {
+            height: 58vh;
+            bottom: auto;
+            object-position: 40% 14%;
+            -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
+            mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
+          }
           .hero-location-row { flex-wrap: wrap; }
           .hero-inner { grid-template-columns: 1fr; gap: 40px; padding: 150px 24px 80px; }
           .hero-h1 { font-size: 48px; max-width: 100%; }
