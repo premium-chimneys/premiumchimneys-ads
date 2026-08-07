@@ -10,8 +10,19 @@ export default function ServiceHero({ city, heading, serviceData }) {
   // Possessive: names ending in "s" take just an apostrophe (Dallas' not Dallas's).
   const cityPossessive = /s$/i.test(cityName) ? `${cityName}'` : `${cityName}'s`;
   const serviceName = heading.replace(` in ${city.name}`, '');
+  // The hero image is the LCP element and lives on a third-party CDN, so the
+  // browser would otherwise pay a cold DNS+TCP+TLS handshake before its first
+  // byte — and only discover it at Low priority behind the render-blocking font
+  // stylesheet. Preconnect to its origin and preload it at high priority.
+  // React 19 hoists both <link>s into <head>, so they land ahead of the <img>.
+  // Derived from the URL rather than hardcoded: the image comes from the
+  // v2_hero_images table, so the host can change without touching this file.
+  let heroOrigin = null;
+  try { heroOrigin = new URL(heroImage).origin; } catch { /* relative URL — same origin, no preconnect needed */ }
   return (
     <>
+      {heroOrigin && <link rel="preconnect" href={heroOrigin} crossOrigin="anonymous" />}
+      <link rel="preload" as="image" href={heroImage} fetchPriority="high" />
 
 
 
@@ -281,7 +292,14 @@ export default function ServiceHero({ city, heading, serviceData }) {
       `}} />
 
       <section className="hero">
-        <img className="hero-video" src={heroImage} alt="" />
+        <img
+          className="hero-video"
+          src={heroImage}
+          fetchPriority="high"
+          loading="eager"
+          decoding="async"
+          alt=""
+        />
         <div className="hero-overlay"></div>
 
         <div className="hero-inner">
