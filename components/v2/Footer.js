@@ -487,7 +487,9 @@ export default function Footer({ city }) {
               <p className="footer-service-area">{city.service_area}</p>
       
               <div className="footer-bbb">
-                <img src="https://seal-dallas.bbb.org/seals/blue-seal-293-61-whitetxt-bbb-91352067.png" alt="Premium Chimneys BBB Business Review" style={{ border: '0', maxWidth: '293px', width: '100%', height: 'auto', display: 'block', pointerEvents: 'none' }} />
+                {/* Footer — never on screen at first paint, so lazy it and
+                    keep React from preloading it ahead of the hero. */}
+                <img src="https://seal-dallas.bbb.org/seals/blue-seal-293-61-whitetxt-bbb-91352067.png" alt="Premium Chimneys BBB Business Review" loading="lazy" decoding="async" style={{ border: '0', maxWidth: '293px', width: '100%', height: 'auto', display: 'block', pointerEvents: 'none' }} />
               </div>
             </div>
       

@@ -455,12 +455,19 @@ export default function Form() {
             </button>
             <div className="hero-form-badges">
               <img className="hero-form-badge" src="https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/69498dcf9a206ed260446ac6_bbb-accredited-business-logo.webp" alt="BBB Accredited Business" />
-              <img className="hero-form-badge" src="https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/65ea3566667e1e282004fb81_Home%20Advisor%20Badge.svg" alt="HomeAdvisor" />
-              <img className="hero-form-badge" src="/images/angi_logo.png" alt="Angi" />
-              <img className="hero-form-badge" src="/images/yelp_logo.png" alt="Yelp" />
-              <img className="hero-form-badge" src="/images/houzz_logo.png" alt="Houzz" />
-              <img className="hero-form-badge" src="/images/thumbtack_logo.png" alt="Thumbtack" />
-              <img className="hero-form-badge" src="/images/nextdoor_logo.png" alt="Nextdoor" />
+              {/* These badges sit above the fold, so they stay eager and get
+                  preloaded alongside the hero — which is exactly why their
+                  weight matters. Served at 3x the 36px they render at, from
+                  new files rather than the originals: public/images is shared
+                  with V1, whose assets stay as they are. The HomeAdvisor badge
+                  was a 50 KB "SVG" wrapping 21 base64 rasters; this is the
+                  same artwork flattened to 8 KB. */}
+              <img className="hero-form-badge" src="/images/homeadvisor_badge-216.webp" alt="HomeAdvisor" />
+              <img className="hero-form-badge" src="/images/angi_logo-108.webp" alt="Angi" />
+              <img className="hero-form-badge" src="/images/yelp_logo-108.webp" alt="Yelp" />
+              <img className="hero-form-badge" src="/images/houzz_logo-108.webp" alt="Houzz" />
+              <img className="hero-form-badge" src="/images/thumbtack_logo-108.webp" alt="Thumbtack" />
+              <img className="hero-form-badge" src="/images/nextdoor_logo-108.webp" alt="Nextdoor" />
             </div>
             <div className="hero-form-trust">
               <span className="hero-form-trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg> No spam</span>

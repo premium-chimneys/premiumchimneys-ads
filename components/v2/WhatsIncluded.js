@@ -38,10 +38,16 @@ export default function WhatsIncluded({ city, serviceData }) {
           <div className="wi-grid">
             <div className="wi-image-wrap">
               <div className="wi-image-frame">
+                {/* This section is below the fold. Without loading="lazy" React
+                    emits a <link rel="preload"> for it during SSR, so 68 KB
+                    nobody can see yet competes with the hero for bandwidth at
+                    first paint. */}
                 <img
                   className="wi-image"
                   src="https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/694318b71802992e9f185df1_premium-chimneys-certified-chimney-technician-fireplace-inspection.webp"
                   alt="Premium Chimneys technician on a rooftop"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="wi-image-shade" />
                 <div className="wi-image-badge">
