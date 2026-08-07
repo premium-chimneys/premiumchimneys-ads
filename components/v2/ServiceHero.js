@@ -7,6 +7,8 @@ export default function ServiceHero({ city, heading, serviceData }) {
   const heroImage = serviceData?.hero_image_url || 'https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/694441da86840f464e36c79b_chimney-inspection-roofline-flue-evaluation.webp';
   const heroDescription = serviceData?.hero_description || 'Premium Chimneys provides professional fireplace and chimney services for your home. Our mission is to help you enjoy your fireplace safely and efficiently, with complete peace of mind.';
   const cityName = city.name.split(',')[0].trim();
+  // Possessive: names ending in "s" take just an apostrophe (Dallas' not Dallas's).
+  const cityPossessive = /s$/i.test(cityName) ? `${cityName}'` : `${cityName}'s`;
   const serviceName = heading.replace(` in ${city.name}`, '');
   return (
     <>
@@ -288,7 +290,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
               <GoogleReviewsPill />
             </div>
 
-            <h1 className="hero-h1">{`${cityName}'s Trusted Local ${serviceName}`}</h1>
+            <h1 className="hero-h1">{`${cityPossessive} Trusted Local ${serviceName}`}</h1>
 
             <p className="hero-desc">{heroDescription}</p>
 
