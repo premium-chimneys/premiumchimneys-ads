@@ -5,7 +5,7 @@ export default function Footer({ city }) {
     <>
 
       <style dangerouslySetInnerHTML={{__html: `
-      @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800&display=swap');
+      /* Inter Tight is self-hosted in globals.css (variable, 400-800). */
       
       .footer-wrap {
         font-family: 'Inter Tight', sans-serif;

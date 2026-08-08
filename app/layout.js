@@ -1,5 +1,6 @@
 import Script from 'next/script'
 import TrackingCapture from '@/components/TrackingCapture'
+import ElfsightLoader from '@/components/ElfsightLoader'
 import './globals.css'
 
 export const metadata = {
@@ -19,15 +20,19 @@ export default function RootLayout({ children }) {
       <head>
         <script defer src="https://cdn.serviceroot.io/capture.js" data-tenant="premium-chimneys"></script>
         <script async src="https://gateway.serviceroot.io/booking.js" data-tenant="premium-chimneys" data-mode="popup"></script>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" />
-        <Script
-          id="elfsight-platform"
-          src="https://elfsightcdn.com/platform.js"
-          strategy="afterInteractive"
+        {/* Inter Tight is self-hosted in globals.css, so there is no longer a
+            Google Fonts origin to warm up. Roboto's stylesheet lived here too
+            and was render-blocking on every page, but nothing sets Roboto as
+            body copy — its only use is a rule styling the text *inside* the
+            Elfsight reviews widget, which now falls through to that rule's own
+            -apple-system / Segoe UI fallbacks. */}
+        <link
+          rel="preload"
+          as="font"
+          type="font/woff2"
+          href="/fonts/inter-tight-var-latin.woff2"
+          crossOrigin="anonymous"
         />
-
         <Script id="gtm-loader" strategy="afterInteractive">
           {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -75,6 +80,7 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
         </noscript>
 
         <TrackingCapture />
+        <ElfsightLoader />
         {children}
 
         {/* The chat widget, now served by Agent HQ rather than by Gateway — the
