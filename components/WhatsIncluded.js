@@ -41,6 +41,11 @@ export default function WhatsIncluded({ city, serviceData }) {
                   className="wi-image"
                   src="https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/694318b71802992e9f185df1_premium-chimneys-certified-chimney-technician-fireplace-inspection.webp"
                   alt="Premium Chimneys technician on a rooftop"
+                  /* Below the fold. Without loading="lazy" React emits a
+                     <link rel="preload"> for it during SSR, putting 68 KB
+                     nobody can see yet up against the hero. */
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="wi-image-shade" />
                 <div className="wi-image-badge">

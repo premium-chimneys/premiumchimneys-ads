@@ -4,12 +4,26 @@ import GoogleReviewsPill from './GoogleReviewsPill';
 
 export default function ServiceHero({ city, heading, serviceData }) {
   const heroImage = serviceData?.hero_image_url || 'https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/694441da86840f464e36c79b_chimney-inspection-roofline-flue-evaluation.webp';
+  // The hero image is the LCP element and sits on another origin, so warm that
+  // connection up — React emits the preload itself (taking fetchPriority and
+  // srcSet off the <img>) but never the preconnect.
+  let heroOrigin = null;
+  try { heroOrigin = new URL(heroImage).origin; } catch { /* relative URL — same origin */ }
+
+  // A phone paints this about 390 CSS px wide, so the full-width file is far
+  // more pixels than it can use. Every `-hero-opt.webp` in the bucket has an
+  // 860px sibling; matching on that suffix means a services row pointing
+  // anywhere else just keeps the single image rather than requesting a variant
+  // that was never uploaded.
+  const heroSmall = /-hero-opt\.webp$/.test(heroImage)
+    ? heroImage.replace(/-hero-opt\.webp$/, '-hero-opt-860.webp')
+    : null;
+  const heroSrcSet = heroSmall ? `${heroSmall} 860w, ${heroImage} 1724w` : undefined;
+  const heroSizes = heroSmall ? '100vw' : undefined;
   const heroDescription = serviceData?.hero_description || 'Premium Chimneys provides professional fireplace and chimney services for your home. Our mission is to help you enjoy your fireplace safely and efficiently, with complete peace of mind.';
   return (
     <>
-
-
-
+      {heroOrigin && <link rel="preconnect" href={heroOrigin} crossOrigin="anonymous" />}
 
       <style dangerouslySetInnerHTML={{__html: `
         .hero {
@@ -217,14 +231,26 @@ export default function ServiceHero({ city, heading, serviceData }) {
       `}} />
 
       <section className="hero">
-        <img className="hero-video" src={heroImage} alt="" />
+        <img
+          className="hero-video"
+          src={heroImage}
+          srcSet={heroSrcSet}
+          sizes={heroSizes}
+          fetchPriority="high"
+          loading="eager"
+          decoding="async"
+          alt=""
+        />
         <div className="hero-overlay"></div>
 
         <div className="hero-inner">
           <div className="hero-left">
             <div className="hero-badges">
               <img className="hero-badge-img" src="https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/69498dcf9a206ed260446ac6_bbb-accredited-business-logo.webp" alt="BBB Accredited Business" />
-              <img className="hero-badge-img" src="https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/65ea3566667e1e282004fb81_Home%20Advisor%20Badge.svg" alt="HomeAdvisor" />
+              {/* Was a 50 KB-over-the-wire "SVG" wrapping 21 base64 rasters.
+                  This is the same artwork flattened to 8 KB, at 3x the 72px it
+                  renders at. It stays eager: it is in the hero. */}
+              <img className="hero-badge-img" src="/images/homeadvisor_badge-216.webp" alt="HomeAdvisor" />
               {/* Was the raw Elfsight widget. Because it was the hero's only
                   reviews content, it had to load during the initial render —
                   526 KB of third-party JS on the critical path. The pill paints

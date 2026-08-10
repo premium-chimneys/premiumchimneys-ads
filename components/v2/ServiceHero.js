@@ -25,9 +25,15 @@ export default function ServiceHero({ city, heading, serviceData }) {
   // sibling uploaded alongside it; match on that suffix so a row pointing
   // anywhere else simply gets no srcset and keeps the single full-size image
   // rather than requesting a variant that was never uploaded.
+  // Two naming conventions reach here: `-v2.webp` for the metroplex heroes in
+  // v2_hero_images, and `-hero-opt.webp` for the per-service images V2 falls
+  // back to when a service has no v2_hero_images row (ac-repair, hvac-repair,
+  // air-duct-cleaning, dryer-vent-cleaning). Both have an 860px sibling.
   const heroSmall = /-v2\.webp$/.test(heroImage)
     ? heroImage.replace(/-v2\.webp$/, '-v2-860.webp')
-    : null;
+    : /-hero-opt\.webp$/.test(heroImage)
+      ? heroImage.replace(/-hero-opt\.webp$/, '-hero-opt-860.webp')
+      : null;
   const heroSrcSet = heroSmall ? `${heroSmall} 860w, ${heroImage} 1724w` : undefined;
   // The hero is full-bleed at every breakpoint.
   const heroSizes = heroSmall ? '100vw' : undefined;

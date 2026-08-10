@@ -5,7 +5,7 @@ export default function Reviews({ city }) {
     <>
 
       <style dangerouslySetInnerHTML={{__html: `
-        @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&display=swap');
+        /* Inter Tight is self-hosted in globals.css (variable, 400-800). */
       
         @keyframes faqPulse {
           0%, 100% { opacity: 1; }
