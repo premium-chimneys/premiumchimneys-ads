@@ -1,4 +1,3 @@
-'use client';
 import FormBanner from './FormBanner';
 
 const PROCESS_LAYERS = [

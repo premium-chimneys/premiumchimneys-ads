@@ -1,4 +1,3 @@
-'use client'
 
 // V1's copy of the reviews pill (V2 has its own under components/v2/, and the
 // variants deliberately never share section components).

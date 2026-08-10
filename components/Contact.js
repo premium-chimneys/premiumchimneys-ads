@@ -1,5 +1,4 @@
 
-'use client';
 import Form from './Form';
 
 export default function Contact({ city }) {

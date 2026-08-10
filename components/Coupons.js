@@ -1,5 +1,4 @@
 
-'use client';
 
 export default function Coupons({ city }) {
   return (

@@ -1,5 +1,4 @@
 
-'use client';
 import Form from './Form';
 import GoogleReviewsPill from './GoogleReviewsPill';
 
