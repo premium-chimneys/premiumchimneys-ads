@@ -24,16 +24,9 @@ const formCss = `
   top: 0; left: 0; right: 0;
   height: 3px;
   background: linear-gradient(90deg, #7c3aed, #a78bfa, #c084fc, #e879f9, #c084fc, #a78bfa, #7c3aed);
-  background-size: 300% 100%;
-  animation: auroraSlide 4s ease-in-out infinite;
   z-index: 5;
 }
 
-@keyframes auroraSlide {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
 
 .hero-form-card::after {
   content: '';
@@ -44,13 +37,9 @@ const formCss = `
   box-shadow: 0 0 30px 8px rgba(124, 58, 237, 0.08);
   pointer-events: none;
   z-index: 0;
-  animation: glowPulse 4s ease-in-out infinite;
+  opacity: 0.75;
 }
 
-@keyframes glowPulse {
-  0%, 100% { opacity: 0.5; }
-  50%      { opacity: 1; }
-}
 
 .hero-form-top { padding: 24px 28px 0; position: relative; }
 
@@ -99,13 +88,8 @@ const formCss = `
   inset: -3px;
   border-radius: 50%;
   background: rgba(22, 163, 74, 0.4);
-  animation: livePing 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
-@keyframes livePing {
-  0%   { transform: scale(1); opacity: 0.7; }
-  75%, 100% { transform: scale(2.2); opacity: 0; }
-}
 
 .hero-form-dispatch-text {
   font-family: 'Inter Tight', sans-serif;
@@ -283,10 +267,8 @@ const formCss = `
   inset: -4px;
   border-radius: 50%;
   background: conic-gradient(from 0deg, rgba(34,197,94,0.3), rgba(34,197,94,0.05), rgba(34,197,94,0.3));
-  animation: heroFormRingRotate 3s linear infinite;
 }
 
-@keyframes heroFormRingRotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
 .hero-form-success-circle {
   width: 72px; height: 72px; border-radius: 50%;

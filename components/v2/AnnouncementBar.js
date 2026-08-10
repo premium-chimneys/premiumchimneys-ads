@@ -245,14 +245,9 @@ function AnnouncementBarMembership({ city }) {
           height: 6px;
           border-radius: 50%;
           background: #a78bfa;
-          animation: barPulse 2s ease-in-out infinite;
           flex-shrink: 0;
         }
       
-        @keyframes barPulse {
-          0%, 100% { opacity: 1; transform: scale(1); }
-          50%      { opacity: 0.35; transform: scale(0.65); }
-        }
       
         @media (max-width: 760px) {
           .announcement-avatars { display: none; }
@@ -528,14 +523,9 @@ function AnnouncementBarStandard({ city }) {
           height: 6px;
           border-radius: 50%;
           background: #a78bfa;
-          animation: barPulse2 2s ease-in-out infinite;
           flex-shrink: 0;
         }
       
-        @keyframes barPulse2 {
-          0%, 100% { opacity: 1; transform: scale(1); }
-          50%      { opacity: 0.35; transform: scale(0.65); }
-        }
       
         @media (max-width: 480px) {
           .announcement-quarter-2 { display: none; }
