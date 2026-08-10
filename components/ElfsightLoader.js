@@ -66,7 +66,10 @@ export default function ElfsightLoader() {
         (entries) => {
           if (entries.some((e) => e.isIntersecting)) load()
         },
-        { rootMargin: '400px' }
+        // Far enough ahead that the widget has usually finished booting by the
+        // time it is actually on screen, without being so eager that a visitor
+        // who stops halfway down the page pays for it.
+        { rootMargin: '600px' }
       )
       found.forEach((el) => observer.observe(el))
     }

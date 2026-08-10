@@ -240,6 +240,15 @@ export default function Reviews({ city }) {
           .tm-star-scatter { display: none; }
         }
 
+        /* Reserve the widget's height. It renders empty until Elfsight boots,
+           then expands and shoves the footer down — a layout shift the visitor
+           sees, since by then they have scrolled to it. Measured in Chrome at
+           the two widths; the widget lays out in fewer columns below 960px. */
+        .tm-widget [class*="elfsight-app-"] { min-height: 686px; }
+        @media (max-width: 960px) {
+          .tm-widget [class*="elfsight-app-"] { min-height: 620px; }
+        }
+
         .tm-widget [class*="elfsight-app-"],
         .tm-widget [class*="elfsight-app-"] * {
           font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
