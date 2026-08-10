@@ -8,10 +8,10 @@ export default function Coupons({ city }) {
       
       
       
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Coupons Section</title>
-      
+      {/* No <title>/<meta> here: React hoists those into <head> from wherever
+          they render, so this section's leftover document boilerplate was
+          overwriting the page title with "Coupons Section" until hydration put
+          it back. The real title comes from generateMetadata in the route. */}
       <style dangerouslySetInnerHTML={{__html: `
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
       
