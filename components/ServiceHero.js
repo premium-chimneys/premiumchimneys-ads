@@ -1,6 +1,7 @@
 
 'use client';
 import Form from './Form';
+import GoogleReviewsPill from './GoogleReviewsPill';
 
 export default function ServiceHero({ city, heading, serviceData }) {
   const heroImage = serviceData?.hero_image_url || 'https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/694441da86840f464e36c79b_chimney-inspection-roofline-flue-evaluation.webp';
@@ -234,8 +235,13 @@ export default function ServiceHero({ city, heading, serviceData }) {
             <div className="hero-badges">
               <img className="hero-badge-img" src="https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/69498dcf9a206ed260446ac6_bbb-accredited-business-logo.webp" alt="BBB Accredited Business" />
               <img className="hero-badge-img" src="https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/65ea3566667e1e282004fb81_Home%20Advisor%20Badge.svg" alt="HomeAdvisor" />
+              {/* Was the raw Elfsight widget. Because it was the hero's only
+                  reviews content, it had to load during the initial render —
+                  526 KB of third-party JS on the critical path. The pill paints
+                  the same information instantly and keeps the real widget
+                  underneath for the click, so Elfsight can now be deferred. */}
               <div className="hero-reviews">
-                <div className="elfsight-app-78d5d8f1-b6c0-487e-bc47-52b7a1546592" data-elfsight-app-lazy={true}></div>
+                <GoogleReviewsPill />
               </div>
             </div>
 
