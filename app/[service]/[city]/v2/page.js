@@ -5,6 +5,17 @@ import { getLandingV2Data } from '@/lib/getLandingV2Data'
 import { getV2HeroImage } from '@/lib/getV2HeroImage'
 import ServicePageV2 from '@/components/variants/ServicePageV2'
 
+// Serve from the edge instead of re-rendering per request — see the note on
+// the V1 route. Same one hour window, so both variants go stale together and
+// stay comparable.
+export const revalidate = 3600
+
+// Nothing prerendered at build; each path is cached on first request. See the
+// note on the V1 route.
+export function generateStaticParams() {
+  return []
+}
+
 function serviceNameFromSlug(slug) {
   return slug
     .split('-')

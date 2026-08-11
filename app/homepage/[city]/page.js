@@ -11,6 +11,16 @@ import Contact from '../../../components/Contact'
 import Footer from '../../../components/Footer'
 import LegacyTracking from '@/components/tracking/LegacyTracking'
 
+// Cached at the edge rather than re-rendered per request — see the note on
+// the /[service]/[city] route.
+export const revalidate = 3600
+
+// Nothing prerendered at build; each city is cached on first request. See the
+// note on the /[service]/[city] route.
+export function generateStaticParams() {
+  return []
+}
+
 export async function generateMetadata({ params }) {
   const { city: citySlug } = await params
   const city = await getCityData(citySlug)

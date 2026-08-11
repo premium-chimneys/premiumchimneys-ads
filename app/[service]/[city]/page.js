@@ -4,6 +4,27 @@ import { getServiceData } from '@/lib/getServiceData'
 import ServicePageV1 from '@/components/variants/ServicePageV1'
 import LegacyTracking from '@/components/tracking/LegacyTracking'
 
+// Without this the page is rendered from scratch on every single request —
+// a Supabase round trip per visit, `no-store` on the response, and a permanent
+// CDN miss. That server time lands in front of everything else, so a slow
+// response drags First Contentful Paint and Largest Contentful Paint with it;
+// it is what made the same page score 94 on one run and 61 on the next.
+//
+// One hour is a deliberate trade: city and service copy changes rarely, so
+// almost every visitor gets a cached page from the edge, and an edit in
+// Supabase takes up to an hour to appear. Lower the number if that is too long.
+export const revalidate = 3600
+
+// ISR needs generateStaticParams to be present, but 454 cities x 9 services is
+// ~4,000 pages per variant — far too many to prerender at build time. Returning
+// nothing prerenders nothing: with dynamicParams left at its default of true,
+// each path is built the first time someone asks for it and then served from
+// the cache for the next hour. The first visitor pays the render; nobody else
+// does.
+export function generateStaticParams() {
+  return []
+}
+
 function serviceNameFromSlug(slug) {
   return slug
     .split('-')

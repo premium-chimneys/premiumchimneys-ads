@@ -246,11 +246,14 @@ export default function ServiceHero({ city, heading, serviceData }) {
         <div className="hero-inner">
           <div className="hero-left">
             <div className="hero-badges">
-              <img className="hero-badge-img" src="https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/69498dcf9a206ed260446ac6_bbb-accredited-business-logo.webp" alt="BBB Accredited Business" />
+              <img className="hero-badge-img" src="https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/69498dcf9a206ed260446ac6_bbb-accredited-business-logo.webp" alt="BBB Accredited Business" width="61" height="101" />
               {/* Was a 50 KB-over-the-wire "SVG" wrapping 21 base64 rasters.
                   This is the same artwork flattened to 8 KB, at 3x the 72px it
                   renders at. It stays eager: it is in the hero. */}
-              <img className="hero-badge-img" src="/images/homeadvisor_badge-216.webp" alt="HomeAdvisor" />
+              {/* Intrinsic size, so the browser can work out the box from the
+                  aspect ratio instead of waiting for the file to arrive. The
+                  CSS (height 72px, width auto) still decides how big it draws. */}
+              <img className="hero-badge-img" src="/images/homeadvisor_badge-216.webp" alt="HomeAdvisor" width="239" height="216" />
               {/* Was the raw Elfsight widget. Because it was the hero's only
                   reviews content, it had to load during the initial render —
                   526 KB of third-party JS on the critical path. The pill paints
