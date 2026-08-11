@@ -9,6 +9,7 @@ import Reviews from '../../../components/Reviews'
 import Coupons from '../../../components/Coupons'
 import Contact from '../../../components/Contact'
 import Footer from '../../../components/Footer'
+import LegacyTracking from '@/components/tracking/LegacyTracking'
 
 export async function generateMetadata({ params }) {
   const { city: citySlug } = await params
@@ -35,6 +36,8 @@ export default async function Page({ params }) {
       <Coupons city={city} />
       <Contact city={city} />
       <Footer city={city} />
+      {/* Same scripts this page already loaded from the root layout. */}
+      <LegacyTracking />
     </div>
   )
 }

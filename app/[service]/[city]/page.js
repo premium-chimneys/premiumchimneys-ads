@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { getCityData } from '@/lib/getCityData'
 import { getServiceData } from '@/lib/getServiceData'
 import ServicePageV1 from '@/components/variants/ServicePageV1'
+import LegacyTracking from '@/components/tracking/LegacyTracking'
 
 function serviceNameFromSlug(slug) {
   return slug
@@ -33,12 +34,18 @@ export default async function Page({ params }) {
   const offersMembership = city.metroplex === 'dfw'
 
   return (
-    <ServicePageV1
-      city={city}
-      service={serviceSlug}
-      serviceData={serviceData}
-      heading={heading}
-      offersMembership={offersMembership}
-    />
+    <>
+      <ServicePageV1
+        city={city}
+        service={serviceSlug}
+        serviceData={serviceData}
+        heading={heading}
+        offersMembership={offersMembership}
+      />
+      {/* Unchanged behaviour — these are the same scripts, strategies and
+          order this page has always had; they simply moved out of the root
+          layout so V2 could load them differently. */}
+      <LegacyTracking />
+    </>
   )
 }

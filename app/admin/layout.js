@@ -1,4 +1,5 @@
 import HideChatling from '@/components/HideChatling'
+import LegacyTracking from '@/components/tracking/LegacyTracking'
 
 export const metadata = {
   title: 'Admin',
@@ -18,6 +19,8 @@ export default function AdminLayout({ children }) {
     <>
       <HideChatling />
       {children}
+      {/* Same scripts these routes already loaded from the root layout. */}
+      <LegacyTracking />
     </>
   )
 }
