@@ -291,7 +291,11 @@ export default function Footer({ city }) {
         color: #f0e0fd;
         text-decoration: none;
         padding: 12px 24px;
-        width: 240px;
+        /* Sizes to the label: the longer CTA wrapped onto two lines at the old
+           fixed 240px. 240px stays as the floor. */
+        width: auto;
+        min-width: 240px;
+        white-space: nowrap;
         height: 46px;
         box-sizing: border-box;
         border: 1px solid #7c3aed;
@@ -494,8 +498,8 @@ export default function Footer({ city }) {
             </div>
       
             <div className="footer-right">
-              <button className="footer-btn-book">
-                Schedule Online
+              <button className="footer-btn-book" data-gateway-book="">
+                Schedule Your Free Assessment
               </button>
               <a href={`tel:${city.phone}`} className="footer-btn-phone">{`
                 ${city.phone_text}
