@@ -12,10 +12,11 @@ export default function ServiceHero({ city, service, heading, serviceData }) {
   const serviceName = heading.replace(` in ${city.name}`, '');
   // Every other service name reads as an offering after "Trusted Local", but
   // chimney caps are objects — "Chicago's Trusted Local Chimney Caps" sounds
-  // like we stock them rather than fit them. Keyed off the slug, not the
+  // like we stock them rather than fit them. Singular + "Services", so the
+  // plural is carried once rather than twice. Keyed off the slug, not the
   // display name, so rewording the service upstream cannot silently drop this.
   const headingService =
-    service === 'chimney-caps' ? `${serviceName} Services` : serviceName;
+    service === 'chimney-caps' ? 'Chimney Cap Services' : serviceName;
   // The hero image is the LCP element and lives on another origin, so the
   // browser would otherwise pay a cold DNS+TCP+TLS handshake before its first
   // byte. React already emits the <link rel="preload"> for it (picking up the
