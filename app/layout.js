@@ -12,6 +12,20 @@ export const metadata = {
   verification: {
     google: '51dAetmHAT8n_2vVe6YqPxlTYLoEQjlZnVbzPB1ECSk',
   },
+  // The hero location pill prints a full postal address as plain text
+  // (city.service_area, e.g. "9330 Lyndon B Johnson Fwy #958, Dallas, TX
+  // 75243"). iOS Safari detects that and silently turns it into a link of its
+  // own — underlined in a style we never wrote, opening the Maps action sheet
+  // when tapped. Nothing in our markup does this; the pill is plain spans.
+  //
+  // Only `address` is switched off. `telephone` and `email` are deliberately
+  // left alone: every phone number and every email on the site already sits
+  // inside an explicit <a href="tel:"> or <a href="mailto:">, so nothing
+  // depends on auto-detection and turning those off would change nothing.
+  // Disabling only what is actually broken keeps the real links untouched.
+  formatDetection: {
+    address: false,
+  },
 }
 
 export default function RootLayout({ children }) {
