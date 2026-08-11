@@ -1,4 +1,5 @@
 import TrackingCapture from '@/components/TrackingCapture'
+import AnimationGate from '@/components/AnimationGate'
 import ElfsightLoader from '@/components/ElfsightLoader'
 import './globals.css'
 
@@ -41,10 +42,22 @@ export default function RootLayout({ children }) {
           href="/fonts/inter-tight-var-latin.woff2"
           crossOrigin="anonymous"
         />
+        {/* The LCP element on every service page is the hero image, and it is
+            served from Supabase storage — a different origin, so the browser
+            pays DNS + TCP + TLS before the first byte arrives. Warming the
+            connection here overlaps that handshake with parsing the document
+            instead of stacking it in front of the image. */}
+        <link rel="preconnect" href="https://labekmkkpbgrxfpcsyvz.supabase.co" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://labekmkkpbgrxfpcsyvz.supabase.co" />
       </head>
-      <body>
+      {/* data-anim-hold parks every CSS animation on the page until it has
+          loaded and gone quiet — see globals.css and AnimationGate. It ships
+          in the server HTML on purpose: the cost it removes is paid during
+          load, so lifting it client-side would be too late to matter. */}
+      <body data-anim-hold="">
         <TrackingCapture />
         <ElfsightLoader />
+        <AnimationGate />
         {children}
       </body>
     </html>

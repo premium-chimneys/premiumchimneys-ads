@@ -41,3 +41,37 @@ body {
 body {
   min-height: 100vh;
 }
+
+/* ── Animation gating ──────────────────────────────────────────────────────
+   Both variants ship ~100 infinite CSS animations in the sections below the
+   fold. Most animate background-position or box-shadow, which the compositor
+   cannot take, so each one repaints on the main thread every frame from first
+   paint onward — including the ones nobody has scrolled to yet. On the V2
+   service page that measured as 2.5s of Style & Layout and a hero image that
+   finished downloading in 277ms but then waited 2021ms to be painted.
+
+   Two states, both driven by AnimationGate:
+
+   [data-anim-hold]  sits on <body> in the server HTML and parks everything
+                     until the page has loaded and gone quiet. Nothing above
+                     the fold animates (a063bdb removed those six), so the
+                     held page is visually identical to the running one.
+
+   [data-anim-idle]  parks a section that is out of view. It is only ever
+                     applied after the hold is lifted, so a section freezes
+                     mid-cycle while offscreen and never shows a stopped
+                     first frame.
+
+   The component rules use the `animation` shorthand without !important, so
+   these win. Removing both attributes restores the original behaviour. */
+[data-anim-hold] *,
+[data-anim-hold] *::before,
+[data-anim-hold] *::after,
+[data-anim-idle],
+[data-anim-idle] *,
+[data-anim-idle]::before,
+[data-anim-idle]::after,
+[data-anim-idle] *::before,
+[data-anim-idle] *::after {
+  animation-play-state: paused !important;
+}
