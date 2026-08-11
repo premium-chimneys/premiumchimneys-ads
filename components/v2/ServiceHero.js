@@ -3,13 +3,19 @@
 import Form from './Form';
 import GoogleReviewsPill from './GoogleReviewsPill';
 
-export default function ServiceHero({ city, heading, serviceData }) {
+export default function ServiceHero({ city, service, heading, serviceData }) {
   const heroImage = serviceData?.hero_image_url || 'https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/694441da86840f464e36c79b_chimney-inspection-roofline-flue-evaluation.webp';
   const heroDescription = serviceData?.hero_description || 'Premium Chimneys provides professional fireplace and chimney services for your home. Our mission is to help you enjoy your fireplace safely and efficiently, with complete peace of mind.';
   const cityName = city.name.split(',')[0].trim();
   // Possessive: names ending in "s" take just an apostrophe (Dallas' not Dallas's).
   const cityPossessive = /s$/i.test(cityName) ? `${cityName}'` : `${cityName}'s`;
   const serviceName = heading.replace(` in ${city.name}`, '');
+  // Every other service name reads as an offering after "Trusted Local", but
+  // chimney caps are objects — "Chicago's Trusted Local Chimney Caps" sounds
+  // like we stock them rather than fit them. Keyed off the slug, not the
+  // display name, so rewording the service upstream cannot silently drop this.
+  const headingService =
+    service === 'chimney-caps' ? `${serviceName} Services` : serviceName;
   // The hero image is the LCP element and lives on another origin, so the
   // browser would otherwise pay a cold DNS+TCP+TLS handshake before its first
   // byte. React already emits the <link rel="preload"> for it (picking up the
@@ -342,7 +348,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
               <GoogleReviewsPill />
             </div>
 
-            <h1 className="hero-h1">{`${cityPossessive} Trusted Local ${serviceName}`}</h1>
+            <h1 className="hero-h1">{`${cityPossessive} Trusted Local ${headingService}`}</h1>
 
             <p className="hero-desc">{heroDescription}</p>
 
