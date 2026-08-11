@@ -41,16 +41,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-PBJDQCV7');`}
         </Script>
 
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-8H95KCD7EY"
-          strategy="afterInteractive"
-        />
-        <Script id="ga-init" strategy="afterInteractive">
-          {`window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-8H95KCD7EY');`}
-        </Script>
+        {/* The standalone GA4 tag that used to live here has been removed.
+            GTM-PBJDQCV7 already loads GA4 for G-8H95KCD7EY (3 config tags and
+            5 event tags in the published container), so this was a second,
+            duplicate load of the same measurement ID. */}
 
         <Script id="clarity-init" strategy="afterInteractive">
           {`(function(c,l,a,r,i,t,y){
