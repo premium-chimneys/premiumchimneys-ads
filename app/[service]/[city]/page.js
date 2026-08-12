@@ -35,6 +35,11 @@ function serviceNameFromSlug(slug) {
 export async function generateMetadata({ params }) {
   const { service: serviceSlug, city: citySlug } = await params
   const city = await getCityData(citySlug)
+  // Metadata runs alongside the page rather than after it, so the guard has to
+  // be in both places. Without it, an unknown city reaches `city.name` here and
+  // the whole request is a 500 even though the page below knows it is a 404.
+  if (!city) notFound()
+
   const serviceName = serviceNameFromSlug(serviceSlug)
   return {
     title: `${serviceName} in ${city.name} | Premium Chimneys`,
@@ -49,6 +54,9 @@ export default async function Page({ params }) {
   if (!serviceData) notFound()
 
   const city = await getCityData(citySlug)
+  // Same treatment the service slug already got. A URL is only a page when both
+  // halves of it name something real.
+  if (!city) notFound()
 
   const serviceName = serviceNameFromSlug(serviceSlug)
   const heading = `${serviceName} in ${city.name}`

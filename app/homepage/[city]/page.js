@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation'
 import { getCityData } from '../../../lib/getCityData'
 import AnnouncementBar from '../../../components/AnnouncementBar'
 import NavigationBar from '../../../components/NavigationBar'
@@ -24,6 +25,10 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }) {
   const { city: citySlug } = await params
   const city = await getCityData(citySlug)
+  // Metadata runs alongside the page rather than after it, so the guard has to
+  // be in both places — see the /[service]/[city] route.
+  if (!city) notFound()
+
   return {
     title: `Chimney & Fireplace Services in ${city.name} | Premium Chimneys`,
     description: `Premium Chimneys provides expert chimney and fireplace services in ${city.name}. Book your inspection today.`,
@@ -33,6 +38,8 @@ export async function generateMetadata({ params }) {
 export default async function Page({ params }) {
   const { city: citySlug } = await params
   const city = await getCityData(citySlug)
+  // An unknown city is a page that does not exist, not a crash.
+  if (!city) notFound()
 
   return (
     <div>

@@ -26,6 +26,10 @@ function serviceNameFromSlug(slug) {
 export async function generateMetadata({ params }) {
   const { service: serviceSlug, city: citySlug } = await params
   const city = await getCityData(citySlug)
+  // Metadata runs alongside the page rather than after it, so the guard has to
+  // be in both places — see the V1 route.
+  if (!city) notFound()
+
   const serviceName = serviceNameFromSlug(serviceSlug)
   return {
     title: `${serviceName} in ${city.name} | Premium Chimneys`,
@@ -43,6 +47,9 @@ export default async function Page({ params }) {
     getCityData(citySlug),
     getLandingV2Data(serviceSlug),
   ])
+  // Same treatment the service slug already got. Before the hero lookup below,
+  // which reads city.metroplex.
+  if (!city) notFound()
 
   // V2-only: swap the hero image based on service group + metroplex. Falls back
   // to the existing services.hero_image_url when there's no mapping, so V1 is
