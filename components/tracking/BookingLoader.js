@@ -9,7 +9,21 @@ const TRIGGER = '[data-gateway-book]'
 
 // Where a visitor goes if booking.js cannot be fetched at all. This is the
 // same hosted flow the popup renders in its iframe, just as a full page.
-const FALLBACK_URL = `https://gateway.serviceroot.io/book/${TENANT}`
+const FALLBACK_BASE = `https://gateway.serviceroot.io/book/${TENANT}`
+
+// The popup forwards this page's full URL to the booking flow as ?parent_url=,
+// and the booking page reports that as the lead's source_url — which is where
+// every utm_* and the gclid are read from downstream. A bare navigation to
+// FALLBACK_BASE carries none of that, so a visitor who arrives on an ad click
+// and then hits this fallback books as if they walked in off the street. Send
+// the same parameter by hand so the fallback attributes exactly like the popup.
+function fallbackUrl() {
+  try {
+    return `${FALLBACK_BASE}?parent_url=${encodeURIComponent(window.location.href)}`
+  } catch {
+    return FALLBACK_BASE
+  }
+}
 
 // booking.js is not a passive widget: its very last statement installs the
 // delegated click listener that makes every [data-gateway-book] element work
@@ -123,7 +137,7 @@ export default function BookingLoader() {
         },
         () => {
           if (cancelled) return
-          window.location.href = FALLBACK_URL
+          window.location.href = fallbackUrl()
         }
       )
     }
