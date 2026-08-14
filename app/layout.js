@@ -43,6 +43,19 @@ export default function RootLayout({ children }) {
             the route, so giving V2 its own loading schedule meant no variant
             can inherit one from here. */}
         <script defer src="https://cdn.serviceroot.io/capture.js" data-tenant="premium-chimneys"></script>
+        {/* First-party visitor counting. Served from the CRM app, like chat.js,
+            so how a visit is counted is one file in one repo rather than three
+            copies that drift.
+
+            Deferred and parser-inserted, in the same slot and for the same
+            reason as capture.js above: it registers a few passive listeners and
+            posts a beacon, so it costs nothing above the fold and there is no
+            variant that should be without it.
+
+            data-site is declared rather than read from location.hostname on
+            purpose — preview deployments and the apex/www pair would otherwise
+            each become their own site in the rollup and split the numbers. */}
+        <script defer src="https://agents.premiumchimneys.com/pv.js" data-site="book.premiumchimneys.com"></script>
         {/* Inter Tight is self-hosted in globals.css, so there is no longer a
             Google Fonts origin to warm up. Roboto's stylesheet lived here too
             and was render-blocking on every page, but nothing sets Roboto as
