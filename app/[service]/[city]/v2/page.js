@@ -34,6 +34,9 @@ export async function generateMetadata({ params }) {
   return {
     title: `${serviceName} in ${city.name} | Premium Chimneys`,
     description: `Professional ${serviceName} in ${city.name}. Trusted local experts. Book your appointment today.`,
+    // The V2 half of the pair. See the note on the V1 route: same tag, and the
+    // variant string is what keeps the two sets of buckets apart in the panel.
+    other: { 'pv-depth': 'service-v2' },
   }
 }
 

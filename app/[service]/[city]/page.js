@@ -44,6 +44,16 @@ export async function generateMetadata({ params }) {
   return {
     title: `${serviceName} in ${city.name} | Premium Chimneys`,
     description: `Professional ${serviceName} in ${city.name}. Trusted local experts. Book your appointment today.`,
+    // Turns on scroll-depth measurement for this page and names the variant.
+    //
+    // The beacon (agents repo, public/pv.js) is loaded by four properties and
+    // measures depth only where it finds this tag, so the decision about which
+    // page is worth measuring lives with the page instead of as a list of paths
+    // inside a script served from somewhere else. The content string is stored
+    // as-is and is what splits V1 from V2 in the panel — the two are different
+    // documents of different lengths, so pooling their depths would compare the
+    // layouts rather than the readers.
+    other: { 'pv-depth': 'service-v1' },
   }
 }
 
