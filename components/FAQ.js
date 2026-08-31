@@ -2,7 +2,7 @@
 'use client';
 import { useEffect } from 'react';
 
-export default function FAQ({ city }) {
+export default function FAQ() {
   useEffect(() => {
     // ---- script block ----
     try {

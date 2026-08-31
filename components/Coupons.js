@@ -36,9 +36,6 @@ export default function Coupons({ city }) {
           85%{opacity:0;offset-distance:97%}
           100%{opacity:0;offset-distance:0%}
         }
-        @keyframes overlayIn{from{opacity:0}to{opacity:1}}
-        @keyframes modalIn{from{opacity:0;transform:translateY(30px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
-        @keyframes caseReveal{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
       
         /* ── Section ── */
         .cp-section{
@@ -228,153 +225,6 @@ export default function Coupons({ city }) {
           display:inline-block;
         }
       
-        /* ── Modal ── */
-        .cp-overlay{
-          display:none;
-          position:fixed;
-          inset:0;
-          z-index:10000;
-          font-family:'Inter Tight',sans-serif;
-          background:rgba(0,0,0,0.7);
-          backdrop-filter:blur(8px);
-          -webkit-backdrop-filter:blur(8px);
-          justify-content:center;
-          align-items:center;
-          flex-direction:column;
-          animation:overlayIn .3s ease both;
-          cursor:pointer;
-        }
-        .cp-overlay.cp-active{display:flex}
-      
-        .cp-modal-greeting{
-          font-family:'Inter Tight',sans-serif;
-          font-size:56px;
-          font-weight:700;
-          letter-spacing:-0.03em;
-          color:#fff;
-          margin-bottom:8px;
-          text-align:center;
-          animation:modalIn .45s ease both;
-        }
-        .cp-modal-sub{
-          font-family:'Inter Tight',sans-serif;
-          font-size:18px;
-          color:rgba(255,255,255,.75);
-          margin-bottom:32px;
-          text-align:center;
-          animation:modalIn .45s ease .08s both;
-        }
-      
-        .cp-card.cp-modal-card{
-          max-width:92vw;
-          flex:0 0 auto;
-          cursor:default;
-          animation:modalIn .45s ease .16s both;
-          box-shadow:0 12px 48px rgba(124,58,237,.25);
-        }
-        .cp-modal-card::before,
-        .cp-modal-card::after{
-          content:'';
-          position:absolute;
-          width:26px;
-          height:26px;
-          background:#14101e;
-          border-radius:50%;
-          top:50%;
-          transform:translateY(-50%);
-          z-index:2;
-          box-shadow:inset 0 0 0 2px #7c3aed;
-        }
-        .cp-modal-card::before{left:-14px}
-        .cp-modal-card::after{right:-14px}
-      
-        .cp-modal-top{
-          position:relative;
-          padding:32px 24px 26px;
-          text-align:center;
-          color:#fff;
-          overflow:hidden;
-        }
-        .cp-modal-top::after{
-          content:'';
-          position:absolute;
-          inset:0;
-          background:radial-gradient(circle at 20% 30%,rgba(255,255,255,.12) 1px,transparent 1px),
-                     radial-gradient(circle at 80% 70%,rgba(255,255,255,.12) 1px,transparent 1px),
-                     radial-gradient(circle at 50% 50%,rgba(255,255,255,.08) 1px,transparent 1px);
-          background-size:24px 24px,30px 30px,18px 18px;
-          pointer-events:none;
-        }
-        .cp-modal-icon{font-size:52px;display:block;margin-bottom:8px}
-        .cp-modal-amount{font-size:80px;font-weight:800;line-height:1}
-        .cp-modal-off{font-size:22px;font-weight:700;letter-spacing:2px;opacity:.85}
-        .cp-modal-service{font-size:18px;font-weight:600;margin-top:6px;opacity:.9}
-        .cp-modal-shine{
-          position:absolute;
-          top:0;
-          width:60%;
-          height:100%;
-          background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);
-          animation:badgeShine 4s ease-in-out infinite;
-          pointer-events:none;
-        }
-      
-        .cp-modal-sep{
-          border:none;
-          border-top:2px dashed #e2d5f7;
-          margin:0 24px;
-        }
-      
-        .cp-modal-bottom{
-          padding:22px 24px 28px;
-          text-align:center;
-        }
-        .cp-modal-desc{
-          font-size:15px;
-          color:#555;
-          margin-bottom:16px;
-          line-height:1.5;
-        }
-        .cp-modal-code{
-          display:inline-block;
-          padding:10px 28px;
-          border:2px dashed #7c3aed;
-          border-radius:10px;
-          font-family:'Courier New',monospace;
-          font-size:22px;
-          font-weight:700;
-          color:#7c3aed;
-          letter-spacing:2px;
-          background:rgba(124,58,237,.04);
-          margin-bottom:20px;
-        }
-        .cp-modal-btn{
-          display:inline-block;
-          padding:14px 36px;
-          background:linear-gradient(135deg,#7c3aed,#6d28d9);
-          color:#fff;
-          font-family:'Inter Tight',sans-serif;
-          font-size:17px;
-          font-weight:700;
-          border:none;
-          border-radius:50px;
-          text-decoration:none;
-          cursor:pointer;
-          transition:transform .2s,box-shadow .2s;
-          box-shadow:0 4px 18px rgba(124,58,237,.3);
-        }
-        .cp-modal-btn:hover{
-          transform:translateY(-2px);
-          box-shadow:0 6px 24px rgba(124,58,237,.4);
-        }
-      
-        .cp-modal-hint{
-          margin-top:20px;
-          font-size:14px;
-          color:rgba(255,255,255,.5);
-          animation:modalIn .45s ease .2s both;
-        }
-      
         /* ── CTA ── */
         .cp-cta{
           text-align:center;
@@ -435,8 +285,6 @@ export default function Coupons({ city }) {
           .cp-section{padding:0 0 80px}
           .cp-grid{grid-template-columns:1fr}
           .cp-card-amount{font-size:52px}
-          .cp-modal-amount{font-size:64px}
-          .cp-modal-card{width:340px}
         }
       `}} />
       

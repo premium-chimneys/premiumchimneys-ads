@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# premiumchimneys-ads
 
-## Getting Started
+Next.js 16 (App Router, Turbopack) landing pages for Premium Chimneys paid traffic.
+Page content — cities, services, V2 copy, hero images — lives in Supabase, so adding
+a city or a service is a database row, not a deploy.
 
-First, run the development server:
+## Running it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev     # http://localhost:3000
+npm run build
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Requires a `.env.local`. All `.env*` files are gitignored, so nothing here ships
+with the repo — on Vercel these are set on the project instead.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Variable | Used for |
+| --- | --- |
+| `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Reading page content (public-read RLS) |
+| `SUPABASE_SERVICE_ROLE_KEY` | Server-only; the `jobber_auth` token row |
+| `JOBBER_CLIENT_ID`, `JOBBER_CLIENT_SECRET`, `JOBBER_REDIRECT_URI` | Jobber OAuth; the secret also verifies webhook signatures |
+| `REPUTATION_ENROLL_URL`, `REPUTATION_REVIEW_GUARD_URL`, `REPUTATION_ENROLL_SECRET` | Review-campaign fan-out; the whole fan-out no-ops if unset |
+| `PREVIEW_SECRET` | Preview access |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+A longer annotated copy lives in `.env.example` (local only).
 
-## Learn More
+## Routes
 
-To learn more about Next.js, take a look at the following resources:
+| Route | What it is |
+| --- | --- |
+| `/[service]/[city]` | V1 service landing page |
+| `/[service]/[city]/v2` | V2 variant of the same page, isolated from V1 |
+| `/homepage/[city]` | City homepage |
+| `/api/jobber/connect`, `/callback`, `/status` | Jobber OAuth — connects the account and reports token status |
+| `/api/jobber/webhook` | Jobber invoice webhooks; drives the Reputation Manager fan-out |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+`/` renders tracking only.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## V1 and V2
 
-## Deploy on Vercel
+`components/` holds V1, `components/v2/` holds V2, and the two are deliberately kept
+as separate copies rather than one parameterised set — V2 is a live traffic experiment
+and must be able to diverge without any chance of changing V1. `components/variants/`
+composes each one. Expect near-duplicate files there; that is the design, not drift.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Data comes from `lib/get*.js` (public anon key, read-only tables with public-read RLS).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Jobber
+
+`lib/jobber.js` is a single-tenant Jobber GraphQL client — one account, one row of
+tokens in `jobber_auth`, refresh-token rotation handled in-process. It is read-only;
+nothing here writes back to Jobber.
+
+Its only consumer is `lib/jobber-webhook.js`, which on invoice events notifies the
+review campaign in the `premiumchimneys-agents` app (enroll on paid, review-guard on
+create). Both fan-outs are best-effort and swallow their own errors.
+
+This repo previously also maintained an `income_report` table and subcontractor
+submission pages; both were removed. `sql/teardown_income_report.sql` drops the
+leftover tables and is not run automatically.
+
+## Deployment
+
+Vercel. Environment variables are set on the Vercel project, not from `.env.local`.

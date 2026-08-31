@@ -48,8 +48,8 @@ export default async function Page({ params }) {
       <Hero city={city} />
       <Services city={city} />
       <CaseStudies city={city} />
-      <FAQ city={city} />
-      <Reviews city={city} />
+      <FAQ />
+      <Reviews />
       <Coupons city={city} />
       <Contact city={city} />
       <Footer city={city} />

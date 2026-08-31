@@ -92,9 +92,7 @@ export default function CaseStudies({ city }) {
         .cs-wrap { font-family: 'DM Sans', sans-serif; background: #0a0a0a; }
       
         @keyframes caseReveal { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes shimmerLine { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
         @keyframes shimmerText { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
-        @keyframes formGlow { 0%, 100% { box-shadow: 0 0 40px rgba(124,58,237,0.08); } 50% { box-shadow: 0 0 60px rgba(124,58,237,0.15); } }
         @keyframes modalIn { from { opacity: 0; transform: translateY(30px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
         @keyframes overlayIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes crownFloat { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-6px) rotate(3deg); } }

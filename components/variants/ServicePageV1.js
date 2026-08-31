@@ -18,7 +18,7 @@ export default function ServicePageV1({ city, service, serviceData, heading, off
       <WhatsIncluded city={city} serviceData={serviceData} />
       <Education city={city} serviceData={serviceData} />
       <Differentiation city={city} service={service} />
-      <Reviews city={city} />
+      <Reviews />
       <Coupons city={city} />
       <Contact city={city} />
       <Footer city={city} />

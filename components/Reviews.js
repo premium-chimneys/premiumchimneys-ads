@@ -1,16 +1,11 @@
 
 
-export default function Reviews({ city }) {
+export default function Reviews() {
   return (
     <>
 
       <style dangerouslySetInnerHTML={{__html: `
         /* Inter Tight is self-hosted in globals.css (variable, 400-800). */
-      
-        @keyframes faqPulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.2; }
-        }
       
         @keyframes badgeSpin {
           from { transform: rotate(0deg); }
@@ -73,35 +68,6 @@ export default function Reviews({ city }) {
           position: relative;
         }
       
-        /* Scattered stars — static */
-        .tm-star-scatter {
-          position: absolute;
-          display: block;
-          line-height: 0;
-          opacity: 0.2;
-        }
-        .tm-star-scatter svg {
-          fill: #7c3aed;
-          display: block;
-        }
-      
-        .tm-star-scatter:nth-child(1) { top: -20px; left: 5%; animation-delay: 0s; }
-        .tm-star-scatter:nth-child(1) svg { width: 14px; height: 14px; }
-        .tm-star-scatter:nth-child(2) { top: 10px; left: 18%; animation-delay: 0.4s; }
-        .tm-star-scatter:nth-child(2) svg { width: 10px; height: 10px; }
-        .tm-star-scatter:nth-child(3) { top: -30px; left: 42%; animation-delay: 0.8s; }
-        .tm-star-scatter:nth-child(3) svg { width: 12px; height: 12px; }
-        .tm-star-scatter:nth-child(4) { top: 5px; right: 38%; animation-delay: 1.2s; }
-        .tm-star-scatter:nth-child(4) svg { width: 16px; height: 16px; }
-        .tm-star-scatter:nth-child(5) { top: -15px; right: 22%; animation-delay: 1.6s; }
-        .tm-star-scatter:nth-child(5) svg { width: 11px; height: 11px; }
-        .tm-star-scatter:nth-child(6) { top: 20px; right: 8%; animation-delay: 2.0s; }
-        .tm-star-scatter:nth-child(6) svg { width: 13px; height: 13px; }
-        .tm-star-scatter:nth-child(7) { top: -40px; left: 30%; animation-delay: 2.4s; }
-        .tm-star-scatter:nth-child(7) svg { width: 9px; height: 9px; }
-        .tm-star-scatter:nth-child(8) { top: 30px; right: 52%; animation-delay: 2.8s; }
-        .tm-star-scatter:nth-child(8) svg { width: 15px; height: 15px; }
-      
         .tm-big-stars {
           display: flex;
           justify-content: center;
@@ -144,13 +110,6 @@ export default function Reviews({ city }) {
           -webkit-text-fill-color: transparent;
           background-clip: text;
           animation: tmShimmerText 4s ease-in-out infinite;
-        }
-      
-        .tm-subtitle {
-          font-size: 18px;
-          font-weight: 500;
-          color: #6b6080;
-          line-height: 1.5;
         }
       
         /* Guarantee sticker */
@@ -218,7 +177,6 @@ export default function Reviews({ city }) {
         @media (max-width: 960px) {
           .tm-section { padding: 80px 0; }
           .tm-h2 { font-size: 38px; }
-          .tm-subtitle { font-size: 16px; }
           .tm-quote-left,
           .tm-quote-right { font-size: 450px; }
           .tm-guarantee { width: 100px; height: 100px; top: 20px; right: 20px; }
@@ -230,14 +188,12 @@ export default function Reviews({ city }) {
         @media (max-width: 600px) {
           .tm-section { padding: 80px 0; }
           .tm-h2 { font-size: 30px; }
-          .tm-subtitle { font-size: 15px; }
           .tm-quote-left,
           .tm-quote-right { font-size: 300px; }
           .tm-big-star { width: 28px; height: 28px; }
           .tm-guarantee { width: 80px; height: 80px; top: 10px; right: 10px; }
           .tm-guarantee-center { width: 42px; height: 42px; }
           .tm-guarantee-check { width: 18px; height: 18px; }
-          .tm-star-scatter { display: none; }
         }
 
         /* Reserve the widget's height. It renders empty until Elfsight boots,

@@ -113,10 +113,6 @@ export default function Services({ city }) {
         .sv1-inner{max-width:1200px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
         .sv1-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:72px;gap:24px}
         .sv1-header-left{max-width:600px}
-        .sv1-eyebrow{display:inline-flex;align-items:center;gap:8px;margin-bottom:24px;padding:6px 14px 6px 12px;border-radius:8px;background:linear-gradient(135deg,#0e0b14 0%,#241548 50%,#3b1f6e 100%);border:1px solid rgba(124,58,237,.15);box-shadow:0 0 20px rgba(124,58,237,.2),inset 0 0 12px rgba(124,58,237,.1)}
-        .sv1-eyebrow-dot{width:5px;height:5px;border-radius:50%;background:#a78bfa;flex-shrink:0;animation:sv1DP 2s ease-in-out infinite}
-        @keyframes sv1DP{0%,100%{box-shadow:0 0 4px rgba(167,139,250,.5)}50%{box-shadow:0 0 12px rgba(167,139,250,.9),0 0 24px rgba(124,58,237,.3)}}
-        .sv1-eyebrow-text{font-size:12px;font-weight:600;color:#fff;letter-spacing:.04em}
         .sv1-title{font-size:48px;font-weight:700;color:#1a1225;letter-spacing:-.04em;line-height:1.08;margin:0}
         .sv1-title-gradient{background:linear-gradient(135deg,#c2855a 0%,#d4a574 40%,#8b5c34 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
         .sv1-header-right{max-width:340px;flex-shrink:0}

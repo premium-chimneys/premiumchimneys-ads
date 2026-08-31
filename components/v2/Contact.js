@@ -16,11 +16,6 @@ export default function Contact({ city }) {
           75% { transform: rotate(0deg); }
         }
       
-        @keyframes shimmerLine {
-          0% { background-position: -200% center; }
-          100% { background-position: 200% center; }
-        }
-      
         @keyframes faqPulse {
           0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
           50% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }

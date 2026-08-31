@@ -197,16 +197,6 @@ export default function Hero({ city }) {
           font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
         }
 
-        @keyframes heroShimmerText { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
-        .hero-city-accent {
-          background: linear-gradient(135deg, #a78bfa, #c084fc, #e879f9, #c084fc, #a78bfa);
-          background-size: 200% auto;
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          animation: heroShimmerText 4s ease-in-out infinite;
-        }
-
         /* ─── RESPONSIVE ─────────────────────────────────────── */
         @media (max-width: 960px) {
           .hero-inner { grid-template-columns: 1fr; gap: 40px; padding: 189px 24px 80px; }

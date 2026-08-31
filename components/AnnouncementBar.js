@@ -36,7 +36,7 @@ function AnnouncementBarMembership({ city }) {
           };
         }
       
-        var spawnInterval = setInterval(function() {
+        setInterval(function() {
           if (stars.length < MAX_STARS) stars.push(createStar());
         }, 380);
         for (var i = 0; i < 4; i++) stars.push(createStar());
@@ -344,7 +344,7 @@ function AnnouncementBarStandard({ city }) {
           };
         }
       
-        var spawnInterval = setInterval(function() {
+        setInterval(function() {
           if (stars.length < MAX_STARS) stars.push(createStar());
         }, 380);
         for (var i = 0; i < 4; i++) stars.push(createStar());
