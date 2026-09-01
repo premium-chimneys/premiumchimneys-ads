@@ -1,4 +1,5 @@
 import Script from 'next/script'
+import ChatLeadTracking from './ChatLeadTracking'
 
 // The third-party stack exactly as it shipped when it lived in the root layout.
 //
@@ -53,6 +54,11 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
         src="https://s.ksrndkehqnwntyxlhgto.com/137765.js"
         strategy="afterInteractive"
       />
+
+      {/* Hands chat leads to WhatConverts. Mounted here, after wc-loader, on
+          purpose: WhatConverts requires its own tag to load ahead of the chat
+          tracking code. */}
+      <ChatLeadTracking />
 
       <noscript>
         <iframe

@@ -1,5 +1,6 @@
 import Script from 'next/script'
 import BookingLoader from './BookingLoader'
+import ChatLeadTracking from './ChatLeadTracking'
 
 // V2's third-party stack. Same vendors and same container ids as
 // LegacyTracking — only the loading schedule differs.
@@ -43,6 +44,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         src="https://s.ksrndkehqnwntyxlhgto.com/137765.js"
         strategy="afterInteractive"
       />
+
+      {/* Hands chat leads to WhatConverts. Mounted here, after wc-loader, on
+          purpose: WhatConverts requires its own tag to load ahead of the chat
+          tracking code. */}
+      <ChatLeadTracking />
 
       <Script id="clarity-init" strategy="lazyOnload">
         {`(function(c,l,a,r,i,t,y){
