@@ -1,6 +1,7 @@
 import AnnouncementBar from '@/components/v2/AnnouncementBar'
 import NavigationBar from '@/components/v2/NavigationBar'
 import ServiceHero from '@/components/v2/ServiceHero'
+import WorkGallery from '@/components/v2/WorkGallery'
 import WhatsIncluded from '@/components/v2/WhatsIncluded'
 import Education from '@/components/v2/Education'
 import Differentiation from '@/components/v2/Differentiation'
@@ -20,6 +21,7 @@ export default function ServicePageV2({ city, service, serviceData, heading, off
       <AnnouncementBar city={city} offersMembership={offersMembership} />
       <NavigationBar city={city} />
       <ServiceHero city={city} service={service} heading={heading} serviceData={serviceData} />
+      <WorkGallery city={city} service={service} serviceData={serviceData} />
       <WhatsIncluded city={city} serviceData={serviceData} />
       <Education city={city} serviceData={serviceData} />
       <Differentiation city={city} service={service} />

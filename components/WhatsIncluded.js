@@ -28,6 +28,14 @@ export default function WhatsIncluded({ city, serviceData }) {
         <div className="wi-container">
 
           <div className="wi-header">
+            <span className="wi-eyebrow">
+              <svg className="wi-eyebrow-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M9 4h6a1 1 0 0 1 1 1v1H8V5a1 1 0 0 1 1-1z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
+                <path d="M16 5.5h2a1 1 0 0 1 1 1V19a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6.5a1 1 0 0 1 1-1h2" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
+                <path d="M8.75 13.2l2 2 4-4.4" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              Our process
+            </span>
             <h2 className="wi-title">
               What to expect during <span className="wi-title-accent">our visit</span>
             </h2>
@@ -109,7 +117,9 @@ const css = `
   .wi {
     position: relative;
     background: #faf9fe;
-    padding: 130px 0;
+    /* Tight to the gallery above it — the two sections share a background and
+       read as one run, so the old 130px opened a hole between them. */
+    padding: 72px 0 130px;
     overflow: hidden;
     font-family: 'Inter Tight', sans-serif;
   }
@@ -123,11 +133,27 @@ const css = `
   }
   .wi-container { position: relative; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 
-  .wi-header { max-width: 780px; margin: 0 auto 64px; text-align: center; }
+  /* Same header as the gallery above: eyebrow pill, 44px headline with the
+     gradient accent, narrow lede — set left so the two stack on one edge
+     instead of alternating centred and ranged-left down the page. */
+  .wi-header { max-width: 700px; margin: 0 0 56px; text-align: left; }
+  .wi-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 7px 14px;
+    border-radius: 100px;
+    background: rgba(167,139,250,0.10);
+    border: 1px solid rgba(167,139,250,0.28);
+    color: #6d28d9;
+    font-size: 13px; font-weight: 600;
+    letter-spacing: 0.005em;
+    margin-bottom: 18px;
+  }
+  .wi-eyebrow-icon { flex-shrink: 0; }
   .wi-title {
-    font-size: 48px; font-weight: 700; line-height: 1.08;
-    letter-spacing: -0.04em; margin: 0 0 16px;
+    font-size: 44px; font-weight: 700; line-height: 1.08;
+    letter-spacing: -0.04em; margin: 0 0 14px;
     color: #1a1225;
+    text-wrap: balance;
   }
   @keyframes wiShimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
   .wi-title-accent {
@@ -138,7 +164,7 @@ const css = `
     background-clip: text;
     animation: wiShimmer 4s ease-in-out infinite;
   }
-  .wi-lede { font-size: 16px; line-height: 1.65; color: #6b5b86; margin: 0; }
+  .wi-lede { font-size: 16px; line-height: 1.65; color: #6b5b86; margin: 0; max-width: 540px; }
 
   .wi-grid {
     display: grid;
@@ -377,7 +403,7 @@ const css = `
   @keyframes wi-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
 
   @media (max-width: 1040px) {
-    .wi { padding: 100px 0; }
+    .wi { padding: 60px 0 100px; }
     .wi-container { padding: 0 20px; }
     .wi-grid { grid-template-columns: 1fr; gap: 36px; }
     .wi-image-frame { min-height: 380px; }
@@ -388,10 +414,11 @@ const css = `
     .wi-cta-features { flex-wrap: wrap; }
   }
   @media (max-width: 640px) {
-    .wi { padding: 80px 0; }
+    .wi { padding: 48px 0 80px; }
     .wi-container { padding: 0 18px; }
-    .wi-title { font-size: 38px; }
-    .wi-header { margin-bottom: 44px; }
+    .wi-title { font-size: 32px; }
+    .wi-lede { font-size: 15px; }
+    .wi-header { margin-bottom: 36px; }
     .wi-image-frame { min-height: 300px; }
     .wi-card { padding: 20px 22px; gap: 16px; grid-template-columns: auto 1fr; }
     .wi-card-num { display: none; }
