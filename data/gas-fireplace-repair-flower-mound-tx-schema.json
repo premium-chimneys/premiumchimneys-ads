@@ -1,0 +1,164 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Service",
+      "@id": "https://book.premiumchimneys.com/gas-fireplace-repair/flower-mound-tx#service",
+      "name": "Gas Fireplace Repair in Flower Mound, TX",
+      "serviceType": "Gas Fireplace Repair",
+      "description": "Premium Chimneys services and repairs gas fireplaces in Flower Mound, TX, including Bridlewood and Wellington. We troubleshoot pilot light failures, faulty thermocouples and thermopiles, gas valve and ignition problems, and venting concerns, and we replace worn gas logs. Safety is the priority on every gas call, and we document findings and recommendations before any work is performed.",
+      "url": "https://book.premiumchimneys.com/gas-fireplace-repair/flower-mound-tx",
+      "category": "Chimney and Fireplace Services",
+      "provider": {
+        "@id": "https://book.premiumchimneys.com/homepage/flower-mound-tx#localbusiness"
+      },
+      "areaServed": [
+        {
+          "@type": "City",
+          "name": "Flower Mound",
+          "containedInPlace": {
+            "@type": "State",
+            "name": "Texas"
+          }
+        },
+        {
+          "@type": "Place",
+          "name": "Bridlewood, Flower Mound, TX"
+        },
+        {
+          "@type": "Place",
+          "name": "Wellington, Flower Mound, TX"
+        }
+      ],
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Homeowners"
+      },
+      "serviceOutput": {
+        "@type": "Thing",
+        "name": "Written service documentation and recommendations"
+      },
+      "availableChannel": {
+        "@type": "ServiceChannel",
+        "serviceUrl": "https://book.premiumchimneys.com/gas-fireplace-repair/flower-mound-tx",
+        "servicePhone": {
+          "@type": "ContactPoint",
+          "telephone": "+1-469-587-8303"
+        },
+        "availableLanguage": {
+          "@type": "Language",
+          "name": "English"
+        }
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Gas Fireplace Repair Services in Flower Mound, TX",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Pilot light repair",
+              "serviceType": "Pilot light repair"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Thermocouple and thermopile replacement",
+              "serviceType": "Thermocouple and thermopile replacement"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Gas valve repair and replacement",
+              "serviceType": "Gas valve repair and replacement"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Electronic ignition repair",
+              "serviceType": "Electronic ignition repair"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Gas log replacement",
+              "serviceType": "Gas log replacement"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Gas leak detection",
+              "serviceType": "Gas leak detection"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Gas fireplace venting inspection",
+              "serviceType": "Gas fireplace venting inspection"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://book.premiumchimneys.com/gas-fireplace-repair/flower-mound-tx#webpage",
+      "url": "https://book.premiumchimneys.com/gas-fireplace-repair/flower-mound-tx",
+      "name": "Gas Fireplace Repair in Flower Mound, TX | Premium Chimneys",
+      "description": "Gas fireplace repair in Flower Mound, TX. Pilot light, thermocouple, gas valve, ignition, and venting repairs by trained technicians.",
+      "isPartOf": {
+        "@id": "https://book.premiumchimneys.com/#website"
+      },
+      "about": {
+        "@id": "https://book.premiumchimneys.com/gas-fireplace-repair/flower-mound-tx#service"
+      },
+      "mainEntity": {
+        "@id": "https://book.premiumchimneys.com/gas-fireplace-repair/flower-mound-tx#service"
+      },
+      "inLanguage": "en-US",
+      "publisher": {
+        "@id": "https://book.premiumchimneys.com/#organization"
+      },
+      "breadcrumb": {
+        "@id": "https://book.premiumchimneys.com/gas-fireplace-repair/flower-mound-tx#breadcrumb"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://book.premiumchimneys.com/gas-fireplace-repair/flower-mound-tx#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://book.premiumchimneys.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Flower Mound, TX",
+          "item": "https://book.premiumchimneys.com/homepage/flower-mound-tx"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Gas Fireplace Repair",
+          "item": "https://book.premiumchimneys.com/gas-fireplace-repair/flower-mound-tx"
+        }
+      ]
+    }
+  ]
+}

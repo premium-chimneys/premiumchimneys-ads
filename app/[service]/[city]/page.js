@@ -3,6 +3,9 @@ import { getCityData } from '@/lib/getCityData'
 import { getServiceData } from '@/lib/getServiceData'
 import ServicePageV1 from '@/components/variants/ServicePageV1'
 import LegacyTracking from '@/components/tracking/LegacyTracking'
+import chimneyRepairSchema from '@/data/chimney-repair-flower-mound-tx-schema.json'
+import fireplaceRepairSchema from '@/data/fireplace-repair-flower-mound-tx-schema.json'
+import gasFireplaceRepairSchema from '@/data/gas-fireplace-repair-flower-mound-tx-schema.json'
 
 // Without this the page is rendered from scratch on every single request —
 // a Supabase round trip per visit, `no-store` on the response, and a permanent
@@ -13,6 +16,12 @@ import LegacyTracking from '@/components/tracking/LegacyTracking'
 // One hour is a deliberate trade: city and service copy changes rarely, so
 // almost every visitor gets a cached page from the edge, and an edit in
 // Supabase takes up to an hour to appear. Lower the number if that is too long.
+const FLOWER_MOUND_SCHEMAS = {
+  'chimney-repair': chimneyRepairSchema,
+  'fireplace-repair': fireplaceRepairSchema,
+  'gas-fireplace-repair': gasFireplaceRepairSchema,
+}
+
 export const revalidate = 3600
 
 // ISR needs generateStaticParams to be present, but 454 cities x 9 services is
@@ -71,9 +80,14 @@ export default async function Page({ params }) {
   const serviceName = serviceNameFromSlug(serviceSlug)
   const heading = `${serviceName} in ${city.name}`
   const offersMembership = city.metroplex === 'dfw'
+  const schema =
+    citySlug === 'flower-mound-tx' ? FLOWER_MOUND_SCHEMAS[serviceSlug] : null
 
   return (
     <>
+      {schema && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      )}
       <ServicePageV1
         city={city}
         service={serviceSlug}
