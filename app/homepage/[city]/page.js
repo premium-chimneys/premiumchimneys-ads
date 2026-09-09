@@ -11,6 +11,7 @@ import Coupons from '../../../components/Coupons'
 import Contact from '../../../components/Contact'
 import Footer from '../../../components/Footer'
 import LegacyTracking from '@/components/tracking/LegacyTracking'
+import BookReviewWidget from '@/components/BookReviewWidget'
 import flowerMoundSchema from '@/data/homepage-flower-mound-tx-schema.json'
 
 // Cached at the edge rather than re-rendered per request — see the note on
@@ -54,6 +55,7 @@ export default async function Page({ params }) {
       <CaseStudies city={city} />
       <FAQ />
       <Reviews />
+      {citySlug === 'flower-mound-tx' && <BookReviewWidget />}
       <Coupons city={city} />
       <Contact city={city} />
       <Footer city={city} />
