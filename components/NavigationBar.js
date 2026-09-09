@@ -180,8 +180,11 @@ export default function NavigationBar({ city }) {
           );
         }
       
-        .nav-services { position: relative; margin-left: 28px; }
-        .nav-services-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 4px; color: #20152d; text-decoration: none; font-size: 15px; font-weight: 700; cursor: pointer; }
+        .nav-services { position: relative; margin-left: 32px; margin-right: auto; }
+        .nav-services-btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 16px; border-radius: 999px; color: #2a1f3d; text-decoration: none; font-size: 15px; font-weight: 700; cursor: pointer; transition: background .16s ease, color .16s ease; }
+        .nav-services-btn:hover { background: #f4eeff; color: #5b3a95; }
+        .nav-services-btn svg { transition: transform .22s ease; }
+        .nav-services:hover .nav-services-btn svg { transform: rotate(180deg); }
         .nav-services-menu { position: absolute; top: calc(100% + 10px); left: 0; min-width: 260px; padding: 10px; background: #fff; border: 1px solid rgba(26,18,37,.08); border-radius: 14px; box-shadow: 0 24px 60px rgba(91,33,182,.16); opacity: 0; visibility: hidden; transform: translateY(6px); transition: opacity .18s ease, transform .18s ease, visibility .18s; z-index: 1000; display: grid; gap: 2px; }
         .nav-services:hover .nav-services-menu, .nav-services:focus-within .nav-services-menu { opacity: 1; visibility: visible; transform: translateY(0); }
         .nav-services-item { display: block; padding: 10px 12px; border-radius: 9px; color: #3a2b4d; text-decoration: none; font-size: 14px; font-weight: 600; }
