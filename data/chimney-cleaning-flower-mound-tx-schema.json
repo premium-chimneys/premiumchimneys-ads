@@ -1,0 +1,156 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Service",
+      "@id": "https://book.premiumchimneys.com/chimney-cleaning/flower-mound-tx#service",
+      "name": "Chimney Cleaning in Flower Mound, TX",
+      "serviceType": "Chimney Sweeping",
+      "description": "Premium Chimneys provides chimney cleaning and sweeping for residential properties in Flower Mound, TX, including Bridlewood and Wellington. We remove creosote, soot, and debris from the flue, smoke chamber, and firebox using modern equipment and containment that keeps your home clean. Each visit includes a condition assessment and documentation so you know the state of your system before fireplace season.",
+      "url": "https://book.premiumchimneys.com/chimney-cleaning/flower-mound-tx",
+      "category": "Chimney and Fireplace Services",
+      "provider": {
+        "@id": "https://book.premiumchimneys.com/homepage/flower-mound-tx#localbusiness"
+      },
+      "areaServed": [
+        {
+          "@type": "City",
+          "name": "Flower Mound",
+          "containedInPlace": {
+            "@type": "State",
+            "name": "Texas"
+          }
+        },
+        {
+          "@type": "Place",
+          "name": "Bridlewood, Flower Mound, TX"
+        },
+        {
+          "@type": "Place",
+          "name": "Wellington, Flower Mound, TX"
+        }
+      ],
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Homeowners"
+      },
+      "serviceOutput": {
+        "@type": "Thing",
+        "name": "Written service documentation and recommendations"
+      },
+      "availableChannel": {
+        "@type": "ServiceChannel",
+        "serviceUrl": "https://book.premiumchimneys.com/chimney-cleaning/flower-mound-tx",
+        "servicePhone": {
+          "@type": "ContactPoint",
+          "telephone": "+1-469-587-8303"
+        },
+        "availableLanguage": {
+          "@type": "Language",
+          "name": "English"
+        }
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Chimney Cleaning Services in Flower Mound, TX",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Chimney sweeping",
+              "serviceType": "Chimney sweeping"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Creosote removal",
+              "serviceType": "Creosote removal"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Soot and debris removal",
+              "serviceType": "Soot and debris removal"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Smoke chamber cleaning",
+              "serviceType": "Smoke chamber cleaning"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Flue cleaning",
+              "serviceType": "Flue cleaning"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Animal nest and obstruction removal",
+              "serviceType": "Animal nest and obstruction removal"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://book.premiumchimneys.com/chimney-cleaning/flower-mound-tx#webpage",
+      "url": "https://book.premiumchimneys.com/chimney-cleaning/flower-mound-tx",
+      "name": "Chimney Cleaning & Sweeping in Flower Mound, TX | Premium Chimneys",
+      "description": "Chimney cleaning and sweeping in Flower Mound, TX. Creosote removal, soot and debris removal, and flue cleaning with a condition report.",
+      "isPartOf": {
+        "@id": "https://book.premiumchimneys.com/#website"
+      },
+      "about": {
+        "@id": "https://book.premiumchimneys.com/chimney-cleaning/flower-mound-tx#service"
+      },
+      "mainEntity": {
+        "@id": "https://book.premiumchimneys.com/chimney-cleaning/flower-mound-tx#service"
+      },
+      "inLanguage": "en-US",
+      "publisher": {
+        "@id": "https://book.premiumchimneys.com/#organization"
+      },
+      "breadcrumb": {
+        "@id": "https://book.premiumchimneys.com/chimney-cleaning/flower-mound-tx#breadcrumb"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://book.premiumchimneys.com/chimney-cleaning/flower-mound-tx#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://book.premiumchimneys.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Flower Mound, TX",
+          "item": "https://book.premiumchimneys.com/homepage/flower-mound-tx"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Chimney Cleaning",
+          "item": "https://book.premiumchimneys.com/chimney-cleaning/flower-mound-tx"
+        }
+      ]
+    }
+  ]
+}

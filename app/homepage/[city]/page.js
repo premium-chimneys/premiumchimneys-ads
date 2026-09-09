@@ -11,6 +11,7 @@ import Coupons from '../../../components/Coupons'
 import Contact from '../../../components/Contact'
 import Footer from '../../../components/Footer'
 import LegacyTracking from '@/components/tracking/LegacyTracking'
+import flowerMoundSchema from '@/data/homepage-flower-mound-tx-schema.json'
 
 // Cached at the edge rather than re-rendered per request — see the note on
 // the /[service]/[city] route.
@@ -43,6 +44,9 @@ export default async function Page({ params }) {
 
   return (
     <div>
+      {citySlug === 'flower-mound-tx' && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(flowerMoundSchema) }} />
+      )}
       <AnnouncementBar city={city} offersMembership={city.metroplex === 'dfw'} />
       <NavigationBar city={city} />
       <Hero city={city} />
