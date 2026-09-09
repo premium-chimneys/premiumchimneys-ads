@@ -9,6 +9,7 @@ import Coupons from '@/components/Coupons'
 import Contact from '@/components/Contact'
 import Footer from '@/components/Footer'
 import LegacyTracking from '@/components/tracking/LegacyTracking'
+import BookServiceLinks from '@/components/BookServiceLinks'
 import schema from '@/data/chimney-cleaning-flower-mound-tx-schema.json'
 import { css } from './styles'
 import {
@@ -161,6 +162,7 @@ export default async function Page({ params }) {
         </div>
       </section>
 
+      <BookServiceLinks currentService="chimney-cleaning" />
       <Reviews />
       <Coupons city={city} />
       <Contact city={city} />

@@ -10,7 +10,7 @@ import Coupons from '@/components/Coupons'
 import Contact from '@/components/Contact'
 import Footer from '@/components/Footer'
 
-export default function ServicePageV1({ city, service, serviceData, heading, offersMembership }) {
+export default function ServicePageV1({ city, service, serviceData, heading, offersMembership, extraSection = null }) {
   return (
     <div data-variant="v1">
       <AnnouncementBar city={city} offersMembership={offersMembership} />
@@ -22,6 +22,7 @@ export default function ServicePageV1({ city, service, serviceData, heading, off
       <Differentiation city={city} service={service} />
       <Reviews />
       <Coupons city={city} />
+      {extraSection}
       <Contact city={city} />
       <Footer city={city} />
     </div>

@@ -3,6 +3,7 @@ import { getCityData } from '@/lib/getCityData'
 import { getServiceData } from '@/lib/getServiceData'
 import ServicePageV1 from '@/components/variants/ServicePageV1'
 import LegacyTracking from '@/components/tracking/LegacyTracking'
+import BookServiceLinks from '@/components/BookServiceLinks'
 import chimneyRepairSchema from '@/data/chimney-repair-flower-mound-tx-schema.json'
 import fireplaceRepairSchema from '@/data/fireplace-repair-flower-mound-tx-schema.json'
 import gasFireplaceRepairSchema from '@/data/gas-fireplace-repair-flower-mound-tx-schema.json'
@@ -94,6 +95,11 @@ export default async function Page({ params }) {
         serviceData={serviceData}
         heading={heading}
         offersMembership={offersMembership}
+        extraSection={
+          citySlug === 'flower-mound-tx' ? (
+            <BookServiceLinks currentService={serviceSlug} />
+          ) : null
+        }
       />
       {/* Unchanged behaviour — these are the same scripts, strategies and
           order this page has always had; they simply moved out of the root
