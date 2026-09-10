@@ -1,5 +1,6 @@
 'use client';
 import { BOOK_SERVICES } from '@/components/BookServiceLinks'
+import BookMobileMenu from '@/components/BookMobileMenu'
 import { useEffect } from 'react';
 
 export default function NavigationBar({ city }) {
@@ -236,6 +237,7 @@ export default function NavigationBar({ city }) {
               </svg>
               Book Appointment
             </button>
+            {city?.slug === 'flower-mound-tx' && <BookMobileMenu city={city} />}
           </div>
       
         </div>
