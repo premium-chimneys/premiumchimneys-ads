@@ -194,6 +194,7 @@ export default function NavigationBar({ city }) {
         @media (max-width: 760px) {
           .nav-phone { display: none; }
           .nav-services { display: none; }
+          .nav-apply { display: none; }
           .nav-inner { padding: 0 20px; }
         }
       `}} />
