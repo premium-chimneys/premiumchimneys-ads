@@ -61,6 +61,7 @@ export default function BookMobileMenu({ city }) {
               </div>
             )}
 
+            <button type="button" className="bmm-book">Book Appointment</button>
             <a href={`tel:${city?.phone}`} className="bmm-phone">{city?.phone_text}</a>
           </div>
         </div>
@@ -109,9 +110,14 @@ const bmmCss = `
   color: #3a2b4d; text-decoration: none; font-size: 14px; font-weight: 600;
 }
 .bmm-sub-item:active, .bmm-sub-item:hover { background: #f7f3fd; }
-.bmm-phone {
-  display: block; margin-top: 18px; padding: 14px; border-radius: 999px;
+.bmm-book {
+  display: block; width: 100%; margin-top: 18px; padding: 15px; border: 0; border-radius: 999px;
   background: linear-gradient(135deg,#6f3fb0,#4f2481); color: #fff;
+  font: inherit; font-size: 15px; font-weight: 800; cursor: pointer;
+}
+.bmm-phone {
+  display: block; margin-top: 10px; padding: 13px; border-radius: 999px;
+  border: 1px solid #d9cdec; background: #fff; color: #5b3a95;
   text-align: center; text-decoration: none; font-size: 15px; font-weight: 800;
 }
 @media (max-width: 760px) { .bmm-trigger { display: flex; } }
