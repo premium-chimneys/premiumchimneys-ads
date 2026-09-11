@@ -469,7 +469,7 @@ export default function Footer({ city }) {
       
               <p className="footer-hours-title">Working Hours:</p>
               <p className="footer-hours">
-                Everyday: 8:00 AM - 7:00 PM
+                Everyday: 6:00 AM - 11:00 PM
               </p>
       
               <p className="footer-service-title">Office Address:</p>
