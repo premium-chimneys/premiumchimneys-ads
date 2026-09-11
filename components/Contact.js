@@ -321,7 +321,7 @@ export default function Contact({ city }) {
                   <div className="ct-hours-row">
                     <div className="ct-green-dot"></div>
                     <div className="ct-hours-day">Everyday</div>
-                    <div className="ct-hours-time">8:00 AM – 7:00 PM</div>
+                    <div className="ct-hours-time">6:00 AM – 11:00 PM</div>
                   </div>
                 </div>
                 <div className="ct-speech-bubble">Yes, we work on weekends! &#x1F4AA;</div>
