@@ -50,14 +50,14 @@ export default async function Page({ params }) {
     getCityData(citySlug),
     getLandingV2Data(serviceSlug),
   ])
-  // Same treatment the service slug already got. Before the hero lookup below,
-  // which reads city.metroplex.
+  // Same treatment the service slug already got. Before anything below reads
+  // city (the heading, the membership check).
   if (!city) notFound()
 
-  // V2-only: swap the hero image based on service group + metroplex (chimney
-  // skylines only on the metroplex's hub city). Falls back to the existing
+  // V2-only: swap the hero image based on service group + city (chimney
+  // skylines only on the cities in HERO_KEY). Falls back to the existing
   // services.hero_image_url when there's no mapping, so suburbs get the V1 image.
-  const v2HeroImage = await getV2HeroImage(serviceSlug, citySlug, city.metroplex)
+  const v2HeroImage = await getV2HeroImage(serviceSlug, citySlug)
   const serviceDataV2 = v2HeroImage
     ? { ...serviceData, hero_image_url: v2HeroImage }
     : serviceData
