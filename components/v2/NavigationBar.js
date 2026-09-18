@@ -180,12 +180,27 @@ export default function NavigationBar({ city }) {
           );
         }
       
+        .nav-apply-short { display: none; }
+
         @media (max-width: 760px) {
           .nav-phone { display: none; }
           .nav-inner { padding: 0 20px; height: 64px; }
           .nav-logo img { height: 37px; }
           .nav-apply { padding: 8px 18px 8px 14px; font-size: 14px; }
         }
+
+        /* The full label is ~261px at 14px and neither the logo nor the CTA
+           may shrink, so below ~400px the button ran past the right edge of
+           this fixed bar. iOS Safari counts that overhang as page width: after
+           the booking popup closed (scroll lock released, input zoom undone)
+           the page was left panned sideways with a white strip on the right. */
+        @media (max-width: 420px) {
+          .nav-apply-full { display: none; }
+          .nav-apply-short { display: inline; }
+        }
+
+        /* Belt and braces: nothing in the bar may ever widen the page. */
+        .nav-wrapper { overflow-x: clip; }
       `}} />
       
       <nav className="nav-wrapper" id="navWrapper">
@@ -211,7 +226,8 @@ export default function NavigationBar({ city }) {
                 <line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
                 <line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" strokeWidth="1.8" />
               </svg>
-              Schedule Your Free Assessment
+              <span className="nav-apply-full">Schedule Your Free Assessment</span>
+              <span className="nav-apply-short">Free Assessment</span>
             </button>
           </div>
       
