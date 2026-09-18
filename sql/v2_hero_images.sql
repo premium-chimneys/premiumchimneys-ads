@@ -1,5 +1,5 @@
 -- V2 hero images: image = f(service_group, metroplex).
---   chimney_core -> one row per metroplex
+--   chimney_core -> one row per metroplex, shown only on its hub city (HUB_CITY in lib/getV2HeroImage.js)
 --   fireplace    -> a single row with metroplex NULL (shared everywhere)
 -- Read-only public access, mirroring services/cities. V1 never reads this.
 

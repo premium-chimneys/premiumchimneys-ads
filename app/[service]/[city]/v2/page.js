@@ -54,10 +54,10 @@ export default async function Page({ params }) {
   // which reads city.metroplex.
   if (!city) notFound()
 
-  // V2-only: swap the hero image based on service group + metroplex. Falls back
-  // to the existing services.hero_image_url when there's no mapping, so V1 is
-  // untouched and V2 keeps the old image until the table is populated.
-  const v2HeroImage = await getV2HeroImage(serviceSlug, city.metroplex)
+  // V2-only: swap the hero image based on service group + metroplex (chimney
+  // skylines only on the metroplex's hub city). Falls back to the existing
+  // services.hero_image_url when there's no mapping, so suburbs get the V1 image.
+  const v2HeroImage = await getV2HeroImage(serviceSlug, citySlug, city.metroplex)
   const serviceDataV2 = v2HeroImage
     ? { ...serviceData, hero_image_url: v2HeroImage }
     : serviceData
