@@ -1,4 +1,6 @@
 
+import { GOOGLE_RATING, GOOGLE_REVIEW_COUNT } from '@/lib/credentials'
+
 // V1's copy of the reviews pill (V2 has its own under components/v2/, and the
 // variants deliberately never share section components).
 //
@@ -10,7 +12,7 @@
 // on the widget and opens its own native popup: Elfsight exposes no public API
 // to open it, and a genuine (trusted) click is far more reliable than a
 // synthesized one.
-const ELF_CLASS = 'elfsight-app-78d5d8f1-b6c0-487e-bc47-52b7a1546592'
+export const ELF_CLASS = 'elfsight-app-78d5d8f1-b6c0-487e-bc47-52b7a1546592'
 
 const css = `
 .grp {
@@ -107,7 +109,7 @@ export default function GoogleReviewsPill() {
         <span className="grp-logo">{GoogleG}</span>
         <span className="grp-divider" aria-hidden="true"></span>
         <span className="grp-text">
-          <span className="grp-eyebrow">4.9 rated <span className="grp-count">(219 reviews)</span></span>
+          <span className="grp-eyebrow">{`${GOOGLE_RATING} rated `}<span className="grp-count">{`(${GOOGLE_REVIEW_COUNT} reviews)`}</span></span>
           <span className="grp-stars">
             <Star /><Star /><Star /><Star /><Star />
           </span>

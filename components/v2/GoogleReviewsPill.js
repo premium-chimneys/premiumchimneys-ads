@@ -1,11 +1,13 @@
 'use client'
 
+import { GOOGLE_RATING, GOOGLE_REVIEW_COUNT } from '@/lib/credentials'
+
 // The live Elfsight Google Reviews widget id (same one that used to render
 // inline in the hero). We keep it mounted on top of our custom face but fully
 // transparent, so the user's real click lands on the actual widget and its own
 // native popup opens — Elfsight exposes no public API to open it, and a real
 // (trusted) click is far more reliable than a synthesized one.
-const ELF_CLASS = 'elfsight-app-78d5d8f1-b6c0-487e-bc47-52b7a1546592'
+export const ELF_CLASS = 'elfsight-app-78d5d8f1-b6c0-487e-bc47-52b7a1546592'
 
 const css = `
 .grp {
@@ -102,7 +104,7 @@ export default function GoogleReviewsPill() {
         <span className="grp-logo">{GoogleG}</span>
         <span className="grp-divider" aria-hidden="true"></span>
         <span className="grp-text">
-          <span className="grp-eyebrow">4.9 rated <span className="grp-count">(219 reviews)</span></span>
+          <span className="grp-eyebrow">{`${GOOGLE_RATING} rated `}<span className="grp-count">{`(${GOOGLE_REVIEW_COUNT} reviews)`}</span></span>
           <span className="grp-stars">
             <Star /><Star /><Star /><Star /><Star />
           </span>

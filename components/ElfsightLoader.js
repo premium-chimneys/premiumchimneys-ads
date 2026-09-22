@@ -55,12 +55,13 @@ export default function ElfsightLoader() {
     // Only start watching once the page has finished loading and gone quiet,
     // so the observer can never fire while the hero is still coming in.
     const startObserving = () => {
-      // Deliberately skip the V2 hero pill (.grp-elf). It is above the fold, so
-      // observing it would pull 526 KB on every single visit and defeat the
-      // whole point — a session that bounces from the hero should never pay for
-      // it. The pointer listeners above still cover it, so someone who reaches
-      // for the pill gets the widget.
-      const found = [...widgets()].filter((el) => !el.closest('.grp-elf'))
+      // Deliberately skip the V2 hero's invisible widgets — the reviews pill
+      // (.grp-elf) and the review count under the CTA (.hero-cta-reviews-elf).
+      // They are above the fold, so observing them would pull 526 KB on every
+      // single visit and defeat the whole point — a session that bounces from
+      // the hero should never pay for it. The pointer listeners above still
+      // cover them, so someone who reaches for either gets the widget.
+      const found = [...widgets()].filter((el) => !el.closest('.grp-elf, .hero-cta-reviews-elf'))
       if (!found.length) return
       observer = new IntersectionObserver(
         (entries) => {

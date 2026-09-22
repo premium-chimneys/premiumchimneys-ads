@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import { BBB_ACCREDITED_SINCE } from '@/lib/credentials'
 
 const formCss = `
 .hero-form-card {
@@ -233,20 +234,63 @@ const formCss = `
 .hero-form-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 .hero-form-submit svg { position: relative; z-index: 1; }
 
-.hero-form-badges {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 18px;
+/* Two credibility cards with readable labels, deliberately not links. It
+   used to be a strip of seven platform
+   logos, which read as seven endorsements and could not be verified from the
+   page. Google is left out here because the hero already carries it, and
+   availability because the form already says it is live. */
+.hero-form-creds {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 16px;
 }
 
-.hero-form-badge {
-  height: 36px;
-  width: auto;
-  display: block;
-  object-fit: contain;
+/* Icon on top, text centred beneath, so the labels get the card's full
+   width and stay on one line instead of wrapping beside the icon. */
+.hero-form-cred {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 12px 10px;
+  text-align: center;
+  border: 1px solid rgba(17, 20, 26, 0.1);
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+
+.hero-form-cred-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.hero-form-cred-mark img { height: 32px; width: auto; display: block; }
+.hero-form-cred-mark svg { width: 24px; height: 24px; display: block; }
+
+.hero-form-cred-text { display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 0; text-wrap: balance; }
+
+.hero-form-cred-title {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #1a1225;
+}
+
+.hero-form-cred-shield { color: #3f7f7a; }
+
+.hero-form-cred-sub {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 11.5px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: #5b5566;
 }
 
 .hero-form-trust {
@@ -340,6 +384,10 @@ const formCss = `
   .hero-form-dispatch { top: 20px; right: 20px; }
   .hero-form-body { padding: 16px 20px 24px; }
   .hero-form-trust { flex-wrap: wrap; gap: 10px; }
+}
+
+@media (max-width: 360px) {
+  .hero-form-creds { grid-template-columns: 1fr; }
 }
 `
 
@@ -462,25 +510,25 @@ export default function Form() {
               </svg>
               Submit Request
             </button>
-            <div className="hero-form-badges">
-              <img className="hero-form-badge" src="https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/69498dcf9a206ed260446ac6_bbb-accredited-business-logo.webp" alt="BBB Accredited Business" width="61" height="101" />
-              {/* These badges sit above the fold, so they stay eager and get
-                  preloaded alongside the hero — which is exactly why their
-                  weight matters. Served at 3x the 36px they render at, from
-                  new files rather than the originals: public/images is shared
-                  with V1, whose assets stay as they are. The HomeAdvisor badge
-                  was a 50 KB "SVG" wrapping 21 base64 rasters; this is the
-                  same artwork flattened to 8 KB. */}
-              {/* Intrinsic sizes, so the browser can reserve each box from the
-                  aspect ratio rather than measuring once the file lands — that
-                  measuring pass is the forced reflow Lighthouse flags. The CSS
-                  (height 36px, width auto) still decides how big they draw. */}
-              <img className="hero-form-badge" src="/images/homeadvisor_badge-216.webp" alt="HomeAdvisor" width="239" height="216" />
-              <img className="hero-form-badge" src="/images/angi_logo-108.webp" alt="Angi" width="108" height="108" />
-              <img className="hero-form-badge" src="/images/yelp_logo-108.webp" alt="Yelp" width="108" height="108" />
-              <img className="hero-form-badge" src="/images/houzz_logo-108.webp" alt="Houzz" width="108" height="108" />
-              <img className="hero-form-badge" src="/images/thumbtack_logo-108.webp" alt="Thumbtack" width="108" height="108" />
-              <img className="hero-form-badge" src="/images/nextdoor_logo-108.webp" alt="Nextdoor" width="108" height="108" />
+            <div className="hero-form-creds">
+              <div className="hero-form-cred">
+                <span className="hero-form-cred-mark">
+                  <img src="https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/69498dcf9a206ed260446ac6_bbb-accredited-business-logo.webp" alt="" width="61" height="101" />
+                </span>
+                <span className="hero-form-cred-text">
+                  <span className="hero-form-cred-title">BBB Accredited</span>
+                  <span className="hero-form-cred-sub">{`Since ${BBB_ACCREDITED_SINCE}`}</span>
+                </span>
+              </div>
+              <div className="hero-form-cred">
+                <span className="hero-form-cred-mark hero-form-cred-shield">
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /><path d="M9 12l2 2 4-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                </span>
+                <span className="hero-form-cred-text">
+                  <span className="hero-form-cred-title">Insured &amp; Bonded</span>
+                  <span className="hero-form-cred-sub">Protection for your home</span>
+                </span>
+              </div>
             </div>
             <div className="hero-form-trust">
               <span className="hero-form-trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg> No spam</span>

@@ -1,7 +1,8 @@
 
 'use client';
 import Form from './Form';
-import GoogleReviewsPill from './GoogleReviewsPill';
+import GoogleReviewsPill, { ELF_CLASS } from './GoogleReviewsPill';
+import { GOOGLE_RATING, GOOGLE_REVIEW_COUNT, GOOGLE_REVIEWS_URL } from '@/lib/credentials';
 
 export default function ServiceHero({ city, service, heading, serviceData }) {
   const heroImage = serviceData?.hero_image_url || 'https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/694441da86840f464e36c79b_chimney-inspection-roofline-flue-evaluation.webp';
@@ -195,12 +196,116 @@ export default function ServiceHero({ city, service, heading, serviceData }) {
           white-space: nowrap;
         }
 
+        /* Top-aligned so the two buttons stay level even though only the
+           primary slot carries a note underneath. The top padding is the room
+           the badges poke up into, so they never crowd the paragraph above; the
+           row gap is the same room again should the buttons wrap. */
         .hero-ctas {
           display: flex;
-          align-items: center;
-          gap: 12px;
+          align-items: flex-start;
+          gap: 26px 14px;
           flex-wrap: wrap;
+          padding-top: 8px;
         }
+
+        /* Each button sits in a slot that the badge hangs off. The badge can't
+           live inside the button: the primary clips its own overflow for the
+           shine sweep, which would cut the badge in half. */
+        .hero-cta-slot {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+        }
+
+        /* One badge, two colourways. Same height, type, padding and overlap on
+           both buttons; only the palette changes. It overlaps the button's top
+           border by half its own height (24px / 2), and ignores the pointer so
+           a click on it lands on the button underneath. */
+        .hero-cta-badge {
+          position: absolute;
+          top: -12px;
+          right: 12px;
+          z-index: 2;
+          display: inline-flex;
+          align-items: center;
+          gap: 5px;
+          height: 24px;
+          padding: 0 9px;
+          font-family: 'Inter Tight', sans-serif;
+          font-size: 12px;
+          font-weight: 600;
+          line-height: 1;
+          letter-spacing: 0.01em;
+          white-space: nowrap;
+          border: 1px solid;
+          border-radius: 6px;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.22);
+          pointer-events: none;
+          transition: transform 0.22s ease;
+        }
+
+        .hero-cta-badge-rating {
+          color: #352a16;
+          background: #fff8e7;
+          border-color: rgba(166, 107, 0, 0.35);
+        }
+
+        .hero-cta-badge-star { color: #a66b00; font-size: 12px; }
+
+        .hero-cta-badge-open {
+          color: #166534;
+          background: #ecfdf5;
+          border-color: rgba(22, 101, 52, 0.28);
+        }
+
+        .hero-cta-badge-dot {
+          width: 6px;
+          height: 6px;
+          flex-shrink: 0;
+          border-radius: 50%;
+          background: #16a34a;
+        }
+
+        /* The primary lifts 2px on hover; its badge rides along so it still
+           looks attached rather than left behind. */
+        .hero-cta-slot:has(.hero-cta-primary:hover) .hero-cta-badge { transform: translateY(-2px); }
+
+        .hero-cta-note {
+          margin: 8px 0 0;
+          font-family: 'Inter Tight', sans-serif;
+          font-size: 12.5px;
+          font-weight: 500;
+          line-height: 1.3;
+          letter-spacing: 0.01em;
+          text-align: center;
+          color: rgba(255, 255, 255, 0.72);
+        }
+
+        .hero-cta-note a {
+          color: rgba(255, 255, 255, 0.9);
+          text-decoration: underline;
+          text-decoration-color: rgba(255, 255, 255, 0.35);
+          text-underline-offset: 3px;
+          transition: color 0.2s ease, text-decoration-color 0.2s ease;
+        }
+
+        .hero-cta-note a:hover,
+        .hero-cta-reviews:hover a { color: #ffffff; text-decoration-color: rgba(255, 255, 255, 0.8); }
+
+        .hero-cta-reviews { position: relative; display: inline-block; }
+
+        /* The invisible widget, padded a little past the link so the whole
+           phrase is an easy target, and clipped to that box. */
+        .hero-cta-reviews-elf {
+          position: absolute;
+          inset: -4px -6px;
+          z-index: 1;
+          opacity: 0;
+          overflow: hidden;
+          cursor: pointer;
+        }
+
+        .hero-cta-reviews-elf > div { width: 100%; height: 100%; }
 
         .hero-cta-primary,
         .hero-cta-secondary {
@@ -238,7 +343,7 @@ export default function ServiceHero({ city, service, heading, serviceData }) {
           border: 1px solid #7c3aed;
           border-radius: 10px;
           background: linear-gradient(160deg, #9b5de5 0%, #7c3aed 25%, #5b21b6 50%, #6d28d9 72%, #8b5cf6 100%);
-          box-shadow: inset 0 1px 0 rgba(196,155,240,0.55), inset 0 -1px 0 rgba(0,0,0,0.22), 0 4px 16px rgba(91,33,182,0.45);
+          box-shadow: inset 0 1px 0 rgba(196,155,240,0.55), inset 0 -1px 0 rgba(0,0,0,0.22), 0 3px 12px rgba(91,33,182,0.32);
           cursor: pointer;
           transition: all 0.22s ease;
           position: relative;
@@ -261,7 +366,7 @@ export default function ServiceHero({ city, service, heading, serviceData }) {
 
         .hero-cta-primary:hover {
           transform: translateY(-2px);
-          box-shadow: inset 0 1px 0 rgba(196,155,240,0.55), inset 0 -1px 0 rgba(0,0,0,0.22), 0 8px 24px rgba(91,33,182,0.5);
+          box-shadow: inset 0 1px 0 rgba(196,155,240,0.55), inset 0 -1px 0 rgba(0,0,0,0.22), 0 6px 18px rgba(91,33,182,0.4);
         }
 
         .hero-cta-primary:hover::before { left: 130%; }
@@ -315,6 +420,8 @@ export default function ServiceHero({ city, service, heading, serviceData }) {
         @media (max-width: 480px) {
           .hero-inner { padding: 150px 24px 80px; }
           .hero-h1 { font-size: 48px; }
+          /* Stacked, the 26px row gap still clears the note under the primary
+             plus the half-badge poking up from the phone button. */
           .hero-ctas { flex-direction: column; align-items: stretch; }
           .hero-cta-primary, .hero-cta-secondary { width: 100%; }
         }
@@ -354,14 +461,39 @@ export default function ServiceHero({ city, service, heading, serviceData }) {
             <p className="hero-desc">{heroDescription}</p>
 
             <div className="hero-ctas">
-              <button type="button" className="hero-cta-primary" data-gateway-book="">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ flexShrink: '0' }}><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.8" /><line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /><line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /><line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" strokeWidth="1.8" /></svg>
-                Schedule Your Free Assessment
-              </button>
-              <a href={`tel:${city.phone}`} className="hero-cta-secondary">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{ flexShrink: '0' }}><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>{`
-                ${city.phone_text}
-              `}</a>
+              <div className="hero-cta-slot">
+                <button type="button" className="hero-cta-primary" data-gateway-book="">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ flexShrink: '0' }}><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.8" /><line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /><line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /><line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" strokeWidth="1.8" /></svg>
+                  Schedule Your Free Assessment
+                </button>
+                <span className="hero-cta-badge hero-cta-badge-rating">
+                  <span className="hero-cta-badge-star" aria-hidden="true">★</span>
+                  {`${GOOGLE_RATING} on Google`}
+                </span>
+                <div className="hero-cta-note">
+                  {/* Same trick as the reviews pill: the real Elfsight widget
+                      sits invisibly over the link, so a click opens the same
+                      popup the pill does. The link underneath is what keyboard
+                      and screen-reader users get, straight to Google. */}
+                  <div className="hero-cta-reviews">
+                    <a href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener noreferrer">{`${GOOGLE_REVIEW_COUNT} Google reviews`}</a>
+                    <div className="hero-cta-reviews-elf" aria-hidden="true">
+                      <div className={ELF_CLASS} data-elfsight-app-lazy={true}></div>
+                    </div>
+                  </div>
+                  {' · Insured & Bonded'}
+                </div>
+              </div>
+              <div className="hero-cta-slot">
+                <a href={`tel:${city.phone}`} className="hero-cta-secondary">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{ flexShrink: '0' }}><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>{`
+                  ${city.phone_text}
+                `}</a>
+                <span className="hero-cta-badge hero-cta-badge-open">
+                  <span className="hero-cta-badge-dot" aria-hidden="true"></span>
+                  Open now
+                </span>
+              </div>
             </div>
           </div>
 
