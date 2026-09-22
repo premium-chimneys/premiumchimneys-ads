@@ -131,6 +131,30 @@ const formCss = `
 
 .hero-form-textarea { resize: none; min-height: 80px; }
 
+/* The message is the one field people can skip, so it says so where it stays
+   visible — the placeholder alone vanishes as soon as they start typing. */
+.hero-form-message { display: block; }
+.hero-form-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b5f80;
+  margin: 4px 0 6px 2px;
+}
+.hero-form-optional {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #7c3aed;
+  background: rgba(124, 58, 237, 0.08);
+  padding: 2px 7px;
+  border-radius: 999px;
+}
+
 /* Phone input with +1 prefix */
 .hero-form-phone-wrap {
   display: flex;
@@ -427,7 +451,10 @@ export default function Form() {
               <div className="hero-form-phone-error" ref={phoneErrorRef}>Please enter a valid 10-digit phone number</div>
             </div>
             <div className="hero-form-group"><input className="hero-form-input" type="email" name="email" placeholder="Email Address" required /></div>
-            <div className="hero-form-group"><textarea className="hero-form-textarea" name="message" placeholder="How can we help?"></textarea></div>
+            <label className="hero-form-group hero-form-message">
+              <span className="hero-form-label">Message <span className="hero-form-optional">Optional</span></span>
+              <textarea className="hero-form-textarea" name="message" placeholder="How can we help?"></textarea>
+            </label>
             <button className="hero-form-submit" type="submit">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}>
                 <path d="M22 2L11 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
