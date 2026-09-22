@@ -16,6 +16,7 @@ import {
   HERO_IMAGE, HERO_ALT, HERO_SUB, INTRO, INCLUDED,
   SIGNS, STEPS, REASONS, AREAS, FAQS, RELATED,
 } from './content'
+import CtaTrust from '@/components/CtaTrust'
 
 const CITY_SLUG = 'flower-mound-tx'
 const PAGE_URL = 'https://book.premiumchimneys.com/chimney-cleaning/flower-mound-tx'
@@ -74,6 +75,7 @@ export default async function Page({ params }) {
               <button type="button" className="cc-cta-primary">Book Your Chimney Cleaning</button>
               <a href={`tel:${city.phone}`} className="cc-cta-secondary">Call (469) 587-8303</a>
             </div>
+            <CtaTrust />
           </div>
           <div className="cc-hero-media">
             <Image src={HERO_IMAGE} alt={HERO_ALT} width={760} height={560} priority unoptimized />
@@ -159,6 +161,7 @@ export default async function Page({ params }) {
             <button type="button" className="cc-cta-primary">Book Your Chimney Cleaning</button>
             <a href={`tel:${city.phone}`} className="cc-cta-secondary">Call (469) 587-8303</a>
           </div>
+          <CtaTrust tone="light" align="center" />
         </div>
       </section>
 

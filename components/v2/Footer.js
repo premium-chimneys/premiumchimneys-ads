@@ -1,4 +1,5 @@
 'use client'
+import CtaTrust from './CtaTrust'
 
 export default function Footer({ city }) {
   return (
@@ -489,6 +490,7 @@ export default function Footer({ city }) {
               <a href={`tel:${city.phone}`} className="footer-btn-phone">{`
                 ${city.phone_text}
               `}</a>
+              <CtaTrust flush />
             </div>
           </div>
       
