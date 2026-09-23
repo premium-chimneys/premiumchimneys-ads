@@ -70,10 +70,12 @@ export async function generateMetadata({ params }) {
 export default async function Page({ params }) {
   const { service: serviceSlug, city: citySlug } = await params
 
-  const serviceData = await getServiceData(serviceSlug)
+  const [serviceData, city] = await Promise.all([
+    getServiceData(serviceSlug),
+    getCityData(citySlug),
+  ])
   if (!serviceData) notFound()
 
-  const city = await getCityData(citySlug)
   // Same treatment the service slug already got. A URL is only a page when both
   // halves of it name something real.
   if (!city) notFound()

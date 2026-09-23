@@ -43,13 +43,13 @@ export async function generateMetadata({ params }) {
 export default async function Page({ params }) {
   const { service: serviceSlug, city: citySlug } = await params
 
-  const serviceData = await getServiceData(serviceSlug)
-  if (!serviceData) notFound()
-
-  const [city, landing] = await Promise.all([
+  const [serviceData, city, landing, v2HeroImage] = await Promise.all([
+    getServiceData(serviceSlug),
     getCityData(citySlug),
     getLandingV2Data(serviceSlug),
+    getV2HeroImage(serviceSlug, citySlug),
   ])
+  if (!serviceData) notFound()
   // Same treatment the service slug already got. Before anything below reads
   // city (the heading, the membership check).
   if (!city) notFound()
@@ -57,7 +57,6 @@ export default async function Page({ params }) {
   // V2-only: swap the hero image based on service group + city (chimney
   // skylines only on the cities in HERO_KEY). Falls back to the existing
   // services.hero_image_url when there's no mapping, so suburbs get the V1 image.
-  const v2HeroImage = await getV2HeroImage(serviceSlug, citySlug)
   const serviceDataV2 = v2HeroImage
     ? { ...serviceData, hero_image_url: v2HeroImage }
     : serviceData

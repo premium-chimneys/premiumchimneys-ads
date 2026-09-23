@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/refresh-landing-content.mjs",
     "build": "next build",
+    "refresh:landing": "node scripts/refresh-landing-content.mjs --strict",
     "start": "next start",
     "lint": "eslint"
   },
