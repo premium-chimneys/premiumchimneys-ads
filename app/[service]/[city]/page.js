@@ -43,6 +43,7 @@ export async function generateMetadata({ params }) {
 
   const serviceName = serviceNameFromSlug(serviceSlug)
   return {
+    robots: citySlug === 'flower-mound-tx' ? { index: false, follow: false } : undefined,
     title: `${serviceName} in ${city.name} | Premium Chimneys`,
     description: `Professional ${serviceName} in ${city.name}. Trusted local experts. Book your appointment today.`,
     // Turns on scroll-depth measurement for this page and names the variant.

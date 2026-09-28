@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { getCityData } from '@/lib/getCityData'
@@ -12,7 +11,7 @@ import LegacyTracking from '@/components/tracking/LegacyTracking'
 import { css } from './styles'
 import {
   HERO_IMAGE, HERO_ALT, HERO_SUB, INTRO, INCLUDED,
-  SIGNS, STEPS, REASONS, AREAS, FAQS, RELATED,
+  SIGNS, STEPS, REASONS, AREAS, FAQS,
 } from './content'
 import CtaTrust from '@/components/CtaTrust'
 
@@ -31,6 +30,7 @@ export async function generateMetadata({ params }) {
     return { robots: { index: false, follow: false } }
   }
   return {
+    robots: { index: false, follow: false },
     title: 'Chimney Cleaning in Flower Mound, TX | Premium Chimneys',
     description:
       'Professional chimney cleaning and sweeping in Flower Mound, TX. Creosote and soot removal, clean containment, photo documentation. Call (469) 587-8303.',
@@ -127,12 +127,6 @@ export default async function Page({ params }) {
           <h2 className="cc-h2">Chimney cleaning across Flower Mound</h2>
           <p className="cc-lede">We work throughout Flower Mound and the surrounding neighborhoods.</p>
           <div className="cc-chips">{AREAS.map((a) => <span className="cc-chip" key={a}>{a}</span>)}</div>
-          <div className="cc-related-row">
-            <p className="cc-related-title">Explore Flower Mound services</p>
-            <div className="cc-related-links">
-              {RELATED.map(([n, h]) => <Link key={h} href={h} className="cc-related-link">{n}</Link>)}
-            </div>
-          </div>
         </div>
       </section>
 
