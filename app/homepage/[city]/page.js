@@ -12,7 +12,6 @@ import Contact from '../../../components/Contact'
 import Footer from '../../../components/Footer'
 import LegacyTracking from '@/components/tracking/LegacyTracking'
 import BookReviewWidget from '@/components/BookReviewWidget'
-import flowerMoundSchema from '@/data/homepage-flower-mound-tx-schema.json'
 
 // Cached at the edge rather than re-rendered per request — see the note on
 // the /[service]/[city] route.
@@ -34,6 +33,7 @@ export async function generateMetadata({ params }) {
   return {
     title: `Chimney & Fireplace Services in ${city.name} | Premium Chimneys`,
     description: `Premium Chimneys provides expert chimney and fireplace services in ${city.name}. Book your inspection today.`,
+    robots: citySlug === 'flower-mound-tx' ? { index: false, follow: true } : undefined,
   }
 }
 
@@ -45,9 +45,6 @@ export default async function Page({ params }) {
 
   return (
     <div>
-      {citySlug === 'flower-mound-tx' && (
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(flowerMoundSchema) }} />
-      )}
       <AnnouncementBar city={city} offersMembership={city.metroplex === 'dfw'} />
       <NavigationBar city={city} />
       <Hero city={city} />

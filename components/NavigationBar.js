@@ -1,6 +1,4 @@
 'use client';
-import { BOOK_SERVICES } from '@/components/BookServiceLinks'
-import BookMobileMenu from '@/components/BookMobileMenu'
 import { useEffect } from 'react';
 
 export default function NavigationBar({ city }) {
@@ -181,19 +179,9 @@ export default function NavigationBar({ city }) {
           );
         }
       
-        .nav-services { position: relative; margin-left: 32px; margin-right: auto; }
-        .nav-services-btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 16px; border-radius: 999px; color: #2a1f3d; text-decoration: none; font-size: 15px; font-weight: 700; cursor: pointer; transition: background .16s ease, color .16s ease; }
-        .nav-services-btn:hover { background: #f4eeff; color: #5b3a95; }
-        .nav-services-btn svg { transition: transform .22s ease; }
-        .nav-services:hover .nav-services-btn svg { transform: rotate(180deg); }
-        .nav-services-menu { position: absolute; top: calc(100% + 10px); left: 0; min-width: 260px; padding: 10px; background: #fff; border: 1px solid rgba(26,18,37,.08); border-radius: 14px; box-shadow: 0 24px 60px rgba(91,33,182,.16); opacity: 0; visibility: hidden; transform: translateY(6px); transition: opacity .18s ease, transform .18s ease, visibility .18s; z-index: 1000; display: grid; gap: 2px; }
-        .nav-services:hover .nav-services-menu, .nav-services:focus-within .nav-services-menu { opacity: 1; visibility: visible; transform: translateY(0); }
-        .nav-services-item { display: block; padding: 10px 12px; border-radius: 9px; color: #3a2b4d; text-decoration: none; font-size: 14px; font-weight: 600; }
-        .nav-services-item:hover { background: #f4eeff; color: #5b3a95; }
 
         @media (max-width: 760px) {
           .nav-phone { display: none; }
-          .nav-services { display: none; }
           .nav-apply { display: none; }
           .nav-inner { padding: 0 20px; }
         }
@@ -207,19 +195,6 @@ export default function NavigationBar({ city }) {
             <img src="https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/65e2c8c7fdd2f9e01030c70f_Premium%20Chimneys%20(Dark).svg" alt="Premium Chimneys" />
           </div>
 
-          {city?.slug === 'flower-mound-tx' && (
-            <div className="nav-services">
-              <a href="/services/flower-mound-tx" className="nav-services-btn">
-                Services
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
-              </a>
-              <div className="nav-services-menu">
-                {BOOK_SERVICES.map(([slug, name]) => (
-                  <a key={slug} href={`/${slug}/flower-mound-tx`} className="nav-services-item">{name}</a>
-                ))}
-              </div>
-            </div>
-          )}
 
           {/* CTAs */}
           <div className="nav-ctas">
@@ -238,7 +213,6 @@ export default function NavigationBar({ city }) {
               </svg>
               Book Appointment
             </button>
-            {city?.slug === 'flower-mound-tx' && <BookMobileMenu city={city} />}
           </div>
       
         </div>
