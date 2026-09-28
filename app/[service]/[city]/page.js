@@ -3,10 +3,6 @@ import { getCityData } from '@/lib/getCityData'
 import { getServiceData } from '@/lib/getServiceData'
 import ServicePageV1 from '@/components/variants/ServicePageV1'
 import LegacyTracking from '@/components/tracking/LegacyTracking'
-import BookServiceLinks from '@/components/BookServiceLinks'
-import chimneyRepairSchema from '@/data/chimney-repair-flower-mound-tx-schema.json'
-import fireplaceRepairSchema from '@/data/fireplace-repair-flower-mound-tx-schema.json'
-import gasFireplaceRepairSchema from '@/data/gas-fireplace-repair-flower-mound-tx-schema.json'
 
 // Without this the page is rendered from scratch on every single request —
 // a Supabase round trip per visit, `no-store` on the response, and a permanent
@@ -17,11 +13,6 @@ import gasFireplaceRepairSchema from '@/data/gas-fireplace-repair-flower-mound-t
 // One hour is a deliberate trade: city and service copy changes rarely, so
 // almost every visitor gets a cached page from the edge, and an edit in
 // Supabase takes up to an hour to appear. Lower the number if that is too long.
-const FLOWER_MOUND_SCHEMAS = {
-  'chimney-repair': chimneyRepairSchema,
-  'fireplace-repair': fireplaceRepairSchema,
-  'gas-fireplace-repair': gasFireplaceRepairSchema,
-}
 
 export const revalidate = 3600
 
@@ -83,25 +74,15 @@ export default async function Page({ params }) {
   const serviceName = serviceNameFromSlug(serviceSlug)
   const heading = `${serviceName} in ${city.name}`
   const offersMembership = city.metroplex === 'dfw'
-  const schema =
-    citySlug === 'flower-mound-tx' ? FLOWER_MOUND_SCHEMAS[serviceSlug] : null
 
   return (
     <>
-      {schema && (
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
-      )}
       <ServicePageV1
         city={city}
         service={serviceSlug}
         serviceData={serviceData}
         heading={heading}
         offersMembership={offersMembership}
-        extraSection={
-          citySlug === 'flower-mound-tx' ? (
-            <BookServiceLinks currentService={serviceSlug} />
-          ) : null
-        }
       />
       {/* Unchanged behaviour — these are the same scripts, strategies and
           order this page has always had; they simply moved out of the root

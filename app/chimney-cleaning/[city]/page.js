@@ -9,8 +9,6 @@ import Coupons from '@/components/Coupons'
 import Contact from '@/components/Contact'
 import Footer from '@/components/Footer'
 import LegacyTracking from '@/components/tracking/LegacyTracking'
-import BookServiceLinks from '@/components/BookServiceLinks'
-import schema from '@/data/chimney-cleaning-flower-mound-tx-schema.json'
 import { css } from './styles'
 import {
   HERO_IMAGE, HERO_ALT, HERO_SUB, INTRO, INCLUDED,
@@ -58,10 +56,6 @@ export default async function Page({ params }) {
 
   return (
     <div data-variant="v1">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-      />
       <AnnouncementBar city={city} offersMembership={city.metroplex === 'dfw'} />
       <NavigationBar city={city} />
 
@@ -165,7 +159,6 @@ export default async function Page({ params }) {
         </div>
       </section>
 
-      <BookServiceLinks currentService="chimney-cleaning" />
       <Reviews />
       <Coupons city={city} />
       <Contact city={city} />
