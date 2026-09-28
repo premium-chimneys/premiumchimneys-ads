@@ -67,11 +67,3 @@ export const FAQS = [
   ['What happens if you find a problem during the sweep?', 'We show you the photos, explain what it is and how urgent it is, and give you a written quote. There is no obligation to book the repair with us, and we will tell you plainly if it can wait.'],
 ]
 
-export const RELATED = [
-  ['Chimney Repair', '/chimney-repair/flower-mound-tx'],
-  ['Fireplace Inspection', '/fireplace-inspection/flower-mound-tx'],
-  ['Fireplace Cleaning', '/fireplace-cleaning/flower-mound-tx'],
-  ['Fireplace Maintenance', '/fireplace-maintenance/flower-mound-tx'],
-  ['Gas Fireplace Repair', '/gas-fireplace-repair/flower-mound-tx'],
-  ['Chimney Sweep', '/chimney-sweep/flower-mound-tx'],
-]
