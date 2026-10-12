@@ -19,9 +19,6 @@ with the repo — on Vercel these are set on the project instead.
 | Variable | Used for |
 | --- | --- |
 | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Reading page content (public-read RLS) |
-| `SUPABASE_SERVICE_ROLE_KEY` | Server-only; the `jobber_auth` token row |
-| `JOBBER_CLIENT_ID`, `JOBBER_CLIENT_SECRET`, `JOBBER_REDIRECT_URI` | Jobber OAuth; the secret also verifies webhook signatures |
-| `REPUTATION_ENROLL_URL`, `REPUTATION_REVIEW_GUARD_URL`, `REPUTATION_ENROLL_SECRET` | Review-campaign fan-out; the whole fan-out no-ops if unset |
 | `PREVIEW_SECRET` | Preview access |
 
 A longer annotated copy lives in `.env.example` (local only).
@@ -33,8 +30,6 @@ A longer annotated copy lives in `.env.example` (local only).
 | `/[service]/[city]` | V1 service landing page |
 | `/[service]/[city]/v2` | V2 variant of the same page, isolated from V1 |
 | `/homepage/[city]` | City homepage |
-| `/api/jobber/connect`, `/callback`, `/status` | Jobber OAuth — connects the account and reports token status |
-| `/api/jobber/webhook` | Jobber invoice webhooks; drives the Reputation Manager fan-out |
 
 `/` renders tracking only.
 
@@ -49,13 +44,8 @@ Data comes from `lib/get*.js` (public anon key, read-only tables with public-rea
 
 ## Jobber
 
-`lib/jobber.js` is a single-tenant Jobber GraphQL client — one account, one row of
-tokens in `jobber_auth`, refresh-token rotation handled in-process. It is read-only;
-nothing here writes back to Jobber.
-
-Its only consumer is `lib/jobber-webhook.js`, which on invoice events notifies the
-review campaign in the `premiumchimneys-agents` app (enroll on paid, review-guard on
-create). Both fan-outs are best-effort and swallow their own errors.
+Nothing here talks to Jobber. Its webhooks and OAuth connection live in the
+`premiumchimneys-agents` app.
 
 This repo previously also maintained an `income_report` table and subcontractor
 submission pages; both were removed. `sql/teardown_income_report.sql` drops the
