@@ -8,7 +8,8 @@
     "build": "next build",
     "refresh:landing": "node scripts/refresh-landing-content.mjs --strict",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "node --test \"tests/*.test.mjs\""
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.103.0",

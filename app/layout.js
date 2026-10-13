@@ -69,13 +69,9 @@ export default function RootLayout({ children }) {
           href="/fonts/inter-tight-var-latin.woff2"
           crossOrigin="anonymous"
         />
-        {/* The LCP element on every service page is the hero image, and it is
-            served from Supabase storage — a different origin, so the browser
-            pays DNS + TCP + TLS before the first byte arrives. Warming the
-            connection here overlaps that handshake with parsing the document
-            instead of stacking it in front of the image. */}
-        <link rel="preconnect" href="https://labekmkkpbgrxfpcsyvz.supabase.co" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://labekmkkpbgrxfpcsyvz.supabase.co" />
+        {/* No Supabase preconnect: Storage images are served from this origin
+            through lib/storage-image.mjs, so the browser never contacts
+            Supabase and a warmed connection would go unused. */}
       </head>
       {/* data-anim-hold parks every CSS animation on the page until it has
           loaded and gone quiet — see globals.css and AnimationGate. It ships

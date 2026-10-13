@@ -3,6 +3,7 @@
 import Form from './Form';
 import GoogleReviewsPill, { ELF_CLASS } from './GoogleReviewsPill';
 import { GOOGLE_RATING, GOOGLE_REVIEW_COUNT, GOOGLE_REVIEWS_URL } from '@/lib/credentials';
+import { storageImgProps } from '@/lib/storage-image.mjs';
 
 export default function ServiceHero({ city, service, heading, serviceData }) {
   const heroImage = serviceData?.hero_image_url || 'https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/694441da86840f464e36c79b_chimney-inspection-roofline-flue-evaluation.webp';
@@ -18,33 +19,16 @@ export default function ServiceHero({ city, service, heading, serviceData }) {
   // display name, so rewording the service upstream cannot silently drop this.
   const headingService =
     service === 'chimney-caps' ? 'Chimney Cap Services' : serviceName;
-  // The hero image is the LCP element and lives on another origin, so the
-  // browser would otherwise pay a cold DNS+TCP+TLS handshake before its first
-  // byte. React already emits the <link rel="preload"> for it (picking up the
-  // fetchPriority and srcSet from the <img> below), but it does not preconnect,
-  // so that hint is ours to add — hoisted into <head>, ahead of the <img>.
-  // Derived from the URL rather than hardcoded: the image comes from the
-  // v2_hero_images table, so the host can change without touching this file.
+  // The hero is the LCP element and full-bleed at every breakpoint. A Supabase
+  // Storage hero (v2_hero_images, or the V1 image it falls back to) is served
+  // resized for the screen and edge-cached from this origin
+  // (lib/storage-image.mjs); React emits the preload from the <img>'s
+  // fetchPriority and srcSet. Only a hero still on another origin (the Webflow
+  // fallback) needs that connection warmed — React never preconnects, so the
+  // hint is ours to add, hoisted into <head> ahead of the <img>.
+  const hero = storageImgProps(heroImage, '100vw');
   let heroOrigin = null;
-  try { heroOrigin = new URL(heroImage).origin; } catch { /* relative URL — same origin, no preconnect needed */ }
-
-  // A phone shows the hero about 390 CSS px wide, so the 1724px file is roughly
-  // double the pixels it can use. Every `-v2.webp` in the bucket has an 860px
-  // sibling uploaded alongside it; match on that suffix so a row pointing
-  // anywhere else simply gets no srcset and keeps the single full-size image
-  // rather than requesting a variant that was never uploaded.
-  // Two naming conventions reach here: `-v2.webp` for the metroplex heroes in
-  // v2_hero_images, and `-hero-opt.webp` for the per-service images V2 falls
-  // back to when a service has no v2_hero_images row (ac-repair, hvac-repair,
-  // air-duct-cleaning, dryer-vent-cleaning). Both have an 860px sibling.
-  const heroSmall = /-v2\.webp$/.test(heroImage)
-    ? heroImage.replace(/-v2\.webp$/, '-v2-860.webp')
-    : /-hero-opt\.webp$/.test(heroImage)
-      ? heroImage.replace(/-hero-opt\.webp$/, '-hero-opt-860.webp')
-      : null;
-  const heroSrcSet = heroSmall ? `${heroSmall} 860w, ${heroImage} 1724w` : undefined;
-  // The hero is full-bleed at every breakpoint.
-  const heroSizes = heroSmall ? '100vw' : undefined;
+  try { heroOrigin = new URL(hero.src).origin; } catch { /* relative URL — same origin, no preconnect needed */ }
   return (
     <>
       {heroOrigin && <link rel="preconnect" href={heroOrigin} crossOrigin="anonymous" />}
@@ -430,9 +414,7 @@ export default function ServiceHero({ city, service, heading, serviceData }) {
       <section className="hero">
         <img
           className="hero-video"
-          src={heroImage}
-          srcSet={heroSrcSet}
-          sizes={heroSizes}
+          {...hero}
           fetchPriority="high"
           loading="eager"
           decoding="async"

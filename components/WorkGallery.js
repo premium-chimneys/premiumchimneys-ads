@@ -2,6 +2,10 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { getServiceGallery } from '@/lib/serviceGallery';
+import { storageImgProps } from '@/lib/storage-image.mjs';
+
+// The card's rendered width: most of a phone, two-up on a tablet, fixed above.
+const GALLERY_SIZES = '(max-width: 640px) 84vw, (max-width: 900px) 420px, 460px';
 
 const CheckIcon = (
   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6L9 17l-5-5" stroke="#22c55e" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
@@ -265,12 +269,8 @@ export default function WorkGallery({ city, service, serviceData }) {
                 <div className="wg-media">
                   <img
                     className="wg-img"
-                    src={s.img}
-                    /* Only where a 640w sibling was actually uploaded — the
-                       rest are single files whose source was already smaller
-                       than the slot. */
-                    srcSet={s.small ? `${s.small} 640w, ${s.img} 920w` : undefined}
-                    sizes={s.small ? '(max-width: 640px) 84vw, (max-width: 900px) 420px, 460px' : undefined}
+                    /* Resized to the slot and edge-cached (lib/storage-image.mjs). */
+                    {...storageImgProps(s.img, GALLERY_SIZES)}
                     alt={s.alt}
                     /* Below the fold. Without loading="lazy" React emits a
                        <link rel="preload"> for every slide during SSR, putting

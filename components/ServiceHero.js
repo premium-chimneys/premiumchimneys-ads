@@ -2,25 +2,18 @@
 import Form from './Form';
 import GoogleReviewsPill, { ELF_CLASS } from './GoogleReviewsPill';
 import { GOOGLE_RATING, GOOGLE_REVIEW_COUNT, GOOGLE_REVIEWS_URL } from '@/lib/credentials';
+import { storageImgProps } from '@/lib/storage-image.mjs';
 
 export default function ServiceHero({ city, heading, serviceData }) {
   const heroImage = serviceData?.hero_image_url || 'https://cdn.prod.website-files.com/6583a3bd0693f08aab1194fe/694441da86840f464e36c79b_chimney-inspection-roofline-flue-evaluation.webp';
-  // The hero image is the LCP element and sits on another origin, so warm that
-  // connection up — React emits the preload itself (taking fetchPriority and
-  // srcSet off the <img>) but never the preconnect.
+  // The hero is the LCP element and full-bleed at every breakpoint. A Supabase
+  // Storage hero is served resized for the screen and edge-cached from this
+  // origin (lib/storage-image.mjs); React emits the preload from the <img>'s
+  // fetchPriority and srcSet. Only a hero still on another origin (the Webflow
+  // fallback) needs that connection warmed — React never preconnects.
+  const hero = storageImgProps(heroImage, '100vw');
   let heroOrigin = null;
-  try { heroOrigin = new URL(heroImage).origin; } catch { /* relative URL — same origin */ }
-
-  // A phone paints this about 390 CSS px wide, so the full-width file is far
-  // more pixels than it can use. Every `-hero-opt.webp` in the bucket has an
-  // 860px sibling; matching on that suffix means a services row pointing
-  // anywhere else just keeps the single image rather than requesting a variant
-  // that was never uploaded.
-  const heroSmall = /-hero-opt\.webp$/.test(heroImage)
-    ? heroImage.replace(/-hero-opt\.webp$/, '-hero-opt-860.webp')
-    : null;
-  const heroSrcSet = heroSmall ? `${heroSmall} 860w, ${heroImage} 1724w` : undefined;
-  const heroSizes = heroSmall ? '100vw' : undefined;
+  try { heroOrigin = new URL(hero.src).origin; } catch { /* relative URL — same origin */ }
   const heroDescription = serviceData?.hero_description || 'Premium Chimneys provides professional fireplace and chimney services for your home. Our mission is to help you enjoy your fireplace safely and efficiently, with complete peace of mind.';
   return (
     <>
@@ -340,9 +333,7 @@ export default function ServiceHero({ city, heading, serviceData }) {
       <section className="hero">
         <img
           className="hero-video"
-          src={heroImage}
-          srcSet={heroSrcSet}
-          sizes={heroSizes}
+          {...hero}
           fetchPriority="high"
           loading="eager"
           decoding="async"
