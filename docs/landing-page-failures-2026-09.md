@@ -37,6 +37,8 @@
 
 ## Resilience change
 
-Public landing content is cached for one hour. Database reads stop after 1.5 seconds and use the deployment snapshot on failure, including cold URLs. Successful empty reads remain empty (404). Each build refreshes the snapshot; failed refreshes retain the previous one. Run `npm run refresh:landing` for a strict manual refresh. Customer forms and submissions do not use this cached client.
+Public landing content is cached for one hour. Database reads stop after 5 seconds and are retried once. If both fail, the page render throws: ISR keeps serving the last page built from live data and retries on the next request (a URL never built before returns an error). There is no bundled snapshot; it was removed on 2026-10-18 after it served a stale Chicago address. Successful empty reads remain empty (404). Customer forms and submissions do not use this cached client.
+
+The validation below describes the earlier snapshot design.
 
 Validation: production build and changed-file ESLint passed. All 32 paths rendered HTTP 200 with headings when every Supabase REST request was forced to return 504; unknown city and service paths returned 404. A previously uncached V2 page also rendered HTTP 200 in 1.7 seconds with Supabase requests stalled until abort. External image storage and form submission availability are separate dependencies.
