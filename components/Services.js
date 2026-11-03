@@ -13,9 +13,9 @@ export default function Services({ city }) {
     try {
       (function() {
         var offers = [
-          { emoji: '🏠', title: '$149 Off Chimney Cap', desc: '$149 off a new chimney cap installation.', code: 'cap149' },
-          { emoji: '🧹', title: '$49 Off Sweep', desc: '$49 off any chimney sweep service.', code: 'sweep49' },
-          { emoji: '🔧', title: '15% Off Repairs', desc: '15% off any chimney or fireplace repair.', code: 'repair15' }
+          { emoji: '🏠', title: '$150 Off Chimney Cap', desc: '$150 off a new chimney cap installation.', code: 'cap149' },
+          { emoji: '🧹', title: '$50 Off Sweep', desc: '$50 off any chimney sweep service.', code: 'sweep49' },
+          { emoji: '🔧', title: '10% Off Repairs', desc: '10% off any chimney or fireplace repair.', code: 'repair10' }
         ];
       
         var claimed = false;

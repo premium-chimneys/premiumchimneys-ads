@@ -315,13 +315,13 @@ export default function Coupons({ city }) {
               <div className="cp-card-top" style={{ background: 'linear-gradient(135deg,#7c3aed,#6d28d9)' }}>
                 <div className="cp-card-shine"></div>
                 <span className="cp-card-icon">&#x1f9f9;</span>
-                <div className="cp-card-amount">$49</div>
+                <div className="cp-card-amount">$50</div>
                 <div className="cp-card-off">Off</div>
                 <div className="cp-card-service">Chimney Sweeps</div>
               </div>
               <hr className="cp-card-sep" />
               <div className="cp-card-bottom">
-                <p className="cp-card-desc">Save $49 on your next professional chimney sweep service.</p>
+                <p className="cp-card-desc">Save $50 on your next professional chimney sweep service.</p>
                 <div className="cp-card-code-wrap">
                   <span className="cp-card-code">sweep49</span>
                   <span className="cp-card-scissors">&#x2702;&#xFE0F;</span>
@@ -353,13 +353,13 @@ export default function Coupons({ city }) {
               <div className="cp-card-top" style={{ background: 'linear-gradient(135deg,#6d28d9,#5b21b6)' }}>
                 <div className="cp-card-shine"></div>
                 <span className="cp-card-icon">&#x1f525;</span>
-                <div className="cp-card-amount">$149</div>
+                <div className="cp-card-amount">$150</div>
                 <div className="cp-card-off">Off</div>
                 <div className="cp-card-service">Chimney Caps</div>
               </div>
               <hr className="cp-card-sep" />
               <div className="cp-card-bottom">
-                <p className="cp-card-desc">Save $149 on a new chimney cap installation.</p>
+                <p className="cp-card-desc">Save $150 on a new chimney cap installation.</p>
                 <div className="cp-card-code-wrap">
                   <span className="cp-card-code">cap149</span>
                   <span className="cp-card-scissors">&#x2702;&#xFE0F;</span>

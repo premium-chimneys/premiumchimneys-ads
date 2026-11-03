@@ -542,7 +542,7 @@ function AnnouncementBarStandard({ city }) {
           <div className="announcement-divider-2"></div>
       
           <span className="announcement-text-2">
-            <strong>Spring Fix & Save</strong> — $149 off repairs.
+            <strong>Fix It Before Your Next Fire.</strong> Save 10% on repairs.
           </span>
       
           <div className="announcement-pill-2">
