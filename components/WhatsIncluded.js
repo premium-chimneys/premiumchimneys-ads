@@ -91,7 +91,7 @@ export default function WhatsIncluded({ city, serviceData }) {
             </div>
             <div className="wi-cta-content">
               <p className="wi-cta-heading">Schedule your appointment today</p>
-              <p className="wi-cta-desc">Our certified technicians are available this week. Book now and get a full chimney or fireplace assessment.</p>
+              <p className="wi-cta-desc">Our certified technicians are available this week. Book your chimney or fireplace appointment now.</p>
               <div className="wi-cta-features">
                 <span className="wi-cta-feature"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg> Same-week availability</span>
                 <span className="wi-cta-feature"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg> Insured & Bonded</span>
