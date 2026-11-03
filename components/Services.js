@@ -13,8 +13,8 @@ export default function Services({ city }) {
     try {
       (function() {
         var offers = [
-          { emoji: '🔍', title: 'Free Inspection', desc: 'A full chimney or fireplace inspection — on us.', code: 'freeinspect25' },
-          { emoji: '🧹', title: '$69 Off Sweep', desc: '$69 off any chimney sweep service.', code: 'sweep69off' },
+          { emoji: '🏠', title: '$149 Off Chimney Cap', desc: '$149 off a new chimney cap installation.', code: 'cap149' },
+          { emoji: '🧹', title: '$49 Off Sweep', desc: '$49 off any chimney sweep service.', code: 'sweep49' },
           { emoji: '🔧', title: '15% Off Repairs', desc: '15% off any chimney or fireplace repair.', code: 'repair15' }
         ];
       

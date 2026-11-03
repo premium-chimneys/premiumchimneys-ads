@@ -226,8 +226,8 @@ export default function NavigationBar({ city }) {
                 <line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
                 <line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" strokeWidth="1.8" />
               </svg>
-              <span className="nav-apply-full">Schedule Your Free Assessment</span>
-              <span className="nav-apply-short">Free Assessment</span>
+              <span className="nav-apply-full">Schedule Your Assessment</span>
+              <span className="nav-apply-short">Book Assessment</span>
             </button>
           </div>
       
