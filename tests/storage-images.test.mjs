@@ -14,7 +14,6 @@ const { storageImgProps } = await import('../lib/storage-image.mjs')
 
 // Reviewed exceptions. Each must stay off Supabase.
 const UNOPTIMIZED_OK = new Set([
-  'app/chimney-cleaning/[city]/page.js', // HERO_IMAGE is a Webflow CDN literal in ./content.js
 ])
 const STORAGE_LITERAL_OK = new Set([
   'lib/serviceGallery.js', // gallery fallback data, rendered through storageImgProps

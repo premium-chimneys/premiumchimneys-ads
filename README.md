@@ -29,7 +29,6 @@ A longer annotated copy lives in `.env.example` (local only).
 | --- | --- |
 | `/[service]/[city]` | V1 service landing page |
 | `/[service]/[city]/v2` | V2 variant of the same page, isolated from V1 |
-| `/homepage/[city]` | City homepage |
 
 `/` renders tracking only.
 

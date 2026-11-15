@@ -9,7 +9,7 @@ import ChatLeadTracking from './ChatLeadTracking'
 // for every branch to mount its own set. Nothing here changed in the move:
 // same tags, same ids, same strategies, same order.
 //
-// Mounted by V1, /homepage/* and the bare root page — i.e. everything that is
+// Mounted by V1 and the bare root page — i.e. everything that is
 // not V2.
 //
 // capture.js is deliberately NOT here. It stays a parser-inserted
