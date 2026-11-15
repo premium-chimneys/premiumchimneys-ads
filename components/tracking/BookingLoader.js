@@ -17,9 +17,12 @@ const FALLBACK_BASE = `https://gateway.serviceroot.io/book/${TENANT}`
 // FALLBACK_BASE carries none of that, so a visitor who arrives on an ad click
 // and then hits this fallback books as if they walked in off the street. Send
 // the same parameter by hand so the fallback attributes exactly like the popup.
-function fallbackUrl() {
+function fallbackUrl(trigger) {
   try {
-    return `${FALLBACK_BASE}?parent_url=${encodeURIComponent(window.location.href)}`
+    // Carry a button's booking note (e.g. the popup's discount), as booking.js does.
+    const note = trigger?.getAttribute?.('data-gateway-note')?.trim().slice(0, 200)
+    const noteParam = note ? `&note=${encodeURIComponent(note)}` : ''
+    return `${FALLBACK_BASE}?parent_url=${encodeURIComponent(window.location.href)}${noteParam}`
   } catch {
     return FALLBACK_BASE
   }
@@ -137,7 +140,7 @@ export default function BookingLoader() {
         },
         () => {
           if (cancelled) return
-          window.location.href = fallbackUrl()
+          window.location.href = fallbackUrl(trigger)
         }
       )
     }

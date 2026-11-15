@@ -8,6 +8,7 @@ import Differentiation from '@/components/Differentiation'
 import Reviews from '@/components/Reviews'
 import Coupons from '@/components/Coupons'
 import Contact from '@/components/Contact'
+import TimedPopup from '@/components/TimedPopup'
 import Footer from '@/components/Footer'
 
 export default function ServicePageV1({ city, service, serviceData, heading, offersMembership }) {
@@ -24,6 +25,7 @@ export default function ServicePageV1({ city, service, serviceData, heading, off
       <Coupons city={city} />
       <Contact city={city} />
       <Footer city={city} />
+      <TimedPopup service={service} />
     </div>
   )
 }

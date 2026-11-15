@@ -8,6 +8,14 @@ const nextConfig = {
   // The old Flower Mound homepage still has links out there (the Yelp listing
   // had it). Send them to the Flower Mound location page. Any tags on the link
   // (utm_source…) carry over. Temporary (307) so it can be undone cleanly.
+  // The private /popup stats page must never be indexed. The page sets a
+  // robots meta tag too; the header also covers crawlers that skip the HTML.
+  async headers() {
+    return [{
+      source: '/popup',
+      headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive' }],
+    }];
+  },
   async redirects() {
     return [{
       source: '/homepage/flower-mound-tx',
