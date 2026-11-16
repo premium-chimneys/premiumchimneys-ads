@@ -27,7 +27,7 @@ const CSS = `
 .tp-backdrop{position:absolute;inset:0;background:rgba(3,5,12,.8);opacity:0;transition:opacity .25s ease}
 .tp-open .tp-backdrop{opacity:1}
 .tp-card{position:absolute;left:50%;outline:none;top:50%;
-  width:calc(100% - 48px);max-width:420px;background:#fff;border-radius:33px;overflow:hidden;
+  width:calc(100% - 48px);max-width:420px;background:transparent;border-radius:33px;overflow:hidden;isolation:isolate;
   transform:translate(-50%,-46%);opacity:0;transition:transform .3s cubic-bezier(.2,.8,.2,1),opacity .25s ease}
 .tp-open .tp-card{transform:translate(-50%,-50%);opacity:1}
 .tp-media{position:relative;display:block;width:100%;aspect-ratio:1/1;max-height:calc(100dvh - 310px);background:#efe6dd}
@@ -36,7 +36,7 @@ const CSS = `
   display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;
   background:rgba(0,0,0,.45);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 .tp-close svg{width:14px;height:14px}
-.tp-body{padding:22.5px 32px 28px}
+.tp-body{padding:22.5px 32px 28px;background:#fff;margin-top:-1px}
 .tp-title{margin:0;font-size:23.6px;line-height:1.15;font-weight:800;letter-spacing:-.015em;color:#0c0f14}
 .tp-text{margin:9px 0 0;font-size:12px;line-height:14px;font-weight:400;color:#0c0f14}
 .tp-cta{display:flex;align-items:center;justify-content:center;width:100%;height:42px;margin-top:27.3px;
@@ -64,6 +64,7 @@ const CSS = `
   .tp-cta:hover{transform:translateY(-1px);border-color:#8b5cf6;box-shadow:inset 0 1px 0 rgba(196,155,240,.55),inset 0 -1px 0 rgba(0,0,0,.22),0 5px 18px rgba(91,33,182,.5)}
   .tp-cta:hover::before{left:130%}
 }
+.tp-popup-open #sr-chat-launcher,.tp-popup-open #sr-chat-panel,.tp-popup-open .sr-ask{visibility:hidden!important}
 @media (prefers-reduced-motion:reduce){.tp-backdrop,.tp-card{transition:none}}
 `
 
