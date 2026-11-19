@@ -455,7 +455,7 @@ export default function Form() {
               </svg>
               Submit Request
             </button>
-            <p className="hero-form-disclaimer">By submitting, you agree to be contacted by one of our agents. Your information is confidential and won't be shared or sold.</p>
+            <p className="hero-form-disclaimer">By submitting, you agree to be contacted by one of our agents, including by text about your service. Reply STOP to opt out. Your information is confidential and won&apos;t be shared or sold.</p>
             <div className="hero-form-trust">
               <span className="hero-form-trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg> No spam</span>
               <span className="hero-form-trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg> No obligation</span>

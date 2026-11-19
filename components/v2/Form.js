@@ -293,6 +293,15 @@ const formCss = `
   color: #5b5566;
 }
 
+.hero-form-disclaimer {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 11px;
+  color: #a099b2;
+  margin-top: 14px;
+  line-height: 1.5;
+  text-align: center;
+}
+
 .hero-form-trust {
   display: flex;
   align-items: center;
@@ -510,6 +519,7 @@ export default function Form() {
               </svg>
               Submit Request
             </button>
+            <p className="hero-form-disclaimer">By submitting, you agree to be contacted by one of our agents, including by text about your service. Reply STOP to opt out. Your information is confidential and won&apos;t be shared or sold.</p>
             <div className="hero-form-creds">
               <div className="hero-form-cred">
                 <span className="hero-form-cred-mark">
